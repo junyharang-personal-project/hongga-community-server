@@ -3,8 +3,9 @@ package org.comunity.hongga.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.ServiceURIVersion;
-import org.comunity.hongga.model.dto.MemberDTO;
+import org.comunity.hongga.model.dto.MemberSignUpDTO;
 import org.comunity.hongga.model.entity.member.Member;
+import org.comunity.hongga.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class MemberController {
     private final MemberService memberService;
 
     // 회원 가입용 Method
-    @PostMapping("/signup") public ResponseEntity<Member> signup(@Valid @RequestBody MemberDTO memberDTO) {
+    @PostMapping("/signup") public ResponseEntity<Member> signup(@Valid @RequestBody MemberSignUpDTO memberDTO) {
 
         log.info("MemberController가 동작 하였습니다!");
         log.info("signup(@Valid @RequestBody MemberDTO memberDTO)가 호출 되었습니다!");
@@ -50,13 +51,13 @@ public class MemberController {
 
     } // getServiceMemberInfo() 끝
 
-    @GetMapping("/member/{memberId}") @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<Member> getMemberDetailInfo(@PathVariable Long memberId) {
+    @GetMapping("/member/{email}") @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<Member> getMemberDetailInfo(@PathVariable String email) {
 
         log.info("MemberController가 동작 하였습니다!");
         log.info("getMemberDetailInfo(@PathVariable Long memberId)가 호출 되었습니다!");
 
-        return ResponseEntity.ok(memberService.getMemberWithGrade(memberId).get());
+        return ResponseEntity.ok(memberService.getServiceMemberWithGrade(email).get());
 
     } // getMemberDetailInfo(@PathVariable Long memberId) 끝
 

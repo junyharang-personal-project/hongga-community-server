@@ -30,8 +30,14 @@ import java.util.Set;
     private String password;
     @Column(length = 10) private String nickname;
 
+    private String phoneNumber;
+
     private boolean activated;                      // 계정 활성화 여부
 
     @Enumerated(EnumType.STRING) private MemberGrade grade;
+
+    // 자기 소개
+    @Lob // 길이 65,535 byte
+    private String aboutMe;
 
 } // class 끝
