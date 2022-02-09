@@ -14,4 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         // Member의 이름을 가져오는데, 권한 정보를 같이 가져오게 하기 위함.
     Optional<Member> findOneWithGradeByMemberEmail(String email);
 
+    @Query("select m.email from Member m where m.email =:email")
+    Member findByEmail(@Param("email") String email);
+
 } // interface 끝

@@ -4,6 +4,9 @@ import lombok.*;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,10 +37,17 @@ import java.util.Set;
 
     private boolean activated;                      // 계정 활성화 여부
 
-    @Enumerated(EnumType.STRING) private MemberGrade grade;
+    // GUEST, FAMILY, ADMIN
+    private String rolse;
 
     // 자기 소개
     @Lob // 길이 65,535 byte
     private String aboutMe;
+
+    @ManyToMany @JoinTable(
+            name = "member_authority",
+            joinColumns = {@JoinColumn(name = "member_id", referencedColumnName = "member_id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
 
 } // class 끝

@@ -3,7 +3,7 @@ package org.comunity.hongga.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.ServiceURIVersion;
-import org.comunity.hongga.model.dto.MemberSignUpDTO;
+import org.comunity.hongga.model.dto.member.MemberSignUpDTO;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.service.MemberService;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +60,4 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getServiceMemberWithGrade(email).get());
 
     } // getMemberDetailInfo(@PathVariable Long memberId) 끝
-
-
-
 } // class 끝
