@@ -55,7 +55,6 @@ public class MemberSignUpDTO {
                 .name(name)
                 .nickname(nickname)
                 .phoneNumber(phoneNumber)
-                .rolse(authorityName)
                 .build();
     } // toEntity() 끝
 } // class 끝

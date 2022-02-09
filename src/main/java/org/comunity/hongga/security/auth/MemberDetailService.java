@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
         log.info("MemberDetailService가 동작하였습니다!");
         log.info("loadUserByUsername(String username)가 호출 되었습니다! 이용자가 로그인을 시도 합니다!");
 
-        return memberRepository.findOneWithGradeByMemberEmail(username).map(member -> createMember(username, member)).orElseThrow(() ->
+        return memberRepository.findOneWithAuthoritiesByEmail(username).map(member -> createMember(username, member)).orElseThrow(() ->
                 new UsernameNotFoundException("해당 회원을 찾을 수 없습니다!"));
 
     } // loadUserByUsername(String username) 끝

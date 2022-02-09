@@ -43,7 +43,7 @@ import java.util.Optional;
         log.info("signup(MemberDTO memberDTO)가 동작 합니다!");
         log.info("memberDTO안에 UserName이 DB에 없으면 Authority와 Member 정보를 생성해서 MemberRepository를 통해 DB에 저장하겠습니다!");
 
-        if (memberRepository.findOneWithGradeByMemberEmail(memberSignUpDTO.getEmail()).orElse(null) != null) {
+        if (memberRepository.findOneWithAuthoritiesByEmail(memberSignUpDTO.getEmail()).orElse(null) != null) {
             throw new RuntimeException("이미 가입 되어 있는 계정 입니다!");
         } // if문 끝
 
@@ -75,7 +75,7 @@ import java.util.Optional;
         log.info("getServiceMemberWithGrade(String email)가 호출 되었습니다!");
         log.info("회원의 정보 객체와 권한 정보를 가져오는 Method 입니다!");
 
-        return SecurityUtil.getCurrentMemberEmail().flatMap(memberRepository::findOneWithGradeByMemberEmail);
+        return SecurityUtil.getCurrentMemberEmail().flatMap(memberRepository::findOneWithAuthoritiesByEmail);
 
     } // getServiceMemberWithGrade() 끝
 
@@ -87,7 +87,7 @@ import java.util.Optional;
         log.info("getServiceMemberWithGrade()가 호출 되었습니다!");
         log.info("회원의 정보와 권한 정보를 가져오는 Method 입니다!");
 
-        return SecurityUtil.getCurrentMemberEmail().flatMap(memberRepository::findOneWithGradeByMemberEmail);
+        return SecurityUtil.getCurrentMemberEmail().flatMap(memberRepository::findOneWithAuthoritiesByEmail);
 
     } // getServiceMemberWithGrade() 끝
 

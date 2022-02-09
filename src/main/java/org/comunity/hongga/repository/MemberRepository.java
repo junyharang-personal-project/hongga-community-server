@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @EntityGraph(attributePaths = "grade") // Query 수행 시 Lazy 조회가 아니고, Eager 조회로 Authorities 정보를 같이 가져오게 하기 위한 설정
+    @EntityGraph(attributePaths = "authorities") // Query 수행 시 Lazy 조회가 아니고, Eager 조회로 Authorities 정보를 같이 가져오게 하기 위한 설정
         // Member의 이름을 가져오는데, 권한 정보를 같이 가져오게 하기 위함.
-    Optional<Member> findOneWithGradeByMemberEmail(String email);
+    Optional<Member> findOneWithAuthoritiesByEmail(String email);
 
     @Query("select m.email from Member m where m.email =:email")
     Member findByEmail(@Param("email") String email);

@@ -26,23 +26,20 @@ import java.util.Set;
 @Entity public class Member extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    @Column(name = "member_id") private Long memberId;
 
-    @Column(length = 50, unique = true) private String email;
-    @Column(length = 4) private String name;
-    private String password;
-    @Column(length = 10) private String nickname;
+    @Column(name = "email", length = 50, unique = true) private String email;
+    @Column(name = "name", length = 4) private String name;
+    @Column(name = "password", length = 100) private String password;
+    @Column(name = "nickname", length = 10) private String nickname;
 
-    private String phoneNumber;
+    @Column(name = "phone") private String phoneNumber;
 
-    private boolean activated;                      // 계정 활성화 여부
-
-    // GUEST, FAMILY, ADMIN
-    private String rolse;
+    @Column(name = "activated") private boolean activated;                      // 계정 활성화 여부
 
     // 자기 소개
     @Lob // 길이 65,535 byte
-    private String aboutMe;
+    @Column(name = "about_me", length = 65535) private String aboutMe;
 
     @ManyToMany @JoinTable(
             name = "member_authority",
