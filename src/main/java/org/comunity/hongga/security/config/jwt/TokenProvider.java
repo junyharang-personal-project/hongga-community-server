@@ -45,9 +45,7 @@ import java.util.stream.Collectors;
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInmilliseconds) {
 
         log.info("JwtUtil Class 가 호출 되었습니다!");
-        log.info("TokenProvider(\n" +
-                "            @Value(\"${jwt.secret}\") String secret, \n" +
-                "            @Value(\"${jwt.token-validity-in-seconds\") long tokenValidityInmilliseconds) 이 동작 하였습니다!");
+        log.info("TokenProvider() 이 동작 하였습니다!");
 
         this.secret = secret;
         this.tokenValidityInmilliseconds = tokenValidityInmilliseconds * 1000;

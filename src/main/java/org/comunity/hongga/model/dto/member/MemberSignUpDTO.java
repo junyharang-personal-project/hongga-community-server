@@ -39,7 +39,7 @@ public class MemberSignUpDTO {
     @Size(min = 4, max = 20, message = "별명은 4글자 이상 20글자 이하여야 합니다!")
     @NotEmpty private String nickname;
 
-    @Size(message = "핸드폰 번호는 필수 입력 사항 입니다!")
+    @Size(min = 11, max = 13, message = "핸드폰 번호는 필수 입력 사항 입니다!")
     @NotEmpty private String phoneNumber;
 
     private String authorityName;
@@ -55,6 +55,7 @@ public class MemberSignUpDTO {
                 .name(name)
                 .nickname(nickname)
                 .phoneNumber(phoneNumber)
+                .aboutMe(aboutMe)
                 .build();
     } // toEntity() 끝
 } // class 끝

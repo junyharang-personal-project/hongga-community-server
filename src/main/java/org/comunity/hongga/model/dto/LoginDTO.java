@@ -23,6 +23,6 @@ public class LoginDTO {
 
     @NotNull
     @Size(min = 4) private String email;
-    @NotNull @Size(min = 8) private String password;
+    @NotNull @Size(min = 5) private String password;
 
 } // class 끝

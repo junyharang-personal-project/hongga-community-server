@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -33,7 +35,7 @@ import java.util.Optional;
     private final PasswordEncoder passwordEncoder;
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
-        log.info("MemberService가 동작 하였습니다!");
+        log.info("MemberService의 생성자가 동작 하였습니다!");
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
     } // 생성자 끝
@@ -47,6 +49,19 @@ import java.util.Optional;
             throw new RuntimeException("이미 가입 되어 있는 계정 입니다!");
         } // if문 끝
 
+        //TODO : 테스트 완료 뒤 재구성 해야 함.
+
+//        List<Member> allMember = memberRepository.findAll();
+//        Member testAdminMember = memberRepository.findByEmail("admin@hongga.com");
+
+//        if (allMember.isEmpty() && testAdminMember.getEmail().toString() == "admin@hongga.com") {   // 가입된 회원이 없거나, 테스트용 멤버만 가입이 되어 있다면?
+//            log.info("가입된 회원이 없으므로, 현재 가입 하는 회원을 관리자로 등록 하겠습니다!");
+//            log.info("테스트가 완료되면 이 로직은 수정 되어야 합니다!");
+//            Authority authority = Authority.builder()
+//                    .authorityName("ROLE_ADMIN")
+//                    .build();
+//        } // if문 끝
+
         log.info("가입하는 회원의 권한 정보를 생성 하겠습니다!");
         Authority authority = Authority.builder()
                 .authorityName("ROLE_GUEST")
@@ -55,10 +70,11 @@ import java.util.Optional;
         log.info("권한 정보도 추가하여 회원 정보를 생성 하겠습니다!");
         Member member = Member.builder()
                 .email(memberSignUpDTO.getEmail())
-                .password(memberSignUpDTO.getPassword())
+                .password(passwordEncoder.encode(memberSignUpDTO.getPassword()))
                 .name(memberSignUpDTO.getName())
                 .activated(true)
                 .nickname(memberSignUpDTO.getNickname())
+                .phoneNumber(memberSignUpDTO.getPhoneNumber())
                 .authorities(Collections.singleton(authority))
                 .aboutMe(memberSignUpDTO.getAboutMe())
                 .build();

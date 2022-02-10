@@ -4,10 +4,7 @@ import lombok.*;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 회원 DB 관련
@@ -23,17 +20,16 @@ import java.util.Set;
  */
 
 @Getter @Builder @NoArgsConstructor @AllArgsConstructor
-@Entity public class Member extends BaseDateTime {
+@Entity public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id") private Long memberId;
 
     @Column(name = "email", length = 50, unique = true) private String email;
-    @Column(name = "name", length = 4) private String name;
     @Column(name = "password", length = 100) private String password;
+    @Column(name = "name", length = 4) private String name;
     @Column(name = "nickname", length = 10) private String nickname;
-
-    @Column(name = "phone") private String phoneNumber;
+    @Column(name = "phone_number") private String phoneNumber;
 
     @Column(name = "activated") private boolean activated;                      // 계정 활성화 여부
 
