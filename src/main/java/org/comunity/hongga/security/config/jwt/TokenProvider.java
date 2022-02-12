@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInmilliseconds) {
 
-        log.info("JwtUtil Class 가 호출 되었습니다!");
+        log.info("TokenProvider Class 가 호출 되었습니다!");
         log.info("TokenProvider() 이 동작 하였습니다!");
 
         this.secret = secret;
@@ -110,6 +110,8 @@ import java.util.stream.Collectors;
 
         // Token을 매개변수로 받아 parserBuilder를 통해 parsing 하고, 발생하는 Exception을 잡아 문제가 있으면 False, 없으면 true 반환
         try {
+
+            log.info("Token을 매개변수로 받아 parserBuilder를 통해 parsing하겠습니다!");
 
             Jwts.parserBuilder()
                     .setSigningKey(key)

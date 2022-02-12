@@ -23,7 +23,7 @@ import java.util.*;
 @Entity public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id") private Long memberId;
+    @Column(name = "member_no") private Long memberNo;
 
     @Column(name = "email", length = 50, unique = true) private String email;
     @Column(name = "password", length = 100) private String password;
@@ -39,7 +39,7 @@ import java.util.*;
 
     @ManyToMany @JoinTable(
             name = "member_authority",
-            joinColumns = {@JoinColumn(name = "member_id", referencedColumnName = "member_id")},
+            joinColumns = {@JoinColumn(name = "member_no", referencedColumnName = "member_no")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
