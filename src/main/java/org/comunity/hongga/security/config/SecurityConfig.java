@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.security.config.jwt.JwtAuthenticationEntryPoint;
 import org.comunity.hongga.security.config.jwt.TokenProvider;
 import org.comunity.hongga.security.config.jwt.handler.JwtAccessDeniedHandler;
+import org.comunity.hongga.security.service.HonggaOAuth2UserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -36,13 +37,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    public SecurityConfig(TokenProvider tokenProvider, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+    private final HonggaOAuth2UserDetailsService honggaOAuth2UserDetailsService;
+
+    public SecurityConfig(TokenProvider tokenProvider, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler, HonggaOAuth2UserDetailsService honggaOAuth2UserDetailsService) {
 
         this.tokenProvider = tokenProvider;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
 
-    } // 생성자 끝
+        this.honggaOAuth2UserDetailsService = honggaOAuth2UserDetailsService;
+
+    } // JWT 이용 생성자 끝
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -60,6 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()   // 토큰 방식을 사용할 땐 꺼 주는게 좋다.
+                .headers().frameOptions().disable()
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
@@ -71,19 +79,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and().authorizeRequests()
+                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
                 /* /sample/guest 하위 경로는 인증을 한 뒤 이용 가능 */
-                .antMatchers("/sample/guest/**").authenticated()
+                .antMatchers("/sample/guest/**").permitAll()
                 .antMatchers("/sample/family/**").access("hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/sample/admin/**").access("hasRole('ROLE_ADMIN')")
 
                 /* /api/v1/guest 하위 경로는 인증을 한 뒤 이용 가능 */
-                .antMatchers("/api/v1/guest/**").authenticated()
+                .antMatchers("/api/v1/guest/**").permitAll()
                 .antMatchers("/api/v1/family/**").access("hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/api/v1/admin/**").access("hasRole('ROLE_ADMIN')")
                 // 위의 열거 내용 외 모든 요청은 인증 없이 접근 허용한다.
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
+                .and()
+                    .logout()
+                        .logoutSuccessUrl("/")
+                .and().apply(new JwtSecurityConfig(tokenProvider))
+                .and().oauth2Login().userInfoEndpoint().userService(honggaOAuth2UserDetailsService);
                 // JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig Class에 적용
-                .and().apply(new JwtSecurityConfig(tokenProvider));
+
+
     } // configure(HttpSecurity http) 끝
 } // class 끝
 

@@ -39,6 +39,7 @@ out/
 ### Spring ###
 application.properties
 application.yml
+application-oauth.properties
 
 ### macOS ###
 # General
