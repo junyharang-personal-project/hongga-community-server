@@ -14,7 +14,7 @@ import javax.persistence.*;
  *
  * @author 주니하랑
  * @version 1.0.0, 2022.02.13 최초 작성
- * @See ""
+ * @See "스프링 부트와 AWS로 혼자 구현하는 웹 서비스"
  * @see <a href=""></a>
  */
 

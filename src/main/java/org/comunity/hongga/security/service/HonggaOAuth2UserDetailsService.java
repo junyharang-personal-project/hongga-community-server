@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.model.entity.member.OAuthMember;
 import org.comunity.hongga.repository.OAuthMemberRepository;
+import org.comunity.hongga.security.auth.config.dto.OAuthAttributesDTO;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -25,7 +26,7 @@ import java.util.Collections;
  *
  * @author 주니하랑
  * @version 1.0.0, 2022.02.13 최초 작성
- * @See ""
+ * @See "스프링 부트와 AWS로 혼자 구현하는 웹 서비스"
  * @see <a href=""></a>
  */
 
@@ -66,7 +67,7 @@ import java.util.Collections;
 
     } // loadUser(OAuth2UserRequest userRequest) 끝
 
-    private OAuthMember saveOrUpdate(OAuthAttributes attributes) {  /* Google에서 이용자의 정보가 Update 되었을 때를 대비하여 update 기능 구현 */
+    private OAuthMember saveOrUpdate(OAuthAttributesDTO attributes) {  /* Google에서 이용자의 정보가 Update 되었을 때를 대비하여 update 기능 구현 */
 
         // 이용자 이름, 프로필 사진이 변경되면 OAuthMember Entity에도 반영
         OAuthMember oAuthMember = oAuthMemberRepository.findByEmail(attributes.getEmail()).map(entity -> entity.update(attributes.getName(), attributes.getPicture())).orElse(attributes.toEntity());
