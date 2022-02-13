@@ -1,4 +1,4 @@
-package org.comunity.hongga.security.config.jwt.handler;
+package org.comunity.hongga.security.auth.config.jwt.handler;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

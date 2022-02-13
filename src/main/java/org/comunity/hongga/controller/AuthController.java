@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.model.dto.LoginDTO;
-import org.comunity.hongga.security.config.jwt.TokenProvider;
+import org.comunity.hongga.security.auth.config.jwt.TokenProvider;
 import org.comunity.hongga.security.dto.TokenDTO;
 import org.comunity.hongga.security.filter.jwt.JwtFilter;
 import org.springframework.http.HttpHeaders;

@@ -1,6 +1,6 @@
-package org.comunity.hongga.security.config;
+package org.comunity.hongga.security.auth.config;
 
-import org.comunity.hongga.security.config.jwt.TokenProvider;
+import org.comunity.hongga.security.auth.config.jwt.TokenProvider;
 import org.comunity.hongga.security.filter.jwt.JwtFilter;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

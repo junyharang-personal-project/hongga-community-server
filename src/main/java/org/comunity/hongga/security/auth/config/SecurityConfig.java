@@ -1,12 +1,11 @@
-package org.comunity.hongga.security.config;
+package org.comunity.hongga.security.auth.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.security.config.jwt.JwtAuthenticationEntryPoint;
-import org.comunity.hongga.security.config.jwt.TokenProvider;
-import org.comunity.hongga.security.config.jwt.handler.JwtAccessDeniedHandler;
+import org.comunity.hongga.security.auth.config.jwt.JwtAuthenticationEntryPoint;
+import org.comunity.hongga.security.auth.config.jwt.TokenProvider;
+import org.comunity.hongga.security.auth.config.jwt.handler.JwtAccessDeniedHandler;
 import org.comunity.hongga.security.service.HonggaOAuth2UserDetailsService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;

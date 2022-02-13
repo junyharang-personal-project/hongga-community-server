@@ -1,4 +1,4 @@
-package org.comunity.hongga.security.config.jwt;
+package org.comunity.hongga.security.auth.config.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

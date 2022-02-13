@@ -8,6 +8,19 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
+/**
+ * 회원 관련 JPA
+ * <pre>
+ * <b>History:</b>
+ *    주니하랑, 1.0.0, 2022.02.08 최초 작성
+ * </pre>
+ *
+ * @author 주니하랑
+ * @version 1.0.0, 2022.02.08 최초 작성
+ * @See ""
+ * @see <a href=""></a>
+ */
+
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @EntityGraph(attributePaths = "authorities") // Query 수행 시 Lazy 조회가 아니고, Eager 조회로 Authorities 정보를 같이 가져오게 하기 위한 설정

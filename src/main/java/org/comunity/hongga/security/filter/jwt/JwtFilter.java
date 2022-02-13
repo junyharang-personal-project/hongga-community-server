@@ -1,7 +1,7 @@
 package org.comunity.hongga.security.filter.jwt;
 
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.security.config.jwt.TokenProvider;
+import org.comunity.hongga.security.auth.config.jwt.TokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
