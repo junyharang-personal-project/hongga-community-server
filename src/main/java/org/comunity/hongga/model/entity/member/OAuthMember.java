@@ -5,7 +5,22 @@ import org.comunity.hongga.model.entity.base.BaseDateTime;
 
 import javax.persistence.*;
 
+/**
+ * 소셜 로그인용 회원 DB 관련
+ * <pre>
+ * <b>History:</b>
+ *    주니하랑, 1.0.0, 2022.02.13 최초 작성
+ * </pre>
+ *
+ * @author 주니하랑
+ * @version 1.0.0, 2022.02.13 최초 작성
+ * @See ""
+ * @see <a href=""></a>
+ */
+
 public class OAuthMember extends BaseDateTime {
+
+    //TODO : 소셜 로그인용 회원 객체를 따로 만드는 것이 맞을까?
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
