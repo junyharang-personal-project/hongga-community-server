@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.security.auth.config.jwt.JwtAuthenticationEntryPoint;
 import org.comunity.hongga.security.auth.config.jwt.TokenProvider;
 import org.comunity.hongga.security.auth.config.jwt.handler.JwtAccessDeniedHandler;
-import org.comunity.hongga.security.service.HonggaOAuth2UserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,15 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    private final HonggaOAuth2UserDetailsService honggaOAuth2UserDetailsService;
-
-    public SecurityConfig(TokenProvider tokenProvider, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler, HonggaOAuth2UserDetailsService honggaOAuth2UserDetailsService) {
+    public SecurityConfig(TokenProvider tokenProvider, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
 
         this.tokenProvider = tokenProvider;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-
-        this.honggaOAuth2UserDetailsService = honggaOAuth2UserDetailsService;
 
     } // JWT 이용 생성자 끝
 
@@ -65,8 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()   // 토큰 방식을 사용할 땐 꺼 주는게 좋다.
-                .headers().frameOptions().disable()
-                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
@@ -93,8 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                         .logoutSuccessUrl("/")
-                .and().apply(new JwtSecurityConfig(tokenProvider))
-                .and().oauth2Login().userInfoEndpoint().userService(honggaOAuth2UserDetailsService);
+                .and().apply(new JwtSecurityConfig(tokenProvider));
                 // JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig Class에 적용
 
 

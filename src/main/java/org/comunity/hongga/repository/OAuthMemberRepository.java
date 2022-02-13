@@ -1,6 +1,5 @@
 package org.comunity.hongga.repository;
 
-import org.comunity.hongga.model.entity.member.OAuthMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
