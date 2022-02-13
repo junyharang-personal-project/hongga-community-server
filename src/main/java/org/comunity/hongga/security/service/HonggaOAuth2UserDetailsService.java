@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.model.entity.member.OAuthMember;
 import org.comunity.hongga.repository.OAuthMemberRepository;
 import org.comunity.hongga.security.auth.config.dto.OAuthAttributesDTO;
+import org.comunity.hongga.security.auth.config.dto.SessionUserDTO;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -63,7 +64,7 @@ import java.util.Collections;
         // 세션에 이용자 정보를 저장하기 위한 DTO
         httpSession.setAttribute("member", new SessionUserDTO(member));
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(member.getRoleKey())), attributes.getAttributes(), attributes.getNameAttributeKey));
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(member.getRoleKey())), attributes.getAttributes(), attributes.getNameAttributeKey());
 
     } // loadUser(OAuth2UserRequest userRequest) 끝
 

@@ -1,6 +1,7 @@
 package org.comunity.hongga.model.entity.member;
 
 import lombok.Builder;
+import lombok.Getter;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import javax.persistence.*;
  * @see <a href=""></a>
  */
 
+@Getter
 public class OAuthMember extends BaseDateTime {
 
     //TODO : 소셜 로그인용 회원 객체를 따로 만드는 것이 맞을까?

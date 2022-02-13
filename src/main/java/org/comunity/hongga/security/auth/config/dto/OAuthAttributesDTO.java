@@ -2,11 +2,9 @@ package org.comunity.hongga.security.auth.config.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.OAuthMember;
 import org.comunity.hongga.model.entity.member.Role;
 
-import java.security.PublicKey;
 import java.util.Map;
 
 /**
