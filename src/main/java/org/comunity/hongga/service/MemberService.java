@@ -1,7 +1,7 @@
 package org.comunity.hongga.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.model.dto.member.MemberSignUpDTO;
+import org.comunity.hongga.model.dto.request.member.MemberSignUpDTO;
 import org.comunity.hongga.model.entity.member.Authority;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.MemberRepository;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**

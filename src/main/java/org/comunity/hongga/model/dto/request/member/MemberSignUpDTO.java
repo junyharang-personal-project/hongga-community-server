@@ -1,4 +1,4 @@
-package org.comunity.hongga.model.dto.member;
+package org.comunity.hongga.model.dto.request.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

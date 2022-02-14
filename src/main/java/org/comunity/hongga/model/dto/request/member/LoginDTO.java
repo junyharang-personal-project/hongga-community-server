@@ -1,4 +1,4 @@
-package org.comunity.hongga.model.dto;
+package org.comunity.hongga.model.dto.request.member;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
