@@ -31,15 +31,13 @@ public class SystemManualWriteRequestDTO {
 
     // TODO - HashTAG 추가
 
-    @Builder public SystemManual toEntity(SystemManualWriteRequestDTO writeRequestDTO, Optional<Member> member) {
+    @Builder public SystemManual toEntity(SystemManualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
 
         return SystemManual.builder()
-                .writer(member.get())
+                .writer(writer.get())
                 .title(writeRequestDTO.title)
                 .content(writeRequestDTO.content)
                 .build();
 
     } // toEntity(SystemManualWriteRequestDTO writeRequestDTO, Optional<Member> member) 끝
-
-
 } // class 끝

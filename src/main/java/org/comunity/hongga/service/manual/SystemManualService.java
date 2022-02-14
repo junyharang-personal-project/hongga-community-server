@@ -8,7 +8,6 @@ import org.comunity.hongga.model.entity.manual.SystemManual;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.MemberRepository;
 import org.comunity.hongga.repository.manual.SystemManualRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ import java.util.Optional;
     private SystemManualRepository systemManualRepository;
     private MemberRepository memberRepository;
 
-    public DefaultResponse writeManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO, Long memberId) {
+    public DefaultResponse writeSystemManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO, Long memberId) {
 
         Optional<Member> writer = memberRepository.findById(memberId);
 
