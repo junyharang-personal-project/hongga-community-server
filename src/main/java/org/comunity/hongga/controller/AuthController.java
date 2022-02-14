@@ -1,8 +1,12 @@
 package org.comunity.hongga.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.ServiceURIVersion;
+import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.LoginDTO;
 import org.comunity.hongga.security.auth.config.jwt.TokenProvider;
 import org.comunity.hongga.security.dto.TokenDTO;
@@ -25,20 +29,24 @@ import javax.validation.Valid;
  * 인증을 위한 Controller
  * <pre>
  * <b>History:</b>
- *    주니하랑, 1.0.0, 2022.02.08 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.08 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.14 Swagger 관련 내용 작성
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.08 최초 작성
+ * @version 1.0.1, 2022.02.14 Swagger 관련 내용 작성
  * @See ""
  * @see <a href=""></a>
  */
 
-@RequiredArgsConstructor @Slf4j
+@RequiredArgsConstructor @Slf4j @Api(tags = {"로그인 관련 서비스"}) @ApiOperation(value = SwaggerApiInfo.AUTHORIZE)
 @RestController @RequestMapping(ServiceURIVersion.NOW_VERSION) public class AuthController {
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    @ApiOperation(value = SwaggerApiInfo.SIGN_IN, notes = "로그인 처리를 위한 서비스 입니다.")
+    @ApiParam(name = "LoginDTO", value = "로그인 Email, Password를 담은 DTO 객체", readOnly = true)
 
     // loginDTO 안에는 이용자 email과 password 존재
     @PostMapping("/authenticate") public ResponseEntity<TokenDTO> authorize(@Valid @RequestBody LoginDTO loginDTO) {

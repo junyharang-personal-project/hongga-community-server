@@ -71,7 +71,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and().authorizeRequests()
+
+
                 .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
+
+                // Swagger 허용
+                // TODO - 차후 권한을 ADMIN으로 만 변경
+  //              .antMatchers("/swagger-ui/**").permitAll()
+
                 /* /sample/guest 하위 경로는 인증을 한 뒤 이용 가능 */
                 .antMatchers("/sample/guest/**").permitAll()
                 .antMatchers("/sample/family/**").access("hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
@@ -82,7 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/family/**").access("hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/api/v1/admin/**").access("hasRole('ROLE_ADMIN')")
                 // 위의 열거 내용 외 모든 요청은 인증 없이 접근 허용한다.
-                .anyRequest().authenticated()
+     //           .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                     .logout()
                         .logoutSuccessUrl("/")
