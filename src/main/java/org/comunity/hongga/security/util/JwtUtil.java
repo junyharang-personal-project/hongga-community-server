@@ -59,7 +59,7 @@ public class JwtUtil {
                 .claim("token_name", ACCESS_TOKEN_NAME)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
     } // createAccessToken(Long memberId, MemberGrade memberGrade) 끝
@@ -83,7 +83,7 @@ public class JwtUtil {
                 .claim("token_name", REFRESH_TOKEN_NAME)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
     } // createRefreshToken(Long memberId, MemberGrade memberGrade) 끝
