@@ -19,7 +19,7 @@ import javax.persistence.*;
  * @see <a href=""></a>
  */
 
-@Entity public class SystemManual extends BaseDateTime {
+@Entity public class manual extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long manualNo;
@@ -31,7 +31,7 @@ import javax.persistence.*;
     // TODO - 글, 사진 (Editor 사용)
     @Lob @Column(length = 65535) private String content;
 
-    @Builder public SystemManual(Member writer, String title, String content) {
+    @Builder public manual(Member writer, String title, String content) {
         this.writer = writer;
         this.title = title;
         this.content = content;

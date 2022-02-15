@@ -3,23 +3,23 @@ package org.comunity.hongga.service.manual;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
-import org.comunity.hongga.model.dto.request.manual.SystemManualWriteRequestDTO;
-import org.comunity.hongga.model.entity.manual.SystemManual;
+import org.comunity.hongga.model.dto.request.manual.manualWriteRequestDTO;
+import org.comunity.hongga.model.entity.manual.manual;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.member.MemberRepository;
-import org.comunity.hongga.repository.manual.SystemManualRepository;
+import org.comunity.hongga.repository.manual.manualRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor @Slf4j
-@Service public class SystemManualService {
+@Service public class manualService {
 
-    private SystemManualRepository systemManualRepository;
+    private manualRepository systemManualRepository;
     private MemberRepository memberRepository;
 
-    public DefaultResponse writeSystemManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO, Long memberId) {
+    public DefaultResponse writeSystemManual(manualWriteRequestDTO systemManualWriteRequestDTO, Long memberId) {
 
         Optional<Member> writer = memberRepository.findById(memberId);
 
@@ -36,7 +36,7 @@ import java.util.Optional;
 
         log.info("SystemManualRepository의 save()를 호출하여 systemManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
 
-        Optional<SystemManual> writeManual = Optional.of(systemManualRepository.save(systemManualWriteRequestDTO.toEntity(systemManualWriteRequestDTO, writer)));
+        Optional<manual> writeManual = Optional.of(systemManualRepository.save(systemManualWriteRequestDTO.toEntity(systemManualWriteRequestDTO, writer)));
 
         // TODO - Tag 관련 내용 추가
 
