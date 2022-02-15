@@ -20,11 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
- *    주니하랑, 1.0.1, 2022.02.15 로그인 서비스 구현
+ *    주니하랑, 1.0.1, 2022.02.15 로그인 관련 Test Code 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.02.15 로그인 서비스 구현
+ * @version 1.0.1, 2022.02.15 로그인 관련 Test Code 구현
  * @See ""
  * @see <a href=""></a>
  */
