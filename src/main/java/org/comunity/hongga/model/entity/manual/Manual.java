@@ -1,6 +1,8 @@
 package org.comunity.hongga.model.entity.manual;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
 import org.comunity.hongga.model.entity.member.Member;
 
@@ -19,7 +21,8 @@ import javax.persistence.*;
  * @see <a href=""></a>
  */
 
-@Entity public class manual extends BaseDateTime {
+@NoArgsConstructor @AllArgsConstructor
+@Entity public class Manual extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long manualNo;
@@ -31,7 +34,7 @@ import javax.persistence.*;
     // TODO - 글, 사진 (Editor 사용)
     @Lob @Column(length = 65535) private String content;
 
-    @Builder public manual(Member writer, String title, String content) {
+    @Builder public Manual(Member writer, String title, String content) {
         this.writer = writer;
         this.title = title;
         this.content = content;

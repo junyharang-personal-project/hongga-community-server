@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.manual.manualWriteRequestDTO;
-import org.comunity.hongga.model.entity.manual.manual;
+import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.comunity.hongga.repository.manual.ManualRepository;
@@ -36,7 +36,7 @@ import java.util.Optional;
 
         log.info("SystemManualRepository의 save()를 호출하여 systemManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
 
-        Optional<manual> writeManual = Optional.of(systemManualRepository.save(systemManualWriteRequestDTO.toEntity(systemManualWriteRequestDTO, writer)));
+        Optional<Manual> writeManual = Optional.of(systemManualRepository.save(systemManualWriteRequestDTO.toEntity(systemManualWriteRequestDTO, writer)));
 
         // TODO - Tag 관련 내용 추가
 

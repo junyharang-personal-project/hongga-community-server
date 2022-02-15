@@ -1,6 +1,6 @@
 package org.comunity.hongga.repository.manual;
 
-import org.comunity.hongga.model.entity.manual.manual;
+import org.comunity.hongga.model.entity.manual.Manual;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -17,5 +17,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 
-public interface ManualRepository extends JpaRepository<manual, Long> {
+public interface ManualRepository extends JpaRepository<Manual, Long> {
 } // interface 끝

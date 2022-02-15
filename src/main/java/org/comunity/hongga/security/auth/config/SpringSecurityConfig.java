@@ -36,7 +36,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        log.info("WebSecurityConfigurerAdapter를 상속 받은 SpringSecurityConfig가 동작하셨습니다!");
+        log.info("WebSecurityConfigurerAdapter를 상속 받은 SpringSecurityConfig가 동작하송습니다!");
         log.info("configure(HttpSecurity http)가 호출 되었습니다!");
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();

@@ -2,6 +2,7 @@ package org.comunity.hongga.model.entity.member;
 
 import lombok.*;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.*;
@@ -12,16 +13,17 @@ import java.util.*;
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.08 최초 작성
  *    주니하랑, 1.0.1, 2022.02.13 Field 변수 수정 (member_id -> member_no)
- * </pre>
+ *    주니하랑, 1.0.2, 가입일과 수정일을 위해 BaseDateTime 상속
+ *    * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.02.13 Field 변수 수정 (member_id -> member_no)
+ * @version 1.0.2, 가입일과 수정일을 위해 BaseDateTime 상속
  * @See ""
  * @see <a href=""></a>
  */
 
 @Getter @NoArgsConstructor @AllArgsConstructor
-@Entity public class Member {
+@Entity public class Member extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberNo;
@@ -33,7 +35,7 @@ import java.util.*;
 
     @Column(nullable = false) private String phoneNumber;
 
-    private boolean activated;                      // 계정 활성화 여부
+    private boolean activated;                                                  // 계정 활성화 여부
     @Column private String picture;                                             // 이용자 프로필 사진
 
     @Enumerated(EnumType.STRING) private MemberGrade grade;

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.comunity.hongga.model.entity.manual.manual;
+import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.member.Member;
 
 import javax.validation.constraints.NotEmpty;
@@ -31,9 +31,9 @@ public class manualWriteRequestDTO {
 
     // TODO - HashTAG 추가
 
-    @Builder public manual toEntity(manualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
+    @Builder public Manual toEntity(manualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
 
-        return manual.builder()
+        return Manual.builder()
                 .writer(writer.get())
                 .title(writeRequestDTO.title)
                 .content(writeRequestDTO.content)
