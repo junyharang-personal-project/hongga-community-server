@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 /**
- * Manual Repository
+ * 회원 가입 요청 DTO
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
