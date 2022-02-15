@@ -6,6 +6,19 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * Manual Repository
+ * <pre>
+ * <b>History:</b>
+ *    주니하랑, 1.0.0, 2022.02.15 최초 작성
+ * </pre>
+ *
+ * @author 주니하랑
+ * @version 1.0.0, 2022.02.15 최초 작성
+ * @See ""
+ * @see <a href=""></a>
+ */
+
 @Getter @NoArgsConstructor @AllArgsConstructor
 public class MemberSignInRequestDTO {
 

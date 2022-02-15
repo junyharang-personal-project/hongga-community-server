@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
+import org.comunity.hongga.model.dto.request.member.MemberSignInRequestDTO;
 import org.comunity.hongga.model.dto.request.member.MemberSignUpRequestDTO;
 import org.comunity.hongga.service.member.MemberService;
 import org.springframework.http.HttpStatus;

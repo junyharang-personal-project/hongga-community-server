@@ -3,11 +3,15 @@ package org.comunity.hongga.service.member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
+import org.comunity.hongga.model.dto.request.member.MemberSignInRequestDTO;
 import org.comunity.hongga.model.dto.request.member.MemberSignUpRequestDTO;
+import org.comunity.hongga.model.dto.response.member.MemberSignInResponseDTO;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.member.MemberRepository;
+import org.comunity.hongga.security.util.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -49,4 +53,27 @@ import java.util.Optional;
                 });
     } // signUp(MemberSignUpRequestDTO memberSignUpRequestDTO) 끝
 
+    @Transactional public DefaultResponse<MemberSignInResponseDTO> signIn(MemberSignInRequestDTO memberSignInRequestDTO) {
+
+        Optional<String> loginEmail = memberRepository.findByEmail(memberSignInRequestDTO.getEmail());
+
+        return loginEmail.map(email -> {
+
+            Optional<Member> loginMember = memberRepository.findByMember(email, memberSignInRequestDTO.getPassword());
+
+            return loginMember.map(member -> {
+
+                String accessToken = JwtUtil.createAccessToken(member.getMemberNo(), member.getGrade());
+
+                String refreshToken = JwtUtil.createRefreshToken(member.getMemberNo(), member.getGrade());
+
+                member.setRefreshToken(refreshToken);
+
+                return DefaultResponse.response(HttpStatus.OK.value(), "로그인에 성공 하였습니다!", new MemberSignInResponseDTO(accessToken, refreshToken, member.getMemberNo(), member.getGrade(), member.getNickname()));
+
+            }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "비밀번호를 확인 해 주세요!"));
+
+        }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "아이디를 확인 해 주세요!"));
+
+    } // signIn(MemberSignInRequestDTO memberSignInRequestDTO) 끝
 } // class 끝

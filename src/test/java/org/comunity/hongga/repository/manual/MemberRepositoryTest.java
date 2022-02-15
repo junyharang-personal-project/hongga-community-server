@@ -9,6 +9,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Manual Repository Test Code
+ * <pre>
+ * <b>History:</b>
+ *    주니하랑, 1.0.0, 2022.02.15 최초 작성
+ * </pre>
+ *
+ * @author 주니하랑
+ * @version 1.0.0, 2022.02.15 최초 작성
+ * @See ""
+ * @see <a href=""></a>
+ */
+
 @SpringBootTest
 public class MemberRepositoryTest {
 
