@@ -34,8 +34,8 @@ import javax.validation.Valid;
     private final MemberService memberService;
 
     @ApiOperation(value = SwaggerApiInfo.SIGN_UP, notes = "회원 가입 서비스 입니다.")
-    @ApiParam(name = "MemberSignUpDTO", value = "이용을 원하는 이용자가 회원 가입을 합니다. \n 필수 : 자기 소개, 프로필 사진을 제외한 모든 항목 \n 비밀번호는 암호화 처리", readOnly = true)
-    @ApiResponses(value = { @ApiResponse(code=200, message = "1.가입 성공 \n 2. Email 중복")})
+    @ApiParam(name = "MemberSignUpRequestDTO", value = "이용을 원하는 이용자가 회원 가입을 합니다. \n 필수 : 자기 소개, 프로필 사진을 제외한 모든 항목 \n 비밀번호는 암호화 처리", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1.가입 성공 \t 2. Email 중복")})
 
     @PostMapping("/signup") public ResponseEntity<DefaultResponse> signUp (
             @Valid @RequestBody MemberSignUpRequestDTO signUpRequestDTO) {
@@ -48,5 +48,17 @@ import javax.validation.Valid;
         return new ResponseEntity<>(memberService.signUp(signUpRequestDTO), HttpStatus.OK);
 
     } // signUp (@Valid @ResponseBody MemberSignUpRequestDTO signUpRequestDTO) 끝
+
+    @ApiOperation(value = SwaggerApiInfo.SIGN_IN, notes = "로그인 서비스 입니다.")
+    @ApiParam(name = "MemberSignUpDTO", value = "이용을 원하는 이용자가 로그인 합니다. \n 필수 : email, Password", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1.로그인 성공 \t 2. ID 불일치 \t 3. Password 불일치")})
+
+    @PostMapping("/signin") public ResponseEntity<DefaultResponse> signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO) {
+
+        return new ResponseEntity<>(memberService.signIn(memberSignInRequestDTO), HttpStatus.OK);
+
+    } // signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO) 끝
+
+
 
 } // class 끝

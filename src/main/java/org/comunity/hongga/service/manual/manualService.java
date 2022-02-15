@@ -7,7 +7,7 @@ import org.comunity.hongga.model.dto.request.manual.manualWriteRequestDTO;
 import org.comunity.hongga.model.entity.manual.manual;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.member.MemberRepository;
-import org.comunity.hongga.repository.manual.manualRepository;
+import org.comunity.hongga.repository.manual.ManualRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor @Slf4j
 @Service public class manualService {
 
-    private manualRepository systemManualRepository;
+    private ManualRepository systemManualRepository;
     private MemberRepository memberRepository;
 
     public DefaultResponse writeSystemManual(manualWriteRequestDTO systemManualWriteRequestDTO, Long memberId) {
