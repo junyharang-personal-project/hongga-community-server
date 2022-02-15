@@ -20,30 +20,43 @@ import java.util.*;
  * @see <a href=""></a>
  */
 
-@Getter @Builder @NoArgsConstructor @AllArgsConstructor
+@Getter @NoArgsConstructor @AllArgsConstructor
 @Entity public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_no") private Long memberNo;
+    private Long memberNo;
 
-    @Column(name = "email", length = 50, unique = true, nullable = false) private String email;
-    @Column(name = "password", length = 100, nullable = false) private String password;
-    @Column(name = "name", length = 4, nullable = false) private String name;
-    @Column(name = "nickname", length = 10, nullable = false) private String nickname;
+    @Column(length = 50, unique = true, nullable = false) private String email;
+    @Column(length = 100, nullable = false) private String password;
+    @Column(length = 4, nullable = false) private String name;
+    @Column(length = 10, nullable = false) private String nickname;
 
-    @Column(name = "phone_number", nullable = false) private String phoneNumber;
+    @Column(nullable = false) private String phoneNumber;
 
-    @Column(name = "activated") private boolean activated;                      // 계정 활성화 여부
+    private boolean activated;                      // 계정 활성화 여부
     @Column private String picture;                                             // 이용자 프로필 사진
+
+    @Enumerated(EnumType.STRING) private MemberGrade grade;
+
+    private String refreshToken;
 
     // 자기 소개
     @Lob // 길이 65,535 byte
-    @Column(name = "about_me", length = 65535) private String aboutMe;
+    @Column(length = 65535) private String aboutMe;
 
-    @ManyToMany @JoinTable(
-            name = "member_authority",
-            joinColumns = {@JoinColumn(name = "member_no", referencedColumnName = "member_no")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-    private Set<Authority> authorities;
+    @Builder public Member(String email, String password, String name, String nickname, String phoneNumber, MemberGrade grade, String picture, String aboutMe) {
+
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.nickname = nickname;
+        this.phoneNumber = phoneNumber;
+        this.grade = grade;
+        this.picture = picture;
+        this.aboutMe = aboutMe;
+
+    } // 생성자 끝
+
+    public void  setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }    // setRefreshToken(String refreshToken) 끝
 
 } // class 끝

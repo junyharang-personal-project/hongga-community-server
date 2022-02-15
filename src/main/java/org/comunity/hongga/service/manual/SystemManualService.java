@@ -6,7 +6,7 @@ import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.manual.SystemManualWriteRequestDTO;
 import org.comunity.hongga.model.entity.manual.SystemManual;
 import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.repository.MemberRepository;
+import org.comunity.hongga.repository.member.MemberRepository;
 import org.comunity.hongga.repository.manual.SystemManualRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
