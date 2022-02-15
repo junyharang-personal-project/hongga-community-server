@@ -57,8 +57,9 @@ public class MemberServiceTest {
         String phoneNumber = "010-3939-4848";
         String picture = "sdoijgoij.jpg";
         String aboutMe = "안녕하세요! 우리 가족에게 언제나 좋은 일만 가득하길 바랍니다!";
+        boolean activated = true;
 
-        MemberSignUpRequestDTO memberSignUpRequestDTO = new MemberSignUpRequestDTO(email, password, name, nickName, phoneNumber, picture, aboutMe);
+        MemberSignUpRequestDTO memberSignUpRequestDTO = new MemberSignUpRequestDTO(email, password, name, nickName, phoneNumber, picture, aboutMe, activated);
 
         Member mockMember = Member.builder()
                 .email(memberSignUpRequestDTO.getEmail())

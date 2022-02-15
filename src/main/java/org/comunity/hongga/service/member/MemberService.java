@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.member.MemberSignUpRequestDTO;
+import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ import java.util.Optional;
 
         return checkEmail.map(email -> DefaultResponse.response(HttpStatus.OK.value(), "이미 존재하는 Email 입니다!"))
                 .orElseGet(() -> {
+
                     log.info("중복된 Email이 없으므로, DB에 저장 하겠습니다!");
                     memberRepository.save(memberSignUpRequestDTO.toEntity());
 

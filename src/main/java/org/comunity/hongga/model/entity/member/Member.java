@@ -44,7 +44,7 @@ import java.util.*;
     @Lob // 길이 65,535 byte
     @Column(length = 65535) private String aboutMe;
 
-    @Builder public Member(String email, String password, String name, String nickname, String phoneNumber, MemberGrade grade, String picture, String aboutMe) {
+    @Builder public Member(String email, String password, String name, String nickname, String phoneNumber, MemberGrade grade, String picture, String aboutMe, boolean activated) {
 
         this.email = email;
         this.password = password;
@@ -54,6 +54,7 @@ import java.util.*;
         this.grade = grade;
         this.picture = picture;
         this.aboutMe = aboutMe;
+        this.activated = activated;
 
     } // 생성자 끝
 

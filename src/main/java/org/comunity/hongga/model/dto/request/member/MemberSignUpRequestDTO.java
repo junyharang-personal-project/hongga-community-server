@@ -28,6 +28,8 @@ public class MemberSignUpRequestDTO {
 
     String aboutMe;
 
+    boolean activated;                      // 계정 활성화 여부
+
     @Builder public Member toEntity() {
 
         return Member.builder()
@@ -39,6 +41,7 @@ public class MemberSignUpRequestDTO {
                 .picture(picture)
                 .grade(MemberGrade.GUEST)
                 .aboutMe(aboutMe)
+                .activated(true)
                 .build();
 
     } // toEntity() 끝
