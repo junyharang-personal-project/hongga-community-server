@@ -3,6 +3,7 @@ package org.comunity.hongga.model.dto.response.manual;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
 import org.comunity.hongga.model.entity.manual.Manual;
 
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
  * @see <a href=""></a>
  */
 
-@Getter
+@Getter @NoArgsConstructor @AllArgsConstructor @ToString
 public class ManualListResponseDTO {
 
     private Long manualNo;              // 메뉴얼 Index 번호
@@ -37,11 +38,4 @@ public class ManualListResponseDTO {
 
     // TODO - 조회수 처리
 
-    public ManualListResponseDTO(Manual entity) {
-        this.manualNo = entity.getManualNo();
-        this.nickname = entity.getWriter().getNickname();
-        this.title = entity.getTitle();
-        this.registerDate = entity.getRegisterDate();
-        this.modifyDate = entity.getModifyDate();
-    }
-}
+} // class 끝

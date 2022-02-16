@@ -8,6 +8,7 @@ import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
 import org.comunity.hongga.service.manual.ManualService;
 import org.springframework.data.domain.Page;
@@ -55,7 +56,7 @@ import javax.validation.Valid;
     } // writeManual(@Valid @RequestBody SystemManualWriteRequestDTO systemManualWriteDTO, @RequestParam ("memberId") Long memberId) 끝
 
     @ApiOperation(value = SwaggerApiInfo.GET_POSTS_LIST, notes = "사용 설명서 전체 조회(목록) 서비스 입니다.")
-    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일, 조회수", readOnly = true)
+    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
     @GetMapping("/family/manual") public ResponseEntity<DefaultResponse<Page<ManualListResponseDTO>>> manualListSearch (@PageableDefault(sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
@@ -69,4 +70,19 @@ import javax.validation.Valid;
 
     } // manualListSearch (@PageableDefault Pageable pageable, @PathVariable("memberNo") Long memberNo) 끝
 
-} // class
+    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_ONE_THING, notes = "사용 설명서 상세 조회 서비스 입니다.")
+    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
+
+    @GetMapping("/family/manual/detail/{manualNo}") public ResponseEntity<DefaultResponse<ManualDetailResponseDTO>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
+
+        log.info("SystemManualController가 동작 하였습니다!");
+        log.info("manualDetailSearch (@PathVariable(\"manualNo\") Long manualNo)가 호출 되었습니다!");
+
+        log.info("manualService.manualDetailSearch(manualNo)를 호출 하겠습니다!");
+
+        return new ResponseEntity<>(manualService.manualDetailSearch(manualNo), HttpStatus.OK);
+
+    } // manualDetailSearch (@PathVariable("manualNo") Long manualNo) 끝
+
+} // class 끝

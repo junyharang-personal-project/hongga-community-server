@@ -30,7 +30,7 @@ import static org.mockito.BDDMockito.given;
  */
 
 //@RunWith(SpringRunner.class)
-//public class ManualServiceTest {
+public class ManualServiceTest {
 //
 //    @InjectMocks private ManualService manualService;
 //
@@ -61,4 +61,4 @@ import static org.mockito.BDDMockito.given;
 //
 //    } // 메뉴얼_등록() 끝
 //
-//} // class 끝
+} // class 끝
