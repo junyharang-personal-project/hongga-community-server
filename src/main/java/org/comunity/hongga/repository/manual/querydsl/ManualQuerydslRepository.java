@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.comunity.hongga.model.entity.manual.QManual.manual;
+import static org.comunity.hongga.model.entity.manual.QManualTag.manualTag;
 import static org.comunity.hongga.model.entity.member.QMember.member;
 
 /**
@@ -40,7 +43,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager entityManager;
 
-    public Page<ManualListResponseDTO> findAllWithFetchJoin (Pageable pageable) {    /* 전체 조회 / 페이징 처리 */
+    public Page<ManualListResponseDTO> findAllWithFetchJoin (Pageable pageable, Long memberNo) {    /* 전체 조회 / 페이징 처리 */
 
         log.info("ManualService에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
 
@@ -54,7 +57,8 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
                         manual.title))
 
                 .from(manual)
-                .innerJoin(manual.writer, member)
+                .innerJoin(manualTag).on(manualTag.manual.manualNo.eq(manual.manualNo))
+                .where(manual.writer.memberNo.eq(memberNo))
                 .orderBy(manual.manualNo.desc())
                 .fetch();
 
@@ -67,4 +71,37 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     } // findAllWithFetchJoin (Pageable pageable, Long memberNo) 끝
 
+    public Optional<ManualDetailResponseDTO> findByManualId(Long manualNo) {
+
+        log.info("ManualService에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
+
+        log.debug("ManualQuerydslRepository가 동작 하였습니다!");
+        log.debug("메뉴얼 게시글 상세 조회 요청으로 findByManualId(Long manualNo)가 호출 되었습니다!");
+
+        ManualDetailResponseDTO result = jpaQueryFactory
+                .select(Projections.constructor(ManualDetailResponseDTO.class,
+                        manual.manualNo,
+                        manual.title,
+                        manual.registerDate,
+                        manual.modifyDate,
+                        member.nickname,
+                        manual.content,
+                        manualTag.tagContent,
+                        manualTag.tagContent1,
+                        manualTag.tagContent2,
+                        manualTag.tagContent3,
+                        manualTag.tagContent4,
+                        manualTag.tagContent5,
+                        manualTag.tagContent6,
+                        manualTag.tagContent7,
+                        manualTag.tagContent8,
+                        manualTag.tagContent9))
+
+                .from(manual)
+                .innerJoin(manualTag).on(manualTag.manual.manualNo.eq(manual.manualNo))
+                .where(manual.manualNo.eq(manualNo))
+                .fetchOne();
+
+        return Optional.ofNullable(result);
+    } // findByManualId(Long manualNo) 끝
 } // class 끝

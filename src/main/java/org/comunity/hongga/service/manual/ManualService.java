@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.manual.Manual;
@@ -74,16 +75,14 @@ import java.util.stream.Collectors;
 
     } // writeManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO) 끝
 
-    public DefaultResponse<Page<ManualListResponseDTO>> manualListSearch(Pageable pageable) {
+    public DefaultResponse<Page<ManualListResponseDTO>> manualListSearch(Pageable pageable, Long memberNo) {
 
         log.info("SystemManualService가 동작 하였습니다!");
-
         log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
-
         log.info("manualListSearch(Pageable pageable, Long memberNo)가 호출 되었습니다!");
-
         log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable)를 호출하여 데이터를 조회 하겠습니다!");
-        Page<ManualListResponseDTO> manualList = manualQuerydslRepository.findAllWithFetchJoin(pageable);
+
+        Page<ManualListResponseDTO> manualList = manualQuerydslRepository.findAllWithFetchJoin(pageable, memberNo);
 
         log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable, memberNo)를 통해 조회된 데이터가 없는지 검증 하겠습니다!");
         if (manualList.getTotalElements() == 0) {
@@ -101,4 +100,29 @@ import java.util.stream.Collectors;
         } // if - else (manualList.getTotalElements() == 0) 끝
     } // manualListSearch(Pageable pageable, Long memberNo)
 
+    public DefaultResponse<ManualDetailResponseDTO> manualDetailSearch(Long manualNo) {
+
+        log.info("SystemManualService가 동작 하였습니다!");
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
+        log.info("manualDetailSearch(Long manualNo)이 호출 되었습니다!");
+
+        log.info("manualQuerydslRepository.findByManualId(manualNo)를 호출하여 요청으로 들어온 설명서 고유 번호를 찾겠습니다!");
+        Optional<ManualDetailResponseDTO> optionalManualDetailResponseDTO = manualQuerydslRepository.findByManualId(manualNo);
+
+        log.info("DB에서 찾은 자료가 존재 하는지 검증 하겠습니다!");
+        if (optionalManualDetailResponseDTO.isEmpty()) {
+
+            log.info("이용자가 요청한 자료의 고유 번호가 DB에 존재하지 않습니다! 200 Code와 함께 \"데이터 없음\"을 반환 하겠습니다!");
+            return DefaultResponse.response(HttpStatus.OK.value(), "데이터 없음");
+
+        } else {
+
+            log.info("이용자가 요청한 자료의 고유 번호가 존재 함으로, 200 Code와 함께 \"조회 성공\"을 반환 하겠습니다!");
+
+            return optionalManualDetailResponseDTO.map(manualDetailResponseDTO -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualDetailResponseDTO))
+                    .orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공"));
+
+        } // if - else (optionalManualDetailResponseDTO.isEmpty()) 끝
+
+    } // manualDetailSearch(Long manualNo) 끝
 } // class 끝

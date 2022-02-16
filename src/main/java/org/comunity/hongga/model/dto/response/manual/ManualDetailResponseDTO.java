@@ -22,7 +22,7 @@ import java.util.Optional;
  * @see <a href=""></a>
  */
 
-@Getter @NoArgsConstructor @ToString
+@Getter @NoArgsConstructor @AllArgsConstructor @ToString
 public class ManualDetailResponseDTO {
 
     private Long manualNo;
@@ -32,16 +32,5 @@ public class ManualDetailResponseDTO {
     private Member writer;
     private String content;
     private String manualTag;
-
-    public ManualListResponseDTO(ManualDetailResponseDTO manualDetailResponseDTO) {
-        this.manualNo = manualNo;
-        this.title = title;
-        this.registerDate = registerDate;
-        this.modifyDate = modifyDate;
-        this.writer = writer;
-        this.content = content;
-        this.manualTag = manualTag;
-    } // 생성자 끝
-
 
 } // class 끝
