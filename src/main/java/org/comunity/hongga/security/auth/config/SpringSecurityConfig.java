@@ -5,9 +5,12 @@ import org.comunity.hongga.security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -33,10 +36,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
     @Bean JwtUtil jwtUtil() { return new JwtUtil(secret); }
 
+    // TODO - Password 암호화 처리 필요
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        log.info("WebSecurityConfigurerAdapter를 상속 받은 SpringSecurityConfig가 동작하송습니다!");
+        log.info("WebSecurityConfigurerAdapter를 상속 받은 SpringSecurityConfig가 동작 하였습니다!");
         log.info("configure(HttpSecurity http)가 호출 되었습니다!");
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();

@@ -2,7 +2,10 @@ package org.comunity.hongga.model.entity.member;
 
 import lombok.*;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.*;
@@ -29,7 +32,7 @@ import java.util.*;
     private Long memberNo;
 
     @Column(length = 50, unique = true, nullable = false) private String email;
-    @Column(length = 100, nullable = false) private String password;
+    @Column(nullable = false) private String password;
     @Column(length = 4, nullable = false) private String name;
     @Column(length = 10, nullable = false) private String nickname;
 

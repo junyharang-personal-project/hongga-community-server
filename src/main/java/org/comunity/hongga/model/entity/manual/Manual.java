@@ -34,6 +34,8 @@ import javax.persistence.*;
     // TODO - 글, 사진 (Editor 사용)
     @Lob @Column(length = 65535) private String content;
 
+    // TODO - TAG, 댓글, 대댓글 처리
+
     @Builder public Manual(Member writer, String title, String content) {
         this.writer = writer;
         this.title = title;

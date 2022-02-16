@@ -9,7 +9,10 @@ import org.comunity.hongga.model.dto.response.member.MemberSignInResponseDTO;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.comunity.hongga.security.util.JwtUtil;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +44,8 @@ import java.util.Optional;
 
         log.info("회원 가입을 요청한 이용자의 Email 주소가 중복 되었는지 확인 하겠습니다!");
         String requestEmail = memberSignUpRequestDTO.getEmail();
+
+        // TODO - Password 암호화 처리 필요
 
         Optional<String> checkEmail = memberRepository.findByEmail(requestEmail);
 

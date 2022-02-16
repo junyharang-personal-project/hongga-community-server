@@ -61,6 +61,4 @@ import javax.validation.Valid;
 
     } // signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO) 끝
 
-
-
 } // class 끝
