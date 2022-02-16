@@ -22,7 +22,7 @@ import javax.validation.Valid;
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.02.15 최초 작성
+ * @version 1.0.0, 2022.02.15 최초 작성
  * @See ""
  * @see <a href=""></a>
  */

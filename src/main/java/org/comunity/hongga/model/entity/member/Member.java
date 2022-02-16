@@ -43,7 +43,7 @@ import java.util.*;
 
     @Enumerated(EnumType.STRING) private MemberGrade grade;
 
-    private String refreshToken;
+    private String token;
 
     // 자기 소개
     @Lob // 길이 65,535 byte
@@ -63,6 +63,6 @@ import java.util.*;
 
     } // 생성자 끝
 
-    public void  setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }    // setRefreshToken(String refreshToken) 끝
+    public void  setRefreshToken(String token) { this.token = token; }    // setRefreshToken(String refreshToken) 끝
 
 } // class 끝
