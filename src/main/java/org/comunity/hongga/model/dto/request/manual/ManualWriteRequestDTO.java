@@ -24,14 +24,14 @@ import java.util.Optional;
  */
 
 @Getter @NoArgsConstructor @AllArgsConstructor
-public class manualWriteRequestDTO {
+public class ManualWriteRequestDTO {
 
     @NotEmpty private String title;             // 메뉴얼 게시글 제목
     @NotEmpty private String content;           // 메뉴얼 게시글 내용(글/사진)
 
     // TODO - HashTAG 추가
 
-    @Builder public Manual toEntity(manualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
+    @Builder public Manual toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
 
         return Manual.builder()
                 .writer(writer.get())

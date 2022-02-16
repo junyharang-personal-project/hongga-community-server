@@ -3,7 +3,7 @@ package org.comunity.hongga.service.manual;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
-import org.comunity.hongga.model.dto.request.manual.manualWriteRequestDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.member.MemberRepository;
@@ -32,7 +32,7 @@ import java.util.Optional;
     private ManualRepository systemManualRepository;
     private MemberRepository memberRepository;
 
-    public DefaultResponse writeManual(manualWriteRequestDTO systemManualWriteRequestDTO, Long memberNo) {
+    public DefaultResponse writeManual(ManualWriteRequestDTO systemManualWriteRequestDTO, Long memberNo) {
 
         Optional<Member> writer = memberRepository.findById(memberNo);
 
@@ -49,7 +49,7 @@ import java.util.Optional;
 
         log.info("SystemManualRepository의 save()를 호출하여 systemManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
 
-        Optional<Manual> writeManual = Optional.of(systemManualRepository.save(systemManualWriteRequestDTO.toEntity(systemManualWriteRequestDTO, writer)));
+        Optional<Manual> writeManual = Optional.ofNullable(systemManualRepository.save(systemManualWriteRequestDTO.toEntity(systemManualWriteRequestDTO, writer)));
 
         // TODO - Tag 관련 내용 추가
 

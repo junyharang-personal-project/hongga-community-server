@@ -33,7 +33,7 @@ import java.util.*;
 
     @Column(length = 50, unique = true, nullable = false) private String email;
     @Column(nullable = false) private String password;
-    @Column(length = 4, nullable = false) private String name;
+    @Column(length = 6, nullable = false) private String name;
     @Column(length = 10, nullable = false) private String nickname;
 
     @Column(nullable = false) private String phoneNumber;

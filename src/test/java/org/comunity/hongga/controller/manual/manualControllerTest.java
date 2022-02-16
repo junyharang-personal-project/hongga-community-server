@@ -53,7 +53,7 @@ public class manualControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
                         " \"title\": \"Synology NAS 사용법\",\n" +
-                        " \"content\": \"이 제품은 이렇게 사용하시면 삶의 질이 향상 되요!\"\n" +
+                        " \"content\": \"이 제품은 이렇게 사용 하시면 삶의 질이 향상 되요!\"\n" +
                         "}")).andDo(print()).andExpect(status().isOk());
 
     } // 메뉴얼_등록() 끝

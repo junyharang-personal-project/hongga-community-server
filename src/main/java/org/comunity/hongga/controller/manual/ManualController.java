@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
-import org.comunity.hongga.model.dto.request.manual.manualWriteRequestDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.service.manual.ManualService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +36,8 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서를 등록합니다. \n 필수 : Tag를 제외한 모든 항목", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.등록 성공 \n 2. 등록 실패 \n 3.Token Error")})
 
-    @PostMapping("/family/manual/{memberNo}") public ResponseEntity<DefaultResponse<manualWriteRequestDTO>> writeManual(
-            @Valid @RequestBody manualWriteRequestDTO systemManualWriteDTO, @PathVariable ("memberNo") Long memberNo) {
+    @PostMapping("/family/manual/{memberNo}") public ResponseEntity<DefaultResponse<ManualWriteRequestDTO>> writeManual(
+            @Valid @RequestBody ManualWriteRequestDTO systemManualWriteDTO, @PathVariable ("memberNo") Long memberNo) {
 
         log.info("SystemManualController가 동작 하였습니다!");
         log.info("writeManual(@Valid @ResponseBody SystemManualWriteDTO systemManualWriteDTO)가 동작 하였습니다!");
