@@ -1,15 +1,22 @@
 package org.comunity.hongga.controller.manual;
 
 import io.swagger.annotations.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
 import org.comunity.hongga.service.manual.ManualService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,7 +37,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor @Slf4j @Api(tags = {"사용 설명서 관련 API"}) @ApiOperation(value = SwaggerApiInfo.POSTING)
 @RestController @RequestMapping(ServiceURIVersion.NOW_VERSION) public class ManualController {
 
-    private final ManualService systemManualService;
+    private final ManualService manualService;
 
     @ApiOperation(value = SwaggerApiInfo.WRITE_POSTS, notes = "사용 설명서 등록 서비스 입니다.")
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서를 등록합니다. \n 필수 : Tag를 제외한 모든 항목", readOnly = true)
@@ -40,11 +47,26 @@ import javax.validation.Valid;
             @Valid @RequestBody ManualWriteRequestDTO systemManualWriteDTO, @PathVariable ("memberNo") Long memberNo) {
 
         log.info("SystemManualController가 동작 하였습니다!");
-        log.info("writeManual(@Valid @ResponseBody SystemManualWriteDTO systemManualWriteDTO)가 동작 하였습니다!");
+        log.info("writeManual(@Valid @ResponseBody SystemManualWriteDTO systemManualWriteDTO)가 호출 되었습니다!");
 
         log.info("systemManualService.writeSystemManual(systemManualWriteDTO)를 호출하겠습니다!");
 
-        return new ResponseEntity<>(systemManualService.writeManual(systemManualWriteDTO, memberNo), HttpStatus.OK);
+        return new ResponseEntity<>(manualService.writeManual(systemManualWriteDTO, memberNo), HttpStatus.OK);
     } // writeManual(@Valid @RequestBody SystemManualWriteRequestDTO systemManualWriteDTO, @RequestParam ("memberId") Long memberId) 끝
+
+    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_LIST, notes = "사용 설명서 전체 조회(목록) 서비스 입니다.")
+    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일, 조회수", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
+
+    @GetMapping("/family/manual") public ResponseEntity<DefaultResponse<Page<ManualListResponseDTO>>> manualListSearch (@PageableDefault(sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
+
+        log.info("SystemManualController가 동작 하였습니다!");
+        log.info("manualListSearch (@PageableDefault Pageable pageable, @PathVariable(\"memberNo\") Long memberNo)가 호출 되었습니다!");
+
+        log.info("manualService.manualListSearch(pageable, memberNo)를 호출 하겠습니다!");
+
+        return new ResponseEntity<>(manualService.manualListSearch(pageable), HttpStatus.OK);
+
+    } // manualListSearch (@PageableDefault Pageable pageable, @PathVariable("memberNo") Long memberNo) 끝
 
 } // class

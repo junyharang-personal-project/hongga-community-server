@@ -2,6 +2,7 @@ package org.comunity.hongga.model.entity.manual;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
 import org.comunity.hongga.model.entity.member.Member;
@@ -22,13 +23,13 @@ import javax.persistence.*;
  * @see <a href=""></a>
  */
 
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor @Getter
 @Entity public class Manual extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long manualNo;
 
-    @ManyToOne @JoinColumn(name = "member_no") private Member writer;
+    @ManyToOne(targetEntity = Member.class) @JoinColumn(name = "member_no") private Member writer;
 
     @Column(length = 100, nullable = false) private String title;
 

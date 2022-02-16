@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -57,5 +57,12 @@ public class manualControllerTest {
                         "}")).andDo(print()).andExpect(status().isOk());
 
     } // 메뉴얼_등록() 끝
+
+    @Test public void 게시글_전체조회() throws Exception {
+
+        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/family/manual")
+                .param("page", "0")).andExpect(status().isOk());
+
+    } // 게시글_전체조회() 끝
 
 } // class 끝

@@ -1,7 +1,17 @@
 package org.comunity.hongga.repository.manual;
 
+import org.comunity.hongga.constant.DefaultResponse;
+import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Manual Repository
@@ -18,4 +28,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface ManualRepository extends JpaRepository<Manual, Long> {
+
 } // interface 끝
