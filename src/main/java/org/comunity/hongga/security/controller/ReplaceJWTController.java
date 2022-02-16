@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
+import org.comunity.hongga.security.service.SessionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +65,5 @@ public class ReplaceJWTController {
             return new ResponseEntity<>(defaultResponse, HttpStatus.OK);
 
         } // if-else 문 끝
-
     } // replaceToken(HttpServletRequest request) 끝
-
 } // class 끝

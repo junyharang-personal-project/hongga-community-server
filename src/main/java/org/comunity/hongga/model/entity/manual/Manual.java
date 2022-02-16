@@ -7,7 +7,6 @@ import org.comunity.hongga.model.entity.base.BaseDateTime;
 import org.comunity.hongga.model.entity.member.Member;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * 회원 DB 관련
@@ -36,18 +35,10 @@ import java.util.List;
     // TODO - 글, 사진 (Editor 사용)
     @Lob @Column(length = 65535) private String content;
 
-    // TODO - TAG, 댓글, 대댓글 처리
-    @ManyToMany @JoinTable(
-            name = "manual_tag",
-            joinColumns = {@JoinColumn(name = "manual_no", referencedColumnName = "manual_no")},
-            inverseJoinColumns = {@JoinColumn(name = "tag_content", referencedColumnName = "tag_contant")}
-    ) private List<Tag> tag;
-
-    @Builder public Manual(Member writer, String title, String content, List<Tag> tag) {
+    @Builder public Manual(Member writer, String title, String content) {
         this.writer = writer;
         this.title = title;
         this.content = content;
-        this.tag = tag;
     } // 생성자 끝
 
 } // class 끝
