@@ -13,15 +13,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * 사용 설명서 관련 비즈니스 로직
+ * <pre>
+ * <b>History:</b>
+ *    주니하랑, 1.0.0, 2022.02.15 최초 작성
+ * </pre>
+ *
+ * @author 주니하랑
+ * @version 1.0.1, 2022.02.15 최초 작성
+ * @See ""
+ * @see <a href=""></a>
+ */
+
 @RequiredArgsConstructor @Slf4j
-@Service public class manualService {
+@Service public class ManualService {
 
     private ManualRepository systemManualRepository;
     private MemberRepository memberRepository;
 
-    public DefaultResponse writeSystemManual(manualWriteRequestDTO systemManualWriteRequestDTO, Long memberId) {
+    public DefaultResponse writeManual(manualWriteRequestDTO systemManualWriteRequestDTO, Long memberNo) {
 
-        Optional<Member> writer = memberRepository.findById(memberId);
+        Optional<Member> writer = memberRepository.findById(memberNo);
 
         log.info("SystemManualService가 동작 하였습니다!");
         log.info("writeManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO)이 호출 되었습니다!");
@@ -30,7 +43,7 @@ import java.util.Optional;
 
             log.info("시스템 메뉴얼 등록에 입력 되지 않은 내용이 있습니다!");
 
-            return DefaultResponse.response(HttpStatus.OK.value(), "입력 되어야 할 값이 누락 되었습니다!");
+            return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 실패");
 
         } // if문 끝
 
@@ -40,7 +53,7 @@ import java.util.Optional;
 
         // TODO - Tag 관련 내용 추가
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "메뉴얼 게시글 등록이 성공하셨습니다!");
+        return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공");
 
     } // writeManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO) 끝
 

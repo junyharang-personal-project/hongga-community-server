@@ -27,7 +27,7 @@ import javax.persistence.*;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long manualNo;
 
-    @ManyToOne private Member writer;
+    @ManyToOne @JoinColumn(name = "member_no") private Member writer;
 
     @Column(length = 100, nullable = false) private String title;
 
