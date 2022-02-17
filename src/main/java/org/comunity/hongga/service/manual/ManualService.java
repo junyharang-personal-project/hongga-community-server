@@ -42,7 +42,7 @@ import java.util.Optional;
     private ManualTagRepository manualTagRepository;
     private MemberRepository memberRepository;
 
-    private ManualQuerydslRepository manualQuerydslRepository;
+    private final ManualQuerydslRepository manualQuerydslRepository;
 
     public DefaultResponse writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo) {
 
@@ -75,7 +75,7 @@ import java.util.Optional;
     public DefaultResponse<Page<ManualListResponseDTO>> manualListSearch(Pageable pageable) {
 
         log.info("SystemManualService가 동작 하였습니다!");
-        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
+ //       log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
         log.info("manualListSearch(Pageable pageable, Long memberNo)가 호출 되었습니다!");
         log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable)를 호출하여 데이터를 조회 하겠습니다!");
 

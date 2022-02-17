@@ -16,6 +16,7 @@ package org.comunity.hongga.constant;
 public interface ServiceURIVersion {
 
     String NOW_VERSION = "/api/v1";
+    //String NOW_VERSION = "/api";
 
     String NOW_VERSION_GUEST = NOW_VERSION+"guest";
     String NOW_VERSION_FAMILY = NOW_VERSION+"family";
