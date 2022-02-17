@@ -65,4 +65,15 @@ public class manualControllerTest {
 
     } // 게시글_전체조회() 끝
 
+
+    @Test public void 게시글_상세조회() throws Exception {
+
+        String manualNo = "30";
+        String memberNo = "1";
+
+        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/family/manual/detail/{manualNo}", manualNo)
+                .param("memberNo", memberNo)).andExpect(status().isOk());
+
+    } // 게시글_상세조회() 끝
+
 } // class 끝

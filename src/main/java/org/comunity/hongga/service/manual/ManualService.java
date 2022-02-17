@@ -7,22 +7,19 @@ import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
-import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.manual.Manual;
+import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
+import org.comunity.hongga.repository.manual.ManualRepository;
 import org.comunity.hongga.repository.manual.ManualTagRepository;
 import org.comunity.hongga.repository.manual.querydsl.ManualQuerydslRepository;
 import org.comunity.hongga.repository.member.MemberRepository;
-import org.comunity.hongga.repository.manual.ManualRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * 사용 설명서 관련 비즈니스 로직
@@ -75,14 +72,16 @@ import java.util.stream.Collectors;
 
     } // writeManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO) 끝
 
-    public DefaultResponse<Page<ManualListResponseDTO>> manualListSearch(Pageable pageable, Long memberNo) {
+    public DefaultResponse<Page<ManualListResponseDTO>> manualListSearch(Pageable pageable) {
 
         log.info("SystemManualService가 동작 하였습니다!");
         log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
         log.info("manualListSearch(Pageable pageable, Long memberNo)가 호출 되었습니다!");
         log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable)를 호출하여 데이터를 조회 하겠습니다!");
 
-        Page<ManualListResponseDTO> manualList = manualQuerydslRepository.findAllWithFetchJoin(pageable, memberNo);
+        Page<ManualListResponseDTO> manualList = manualQuerydslRepository.findAllWithFetchJoin(pageable);
+
+        log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable)에서 조회된 DATA : " + manualList.toString());
 
         log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable, memberNo)를 통해 조회된 데이터가 없는지 검증 하겠습니다!");
         if (manualList.getTotalElements() == 0) {

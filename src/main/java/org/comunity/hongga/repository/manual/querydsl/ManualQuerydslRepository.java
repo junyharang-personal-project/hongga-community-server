@@ -34,16 +34,15 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
  */
 
 /**
-@param pageable - 페이징 처리를 위한 객체, memberNo - 회원 고유 번호
+@param // pageable - 페이징 처리를 위한 객체, memberNo - 회원 고유 번호
  */
 
 @RequiredArgsConstructor @Slf4j
 @Repository public class ManualQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
-    private final EntityManager entityManager;
 
-    public Page<ManualListResponseDTO> findAllWithFetchJoin (Pageable pageable, Long memberNo) {    /* 전체 조회 / 페이징 처리 */
+    public Page<ManualListResponseDTO> findAllWithFetchJoin (Pageable pageable) {    /* 전체 조회 / 페이징 처리 */
 
         log.info("ManualService에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
 
@@ -54,11 +53,12 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
                 .select(Projections.constructor(ManualListResponseDTO.class,
                         manual.manualNo.as("manualNo"),
                         member.nickname,
-                        manual.title))
+                        manual.title,
+                        manual.registerDate,
+                        manual.modifyDate))
 
                 .from(manual)
-                .innerJoin(manualTag).on(manualTag.manual.manualNo.eq(manual.manualNo))
-                .where(manual.writer.memberNo.eq(memberNo))
+                .innerJoin(manual.writer, member)
                 .orderBy(manual.manualNo.desc())
                 .fetch();
 

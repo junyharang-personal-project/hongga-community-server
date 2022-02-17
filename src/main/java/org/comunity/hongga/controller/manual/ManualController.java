@@ -1,7 +1,6 @@
 package org.comunity.hongga.controller.manual;
 
 import io.swagger.annotations.*;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -59,15 +57,15 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
-    @GetMapping("/family/manual/{memberNo}") public ResponseEntity<DefaultResponse<Page<ManualListResponseDTO>>> manualListSearch (
-            Pageable pageable, @PathVariable("memberNo") Long memberNo) {
+    @GetMapping("/family/manual") public ResponseEntity<DefaultResponse<Page<ManualListResponseDTO>>> manualListSearch (
+            @PageableDefault Pageable pageable) {
 
         log.info("SystemManualController가 동작 하였습니다!");
         log.info("manualListSearch (@PageableDefault Pageable pageable, @PathVariable(\"memberNo\") Long memberNo)가 호출 되었습니다!");
 
         log.info("manualService.manualListSearch(pageable, memberNo)를 호출 하겠습니다!");
 
-        return new ResponseEntity<>(manualService.manualListSearch(pageable, memberNo), HttpStatus.OK);
+        return new ResponseEntity<>(manualService.manualListSearch(pageable), HttpStatus.OK);
 
     } // manualListSearch (@PageableDefault Pageable pageable, @PathVariable("memberNo") Long memberNo) 끝
 
