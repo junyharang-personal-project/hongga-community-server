@@ -38,9 +38,9 @@ import java.util.Optional;
 @RequiredArgsConstructor @Slf4j
 @Service public class ManualService {
 
-    private ManualRepository manualRepository;
-    private ManualTagRepository manualTagRepository;
-    private MemberRepository memberRepository;
+    private final ManualRepository manualRepository;
+    private final ManualTagRepository manualTagRepository;
+    private final MemberRepository memberRepository;
 
     private final ManualQuerydslRepository manualQuerydslRepository;
 
@@ -97,7 +97,7 @@ import java.util.Optional;
             return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualList, new Pagination(manualList));
 
         } // if - else (manualList.getTotalElements() == 0) 끝
-    } // manualListSearch(Pageable pageable, Long memberNo)
+    } // manualListSearch(Pageable pageable, Long memberNo) 끝
 
     public DefaultResponse<ManualDetailResponseDTO> manualDetailSearch(Long manualNo) {
 
