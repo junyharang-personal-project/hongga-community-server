@@ -42,8 +42,8 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서를 등록합니다. \n 필수 : Tag를 제외한 모든 항목", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.등록 성공 \n 2. 등록 실패 \n 3.Token Error")})
 
-    @PostMapping("/family/manual/{memberNo}") public ResponseEntity<DefaultResponse<ManualWriteRequestDTO>> writeManual(
-            @Valid @RequestBody ManualWriteRequestDTO systemManualWriteDTO, @PathVariable ("memberNo") Long memberNo) {
+    @PostMapping("/family/manual") public ResponseEntity<DefaultResponse<ManualWriteRequestDTO>> writeManual(
+            @Valid @RequestBody ManualWriteRequestDTO systemManualWriteDTO, @RequestParam ("memberNo") Long memberNo) {
 
         log.info("SystemManualController가 동작 하였습니다!");
         log.info("writeManual(@Valid @ResponseBody SystemManualWriteDTO systemManualWriteDTO)가 호출 되었습니다!");
@@ -53,8 +53,8 @@ import javax.validation.Valid;
         return new ResponseEntity<>(manualService.writeManual(systemManualWriteDTO, memberNo), HttpStatus.OK);
     } // writeManual(@Valid @RequestBody SystemManualWriteRequestDTO systemManualWriteDTO, @RequestParam ("memberId") Long memberId) 끝
 
-    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_LIST, notes = "사용 설명서 전체 조회(목록) 서비스 입니다.")
-    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일", readOnly = true)
+    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_LIST, notes = "사용 설명서 전체 조회(목록) 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일")
+    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
     @GetMapping("/family/manual") public ResponseEntity<DefaultResponse<Page<Manual>>> manualListSearch (
@@ -69,13 +69,13 @@ import javax.validation.Valid;
 
     } // manualListSearch (@PageableDefault Pageable pageable, @PathVariable("memberNo") Long memberNo) 끝
 
-    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_ONE_THING, notes = "사용 설명서 상세 조회 서비스 입니다.")
-    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일", readOnly = true)
+    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_ONE_THING, notes = "사용 설명서 상세 조회 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용")
+    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
         @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @GetMapping("/family/manual/detail/{manualNo}") public ResponseEntity<DefaultResponse<Manual>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
+    @GetMapping("/family/manual/{manualNo}") public ResponseEntity<DefaultResponse<Manual>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
 
         log.info("SystemManualController가 동작 하였습니다!");
         log.info("manualDetailSearch (@PathVariable(\"manualNo\") Long manualNo)가 호출 되었습니다!");
@@ -85,5 +85,12 @@ import javax.validation.Valid;
         return new ResponseEntity<>(manualService.manualDetailSearch(manualNo), HttpStatus.OK);
 
     } // manualDetailSearch (@PathVariable("manualNo") Long manualNo) 끝
+
+
+//    @ApiOperation(value = SwaggerApiInfo.MODIFY_POSTS, notes = "사용 설명서 수정 서비스 입니다.")
+//    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용", readOnly = true)
+//    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
+//
+//    @PutMapping("/family/manual/{manualNo}")
 
 } // class 끝
