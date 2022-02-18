@@ -1,7 +1,7 @@
 package org.comunity.hongga.repository.manual;
 
-import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.manual.Manual;
+import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.MemberGrade;
 import org.comunity.hongga.repository.member.MemberRepository;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -27,10 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * <pre>
  * <b>History:/b>
  *    주니하랑, 1.0.0, 2022.02.16 최초 작성
+ *    주니하랑, 1.0.2, 2022.02.18 게시물 목록 조회, 상세 조회 코드 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.16 최초 작성
+ * @version 1.0.2, 2022.02.18 게시물 목록 조회, 상세 조회 코드 구현
  * @See ""
  * @see <a href=""></a>
  */

@@ -27,10 +27,11 @@ import javax.validation.Valid;
  *    주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  *    주니하랑, 1.2.0, 2022.02.18 목록 조회, 상세 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  *    주니하랑, 1.2.1, 2022.02.18 글 등록 부분 매개 변수 부분 수정, URI 수정
+ *    주니하랑, 1.2.2, 2022.02.19 게시글 수정 기능 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 1.2.1, 2022.02.18 글 등록 부분 매개 변수 부분 수정, URI 수정
+ * @version 1.2.2, 2022.02.19 게시글 수정 기능 구현
  * @See ""
  * @see <a href=""></a>
  */
