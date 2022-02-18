@@ -13,9 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -169,4 +171,19 @@ public class ManualRepositoryTest {
 
     } // 전체_게시물_조회()
 
-} // class 끝
+@Transactional
+@Test public void 게시물_상세_조회() {
+
+        Long manualNo = 3L;
+
+    Optional<Manual> manual = manualRepository.findByManualAndWriter(manualNo);
+
+        System.out.println("====================================================");
+
+        if (manual.isPresent()) {
+            Manual result = manual.get();
+            System.out.println(result);
+        }
+    } // 게시물_상세_조회() 끝
+
+} // class 끝끝

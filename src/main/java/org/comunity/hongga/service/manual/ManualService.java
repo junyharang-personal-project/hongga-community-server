@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
@@ -27,10 +26,11 @@ import java.util.Optional;
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
  *    주니하랑, 1.0.1, 2022.02.16 Tag 등록 추가
  *    주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
+ *    주니하랑, 1.2.0, 2022.02.18 목록 조회, 상세 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  * </pre>
  *
  * @author 주니하랑
- * @version 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
+ * @version 1.2.0, 2022.02.18 목록 조회, 상세 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  * @See ""
  * @see <a href=""></a>
  */
@@ -100,17 +100,20 @@ import java.util.Optional;
         } // if - else (manualList.getTotalElements() == 0) 끝
     } // manualListSearch(Pageable pageable, Long memberNo) 끝
 
-    public DefaultResponse<ManualDetailResponseDTO> manualDetailSearch(Long manualNo) {
+    public DefaultResponse<Manual> manualDetailSearch(Long manualNo) {
+
+        // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
         log.info("SystemManualService가 동작 하였습니다!");
         log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
         log.info("manualDetailSearch(Long manualNo)이 호출 되었습니다!");
 
         log.info("manualQuerydslRepository.findByManualId(manualNo)를 호출하여 요청으로 들어온 설명서 고유 번호를 찾겠습니다!");
-        Optional<ManualDetailResponseDTO> optionalManualDetailResponseDTO = manualQuerydslRepository.findByManualId(manualNo);
+//        Optional<ManualDetailResponseDTO> optionalManualDetailResponseDTO = manualQuerydslRepository.findByManualId(manualNo);
+        Optional<Manual> manualSearch = manualRepository.findByManualAndWriter(manualNo);
 
         log.info("DB에서 찾은 자료가 존재 하는지 검증 하겠습니다!");
-        if (optionalManualDetailResponseDTO.isEmpty()) {
+        if (manualSearch.isEmpty()) {
 
             log.info("이용자가 요청한 자료의 고유 번호가 DB에 존재하지 않습니다! 200 Code와 함께 \"데이터 없음\"을 반환 하겠습니다!");
             return DefaultResponse.response(HttpStatus.OK.value(), "데이터 없음");
@@ -119,7 +122,7 @@ import java.util.Optional;
 
             log.info("이용자가 요청한 자료의 고유 번호가 존재 함으로, 200 Code와 함께 \"조회 성공\"을 반환 하겠습니다!");
 
-            return optionalManualDetailResponseDTO.map(manualDetailResponseDTO -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualDetailResponseDTO))
+            return manualSearch.map(Manual -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", Manual))
                     .orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공"));
 
         } // if - else (optionalManualDetailResponseDTO.isEmpty()) 끝

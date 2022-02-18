@@ -1,9 +1,6 @@
 package org.comunity.hongga.model.entity.manual;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
 import org.comunity.hongga.model.entity.member.Member;
 
@@ -23,7 +20,7 @@ import javax.persistence.*;
  * @see <a href=""></a>
  */
 
-@NoArgsConstructor @AllArgsConstructor @Getter
+@NoArgsConstructor @AllArgsConstructor @Getter @ToString
 @Entity public class Manual extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -25,7 +25,7 @@ import java.util.*;
  * @see <a href=""></a>
  */
 
-@Getter @NoArgsConstructor @AllArgsConstructor
+@Getter @NoArgsConstructor @AllArgsConstructor @ToString
 @Entity public class Member extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

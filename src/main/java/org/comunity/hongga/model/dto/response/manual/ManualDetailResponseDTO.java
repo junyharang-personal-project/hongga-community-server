@@ -31,6 +31,6 @@ public class ManualDetailResponseDTO {
     private LocalDateTime modifyDate;
     private Member writer;
     private String content;
-    private String manualTag;
+//    private String manualTag;
 
 } // class 끝
