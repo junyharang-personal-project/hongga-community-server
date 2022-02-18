@@ -1,5 +1,6 @@
 package org.comunity.hongga.repository.manual;
 
+import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
@@ -26,7 +27,13 @@ import java.util.Optional;
  * @see <a href=""></a>
  */
 
-
 public interface ManualRepository extends JpaRepository<Manual, Long> {
 
+    @Query(value = "select m.nickname, ma.title, ma.registerDate, ma.modifyDate from Manual ma inner join Member m on ma.writer.memberNo = m.memberNo")
+    Page<ManualListResponseDTO> findAllWithFetchJoin(Pageable pageable);
+
+
+//    @Query(value = "select d from DiscussionBoard d join fetch d.user",
+//            countQuery = "select count(d) from DiscussionBoard d")
+//    Page<DiscussionBoard> dfindAllWithFetchJoin(Pageable pageable);
 } // interface 끝

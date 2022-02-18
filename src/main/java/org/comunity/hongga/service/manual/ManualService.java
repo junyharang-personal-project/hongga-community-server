@@ -77,13 +77,14 @@ import java.util.Optional;
         log.info("SystemManualService가 동작 하였습니다!");
  //       log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
         log.info("manualListSearch(Pageable pageable, Long memberNo)가 호출 되었습니다!");
-        log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable)를 호출하여 데이터를 조회 하겠습니다!");
+        log.info("manualRepository.findAllWithFetchJoin(pageable)를 호출하여 데이터를 조회 하겠습니다!");
 
-        Page<ManualListResponseDTO> manualList = manualQuerydslRepository.findAllWithFetchJoin(pageable);
+//        Page<ManualListResponseDTO> manualList = manualQuerydslRepository.findAllWithFetchJoin(pageable);
+        Page<ManualListResponseDTO> manualList = manualRepository.findAllWithFetchJoin(pageable);
 
-        log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable)에서 조회된 DATA : " + manualList.toString());
+        log.info("manualRepository.findAllWithFetchJoin(pageable)에서 조회된 DATA : " + manualList.toString());
 
-        log.info("manualQuerydslRepository.findAllWithFetchJoin(pageable, memberNo)를 통해 조회된 데이터가 없는지 검증 하겠습니다!");
+        log.info("manualRepository.findAllWithFetchJoin(pageable)를 통해 조회된 데이터가 없는지 검증 하겠습니다!");
         if (manualList.getTotalElements() == 0) {
 
             log.info("조회 된 데이터가 없습니다! 200 Code와 함께 message로 \"데이터 없음\"을 반환 하겠습니다!");

@@ -39,18 +39,18 @@ public class ManualQuerydslRepositoryTest {
 
     @Autowired private ManualQuerydslRepository manualQuerydslRepository;
 
-    @Test public void 전체_목록_조회() {
-
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("manualNo").descending());
-
-        Page<ManualListResponseDTO> result = manualQuerydslRepository.findAllWithFetchJoin(pageRequest);
-
-        result.stream()
-                .forEach(manualValue ->
-                        log.info("메뉴얼 번호 : {}, 글 제목 : {}, 등록일 : {}, 수정일 : {}, 작성자 : {}", manualValue.getManualNo(), manualValue.getTitle(), manualValue.getRegisterDate(), manualValue.getModifyDate(), manualValue.getNickname()));
-
-        assertThat(result.get().count()).isEqualTo(10);
-
-    } // 전체_목록_조회() 끝
+//    @Test public void 전체_목록_조회() {
+//
+//        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("manualNo").descending());
+//
+//        Page<ManualListResponseDTO> result = manualQuerydslRepository.findAllWithFetchJoin(pageRequest);
+//
+//        result.stream()
+//                .forEach(manualValue ->
+//                        log.info("메뉴얼 번호 : {}, 글 제목 : {}, 등록일 : {}, 수정일 : {}, 작성자 : {}", manualValue.getManualNo(), manualValue.getTitle(), manualValue.getRegisterDate(), manualValue.getModifyDate(), manualValue.getNickname()));
+//
+//        assertThat(result.get().count()).isEqualTo(10);
+//
+//    } // 전체_목록_조회() 끝
 
 } // class 끝
