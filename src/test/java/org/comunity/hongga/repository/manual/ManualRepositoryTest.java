@@ -8,7 +8,14 @@ import org.comunity.hongga.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -133,5 +140,33 @@ public class ManualRepositoryTest {
         });
 
     } // 여러_게시물_등록() 끝
+
+    @Test public void 전체_게시물_조회() {
+
+        System.out.println(" 1페이지의 10개 DATA를 조회 하겠습니다!");
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("manualNo").descending());
+
+        List<Object> arr = new ArrayList<>();
+
+        Page<Manual> result = manualRepository.findAllWithFetchJoin(pageable);
+
+        System.out.println(result);
+
+        System.out.println("----------------------------------------------------");
+
+        System.out.println("총 Page 수 : " + result.getTotalPages());
+
+        System.out.println("전체 개수 : " + result.getTotalElements());
+
+        System.out.println("현재 Page 번호 : " + result.getNumber());
+
+        System.out.println("Page 당 Data 개 수 : " + result.getSize());
+
+        System.out.println("다음 Page 존재 여부 : " + result.hasNext());
+
+        System.out.println("현재 Page가 시작 Page인지 여부 : " + result.isFirst());
+
+    } // 전체_게시물_조회()
 
 } // class 끝

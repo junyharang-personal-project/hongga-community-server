@@ -3,8 +3,6 @@ package org.comunity.hongga.repository.manual.querydsl;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.config.JpaAuditingConfig;
 import org.comunity.hongga.config.TestConfig;
-import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -12,9 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;

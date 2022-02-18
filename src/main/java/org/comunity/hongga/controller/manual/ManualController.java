@@ -8,7 +8,7 @@ import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
+import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.service.manual.ManualService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +24,11 @@ import javax.validation.Valid;
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
+ *    주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.15 최초 작성
+ * @version 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  * @See ""
  * @see <a href=""></a>
  */
@@ -56,7 +57,7 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
-    @GetMapping("/family/manual") public ResponseEntity<DefaultResponse<Page<ManualListResponseDTO>>> manualListSearch (
+    @GetMapping("/family/manual") public ResponseEntity<DefaultResponse<Page<Manual>>> manualListSearch (
             @PageableDefault Pageable pageable) {
 
         log.info("SystemManualController가 동작 하였습니다!");

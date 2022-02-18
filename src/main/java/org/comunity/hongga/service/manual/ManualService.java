@@ -6,7 +6,6 @@ import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualListResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
@@ -27,10 +26,11 @@ import java.util.Optional;
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
  *    주니하랑, 1.0.1, 2022.02.16 Tag 등록 추가
+ *    주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.02.16 Tag 등록 추가
+ * @version 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  * @See ""
  * @see <a href=""></a>
  */
@@ -72,7 +72,7 @@ import java.util.Optional;
 
     } // writeManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO) 끝
 
-    public DefaultResponse<Page<ManualListResponseDTO>> manualListSearch(Pageable pageable) {
+    public DefaultResponse<Page<Manual>> manualListSearch(Pageable pageable) {
 
         log.info("SystemManualService가 동작 하였습니다!");
  //       log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
@@ -80,7 +80,7 @@ import java.util.Optional;
         log.info("manualRepository.findAllWithFetchJoin(pageable)를 호출하여 데이터를 조회 하겠습니다!");
 
 //        Page<ManualListResponseDTO> manualList = manualQuerydslRepository.findAllWithFetchJoin(pageable);
-        Page<ManualListResponseDTO> manualList = manualRepository.findAllWithFetchJoin(pageable);
+        Page<Manual> manualList = manualRepository.findAllWithFetchJoin(pageable);
 
         log.info("manualRepository.findAllWithFetchJoin(pageable)에서 조회된 DATA : " + manualList.toString());
 
