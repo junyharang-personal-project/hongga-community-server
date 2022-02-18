@@ -31,7 +31,7 @@ import javax.persistence.*;
     @Column(length = 100, nullable = false) private String title;
 
     // TODO - 글, 사진 (Editor 사용)
-    @Lob @Column(length = 65535) private String content;
+    @Lob @Column(length = 65535, nullable = false) private String content;
 
     @Builder public Manual(Member writer, String title, String content) {
         this.writer = writer;

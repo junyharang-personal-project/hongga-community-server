@@ -1,14 +1,17 @@
 package org.comunity.hongga.repository.manual;
 
+import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
@@ -39,5 +42,15 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
             "left join ma.writer w " +
             "where ma.manualNo =:manualNo ")
     Optional<Manual> findByManualAndWriter(@Param("manualNo") Long manualNo);
+
+    @Query(value = "select ma.manualNo, ma.title, ma.registerDate, ma.modifyDate, ma.content \f" +
+            "from Manual ma " +
+            "where ma.manualNo =:manualNo ")
+    Optional<Manual> findByManualNo(Long manualNo);
+
+    @Transactional @Modifying
+    @Query("update Manual ma set ma.title =:manualUpdateRequestDTO, ma.content =:manualUpdateRequestDTO where ma.manualNo =:manualNo ")
+    void updateManual(@Param("manualUpdateRequestDTO") ManualUpdateRequestDTO manualUpdateRequestDTO, @Param("manualNo") Long manualNo);
+
 
 } // interface 끝

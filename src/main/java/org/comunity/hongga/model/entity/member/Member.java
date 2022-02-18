@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 /**
@@ -17,10 +18,11 @@ import java.util.*;
  *    주니하랑, 1.0.0, 2022.02.08 최초 작성
  *    주니하랑, 1.0.1, 2022.02.13 Field 변수 수정 (member_id -> member_no)
  *    주니하랑, 1.0.2, 가입일과 수정일을 위해 BaseDateTime 상속
+ *    주니하랑, 1.0.3, 자기 소개 작성 가능 길이 변경
  *    * </pre>
  *
  * @author 주니하랑
- * @version 1.0.2, 가입일과 수정일을 위해 BaseDateTime 상속
+ * @version 1.0.3, 자기 소개 작성 가능 길이 변경
  * @See ""
  * @see <a href=""></a>
  */
@@ -46,8 +48,7 @@ import java.util.*;
     private String token;
 
     // 자기 소개
-    @Lob // 길이 65,535 byte
-    @Column(length = 65535) private String aboutMe;
+    @Column(length = 200) @Size(message = "자기 소개는 최대 200자까지 작성 가능 합니다!") private String aboutMe;
 
     @Builder public Member(String email, String password, String name, String nickname, String phoneNumber, MemberGrade grade, String picture, String aboutMe, boolean activated) {
 
