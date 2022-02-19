@@ -142,4 +142,24 @@ public class ManualServiceTest {
 
     } // 게시물_수정() 끝
 
+    @Test public void 게시글_삭제() {
+
+        // given
+        Long manualNo = 99L;
+        Optional<Member> writerOp = memberRepository.findById(99L);
+        Member writer = writerOp.get();
+        String title = "메뉴얼 게시글 삭제 테스트 중 입니다!";
+        String content = "Service Test Code";
+
+        Manual manual = new Manual(writer, title, content);
+
+        // when
+        given(manualRepository.findByManualAndWriter(manualNo, 99L)).willReturn(Optional.of(manual));
+        DefaultResponse result = manualService.deleteManaul(manualNo, 99L);
+
+        // then
+        assertThat(result.getMessage()).isEqualTo("삭제 성공");
+
+    } // 게시글_삭제() 끝
+
 } // class 끝

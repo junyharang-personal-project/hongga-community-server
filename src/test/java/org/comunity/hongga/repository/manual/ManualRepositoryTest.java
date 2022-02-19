@@ -209,4 +209,19 @@ public class ManualRepositoryTest {
 
     } // 게시물_수정() 끝
 
+    @Test public void 게시글_삭제() {
+
+        // given
+        Optional<Manual> result = manualRepository.findByManualNo(98L);
+
+        if (result.isEmpty()) {
+            System.out.println("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
+        } // if (result.isEmpty()) 끝
+
+        // when
+        manualRepository.deleteById(98L);
+
+
+    } // 게시글_삭제() 끝
+
 } // class 끝끝
