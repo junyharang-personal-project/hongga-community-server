@@ -31,10 +31,22 @@ import java.util.Optional;
 
 public interface ManualRepository extends JpaRepository<Manual, Long> {
 
+    /**
+     * 전체 목록 조회 Method
+     * @param pageable 페이징 처리를 위한 객체
+     * @return Page<Manual> 조회된 게시물 목록을 페이징 처리 하여 반환
+     */
+
     @Query(value = "select ma.manualNo, w.nickname, ma.title, ma.registerDate, ma.modifyDate " +
                     "from Manual ma " +
                     "left join ma.writer w ")
     Page<Manual> findAllWithFetchJoin(Pageable pageable);
+
+    /**
+     * 상세 조회 Method
+     * @param manualNo 특정 게시글 조회를 위한 게시글 고유 번호
+     * @return Optional<Manual> 조회 된 게시글과 작성자 반환
+     */
 
     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
@@ -43,6 +55,12 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
             "left join ma.writer w " +
             "where ma.manualNo =:manualNo ")
     Optional<Manual> findByManualAndWriter(@Param("manualNo") Long manualNo);
+
+    /**
+     * 게시글 수정 전 해당 게시글 조회를 위한 Method
+     * @param manualNo 특정 게시글 조회를 위한 게시글 고유 번호
+     * @return Optional<Manual> 조회 된 게시글 반환
+     */
 
     @Query(value = "select ma " +
             "from Manual ma " +

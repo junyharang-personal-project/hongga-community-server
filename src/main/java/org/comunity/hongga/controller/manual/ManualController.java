@@ -99,7 +99,7 @@ import javax.validation.Valid;
 
     @ApiOperation(value = SwaggerApiInfo.MODIFY_POSTS, notes = "사용 설명서 수정 서비스 입니다.")
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용", readOnly = true)
-    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 수정 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
     @PutMapping("/family/manual/update/{manualNo}") public ResponseEntity<DefaultResponse> updateManual (
             @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO,

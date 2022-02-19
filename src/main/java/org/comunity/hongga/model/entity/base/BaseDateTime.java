@@ -2,11 +2,13 @@ package org.comunity.hongga.model.entity.base;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -34,7 +36,7 @@ public class BaseDateTime {
     private LocalDateTime registerDate;
 
     // 수정, 변경 일시
-    @CreatedDate @Column(name = "modifyDate")
+    @LastModifiedDate @Column(name = "modifyDate")
     private LocalDateTime modifyDate;
 
 } // class 끝
