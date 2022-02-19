@@ -101,13 +101,15 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
-    @PutMapping("/family/manual/{manualNo}") public ResponseEntity<DefaultResponse> updateManual (
+    @PutMapping("/family/manual/update/{manualNo}") public ResponseEntity<DefaultResponse> updateManual (
             @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO,
             @PathVariable("manualNo") Long manualNo,
             @RequestParam("memberNo") Long memberNo) {
 
         log.info("SystemManualController가 동작 하였습니다!");
         log.info("updateManual ( @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO, @PathVariable(\"manualNo\") Long manualNo,@RequestParam(\"memberNo\") Long memberNo)가 호출 되었습니다!");
+
+        log.info("요청으로 들어온 값 \n 수정 내용 : " + manualUpdateRequestDTO.toString() + "\n 수정할 게시글 고유 번호 : " + manualNo.toString() + "\n 수정을 요청한 회원 고유 번호 : " + memberNo.toString());
 
         log.info("manualService.updateManual(manualUpdateRequestDTO, manualNo, manualNo)를 호출 하겠습니다!");
 

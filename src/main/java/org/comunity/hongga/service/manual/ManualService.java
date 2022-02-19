@@ -132,10 +132,11 @@ import java.util.Optional;
 
     } // manualDetailSearch(Long manualNo) 끝
 
+
     public DefaultResponse updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
 
         log.info("SystemManualService가 동작 하였습니다!");
-        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualUpdateRequestDTO.toString() + "," + manualNo.toString()  + "," + manualNo.toString());
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualUpdateRequestDTO.toString() + "," + manualNo.toString()  + "," + memberNo.toString());
         log.info("updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)이 호출 되었습니다!");
 
         log.info("memberRepository.findByManualNo(manualNo, memberNo)를 호출하여 요청으로 들어온 설명서 고유 번호와 해당 글의 작성자가 맞는지 여부를 찾겠습니다!");
@@ -149,13 +150,19 @@ import java.util.Optional;
 
         } // if (findManual.isEmpty()) 문 끝
 
+
+
         log.info("요청으로 들어온 이용자의 고유 번호가 DB에 저장된 해당 글의 작성자 고유 번호와 일치한지 검증 하겠습니다! \n 그런 뒤 요청으로 들어온 게시물 고유 번호와 DB에서 찾은 게시물 고유 번호가 일치한지 검증 하겠습니다!");
         return findManual.filter(manual -> manual.getWriter().getMemberNo().equals(memberNo))
                 .filter(manual -> manual.getManualNo().equals(manualNo)).map(manual -> {
 
                     log.info("요청으로 들어온 회원 고유 번호와 게시글 고유 번호가 DB에서 찾은 자료의 값과 일치 합니다!");
                     log.info("manualRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo)를 호출하여 DB 값을 변경 하겠습니다!");
-                    manualRepository.updateManual(manualUpdateRequestDTO, manualNo);
+                    Manual entity = findManual.get();
+                    entity.changeTitle(manualUpdateRequestDTO.getTitle());
+                    entity.changeContent(manualUpdateRequestDTO.getContent());
+
+                    manualRepository.save(entity);
 
                     log.info("DB에 해당 게시물 수정이 완료 되었습니다! 200 Code와 함께 \"수정 성공\" 반환 하겠습니다!");
 

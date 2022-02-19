@@ -44,14 +44,9 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
             "where ma.manualNo =:manualNo ")
     Optional<Manual> findByManualAndWriter(@Param("manualNo") Long manualNo);
 
-    @Query(value = "select ma.manualNo, ma.title, ma.registerDate, ma.modifyDate, ma.content \f" +
+    @Query(value = "select ma " +
             "from Manual ma " +
             "where ma.manualNo =:manualNo ")
-    Optional<Manual> findByManualNo(Long manualNo);
-
-    @Transactional @Modifying
-    @Query("update Manual ma set ma.title =:manualUpdateRequestDTO, ma.content =:manualUpdateRequestDTO where ma.manualNo =:manualNo ")
-    void updateManual(@Param("manualUpdateRequestDTO") ManualUpdateRequestDTO manualUpdateRequestDTO, @Param("manualNo") Long manualNo);
-
+    Optional<Manual> findByManualNo(@Param("manualNo") Long manualNo);
 
 } // interface 끝
