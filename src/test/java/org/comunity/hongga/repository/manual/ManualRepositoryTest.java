@@ -186,4 +186,27 @@ public class ManualRepositoryTest {
         }
     } // 게시물_상세_조회() 끝
 
+    @Test public void 게시물_수정() {
+
+        // given
+        Optional<Manual> result = manualRepository.findByManualNo(103L);
+
+        if (result.isEmpty()) {
+            System.out.println("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
+        } // if (result.isEmpty()) 끝
+
+        Manual manual = result.get();
+
+        manual.changeTitle("Manual Reposiroty 수정 Test");
+        manual.changeContent("수정 Test Code Test 중 입니다!");
+
+        // when
+        Manual saveManual = manualRepository.save(manual);
+
+
+        // then
+        assertThat(saveManual.toString()).isEqualTo(manual.toString());
+
+    } // 게시물_수정() 끝
+
 } // class 끝끝
