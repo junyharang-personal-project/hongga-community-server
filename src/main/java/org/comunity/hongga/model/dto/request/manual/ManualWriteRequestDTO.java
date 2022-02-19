@@ -30,7 +30,7 @@ public class ManualWriteRequestDTO {
     @NotEmpty private String title;             // 메뉴얼 게시글 제목
     @NotEmpty private String content;           // 메뉴얼 게시글 내용(글/사진)
 
-    private String tagContent;                  // TAG
+//    private String tagContent;                  // TAG
 
     // TODO - HashTAG 추가
 
