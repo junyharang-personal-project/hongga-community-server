@@ -1,6 +1,6 @@
 package org.comunity.hongga.repository.manual;
 
-import org.comunity.hongga.model.entity.manual.ManualTag;
+//import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.MemberGrade;
 import org.comunity.hongga.repository.member.MemberRepository;
@@ -28,7 +28,7 @@ public class ManualTagRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired ManualRepository manualRepository;
-    @Autowired ManualTagRepository manualTagRepository;
+//    @Autowired ManualTagRepository manualTagRepository;
 
     @Test public void Tag_등록() {
 
@@ -50,24 +50,24 @@ public class ManualTagRepositoryTest {
 
         Member adminMember = memberRepository.save(testMember);
 
-        ManualTag tags = ManualTag.builder()
-                .tagContent("시놀로지")
-                .tagContent1("NAS")
-                .tagContent2("Network")
-                .tagContent3("Access")
-                .tagContent4("Storage")
-                .tagContent5("영화 보기")
-                .tagContent6("클라우드")
-                .tagContent7("노래 듣기")
-                .tagContent8("Docker")
-                .tagContent9("모두 다 됨")
-                .build();
-
-        // when
-        ManualTag saveManualTag = manualTagRepository.save(tags);
-
-        // then
-        assertThat(tags).isEqualTo(saveManualTag);
+//        ManualTag tags = ManualTag.builder()
+//                .tagContent("시놀로지")
+//                .tagContent1("NAS")
+//                .tagContent2("Network")
+//                .tagContent3("Access")
+//                .tagContent4("Storage")
+//                .tagContent5("영화 보기")
+//                .tagContent6("클라우드")
+//                .tagContent7("노래 듣기")
+//                .tagContent8("Docker")
+//                .tagContent9("모두 다 됨")
+//                .build();
+//
+//        // when
+//        ManualTag saveManualTag = manualTagRepository.save(tags);
+//
+//        // then
+//        assertThat(tags).isEqualTo(saveManualTag);
 
 
     }

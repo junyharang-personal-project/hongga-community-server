@@ -9,20 +9,20 @@ import org.comunity.hongga.model.entity.member.Member;
 import java.time.LocalDateTime;
 
 /**
- * 사용 설명서 관련 상세 조회 DTO
+ * 사용 설명서 관련 삭제용 응답 DTO
  * <pre>
  * <b>History:</b>
- *    주니하랑, 1.0.0, 2022.02.15 최초 작성
+ *    주니하랑, 1.0.0, 2022.02.20 최초 작성
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.15 최초 작성
+ * @version 1.0.0, 2022.02.20 최초 작성
  * @See ""
  * @see <a href=""></a>
  */
 
 @Getter @NoArgsConstructor @AllArgsConstructor @ToString
-public class ManualDetailResponseDTO {
+public class MaualDeleteResponeDTO {
 
     private Long manualNo;
     private String title;

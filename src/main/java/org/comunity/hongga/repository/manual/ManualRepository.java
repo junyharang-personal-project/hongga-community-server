@@ -54,7 +54,7 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
             "from Manual ma " +
             "left join ma.writer w " +
             "where ma.manualNo =:manualNo ")
-    Optional<Manual> findByManualAndWriter(@Param("manualNo") Long manualNo);
+    Optional<Manual> findByManualDetail(@Param("manualNo") Long manualNo);
 
     /**
      * 게시글 수정 전 해당 게시글 조회를 위한 Method
@@ -67,4 +67,27 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
             "where ma.manualNo =:manualNo ")
     Optional<Manual> findByManualNo(@Param("manualNo") Long manualNo);
 
+
+    /**
+     * 게시글 삭제 전 해당 게시글 조회를 위한 Method
+     * @param manualNo 해당 게시글 삭제를 위한 게시글 고유 번호
+     * @param memberNo 해당 게시글 작성자 고유 번호
+     * @return Optional<Manual> 수정 된 게시글 반환
+     */
+
+    @Query(value = "select ma " +
+                   "from Manual ma " +
+                   "left join ma.writer w " +
+                   "where ma.manualNo =:manualNo " +
+                   "and ma.writer.memberNo =:memberNo ")
+    Optional<Manual> findByManualAndWriter(@Param("manualNo")Long manualNo, @Param("memberNo") Long memberNo);
+
+    /**
+     * 게시글 삭제 Method
+     * @param manualNo 해당 게시글 삭제를 위한 게시글 고유 번호
+     * @return Optional<Manual> 수정 된 게시글 반환
+     */
+
+    @Query(value = "delete from Manual where manualNo =:manualNo")
+    void deleteByManualNoAndMemberNo(@Param("manualNo") Long manualNo);
 } // interface 끝
