@@ -82,12 +82,4 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
                    "and ma.writer.memberNo =:memberNo ")
     Optional<Manual> findByManualAndWriter(@Param("manualNo")Long manualNo, @Param("memberNo") Long memberNo);
 
-    /**
-     * 게시글 삭제 Method
-     * @param manualNo 해당 게시글 삭제를 위한 게시글 고유 번호
-     * @return Optional<Manual> 수정 된 게시글 반환
-     */
-
-    @Query(value = "delete from Manual where manualNo =:manualNo")
-    void deleteByManualNoAndMemberNo(@Param("manualNo") Long manualNo);
 } // interface 끝

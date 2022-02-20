@@ -1,6 +1,7 @@
 package org.comunity.hongga.model.entity.manual;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.model.entity.base.BaseDateTime;
 import org.comunity.hongga.model.entity.member.Member;
 
@@ -21,7 +22,7 @@ import javax.persistence.*;
  * @see <a href=""></a>
  */
 
-@NoArgsConstructor @AllArgsConstructor @Getter @ToString
+@NoArgsConstructor @AllArgsConstructor @Getter @ToString @Slf4j
 @Entity public class Manual extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +41,32 @@ import javax.persistence.*;
         this.content = content;
     } // 생성자 끝
 
-    public void changeTitle(String title) { this.title = title; } // changeTitle(String title) 끝
-    public void changeContent(String content) { this.content = content; } // changeContent(String content) 끝
+    public void changeTitle(String title) {
+        log.info("Manual Entity가 호출 되었습니다!");
+        log.info("changeTitle(String title)이 호출 되었습니다!");
+
+        log.info("이용자가 수정한 게시글 제목이 DB에 저장 된 내용과 다른지 검사 하겠습니다!");
+        if (!this.title.equals(title)) {
+
+            log.info("이용자가 수정한 게시글 제목이 DB에 저장 된 내용과 달라 Entity에 내용을 수정하겠습니다!");
+
+            this.title = title;
+        } // if (this.title.equals(title)) 끝
+
+    } // changeTitle(String title) 끝
+    public void changeContent(String content) {
+
+        log.info("Manual Entity가 호출 되었습니다!");
+        log.info("changeContent(String content)");
+
+        log.info("이용자가 수정한 게시글 내용이 DB에 저장 된 내용과 다른지 검사 하겠습니다!");
+
+        if (!this.content.equals(content)) {
+
+            log.info("이용자가 수정한 게시글 내용이 DB에 저장 된 내용과 달라 Entity에 내용을 수정하겠습니다!");
+
+            this.content = content;
+        } // if (!this.content.equals(content)) 끝
+    } // changeContent(String content) 끝
 
 } // class 끝
