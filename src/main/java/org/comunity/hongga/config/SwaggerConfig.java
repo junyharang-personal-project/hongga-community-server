@@ -16,11 +16,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.08 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.20 회원 등급 추가로 인한 안내 사항 추가
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.08 최초 작성
- * @See "코드로 배우는 스프링 부트 웹 프로젝트"
+ * @version 1.0.1, 2022.02.20 회원 등급 추가로 인한 안내 사항 추가
+ * @See ""
  * @see <a href=""></a>
  */
 
@@ -42,9 +43,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
                 .title("홍가 Community Project API Document")
                 .version("1.0.0")
                 .description(
-                        "<h1> 우리 가족 커뮤니티 웹 서비스!! </h1> \t\n\t\n " +
-                                "<h2> 회원 등급 안내 </h2>" +
-                                "/guest ==> 비회원, 가족, 관리자\n" +
+                        "<h1> 우리 가족 커뮤니티 웹 서비스!! </h1> " +
+                                "<h2> 회원 등급 안내 </h2> \t\n\t\n" +
+                                "<h4> URI 등급 별 이용 가능 서비스 </h4> " +
+                                "/guest ==> 손님, 친구, 친가, 외가, 애인, 가족, 관리자\n" +
+                                "/friend ==> 친구, 친가, 외가, 애인, 가족, 관리자\n" +
+                                "/paternal ==> 친가, 외가, 애인, 가족, 관리자\n" +
+                                "/maternal ==> 외가, 애인, 가족, 관리자\n" +
+                                "/valentine ==> 애인, 가족, 관리자\n" +
                                 "/family ==> 가족, 관리자\n" +
                                 "/admin ==> 관리자"
                 ).build();
