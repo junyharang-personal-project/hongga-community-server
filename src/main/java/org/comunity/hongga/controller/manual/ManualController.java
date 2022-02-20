@@ -31,16 +31,17 @@ import javax.validation.Valid;
  *    주니하랑, 1.2.1, 2022.02.18 글 등록 부분 매개 변수 부분 수정, URI 수정
  *    주니하랑, 1.2.2, 2022.02.19 게시글 수정 기능 구현
  *    주니하랑, 1.2.3, 2022.02.20 게시글 삭제 기능 구현
+ *    주니하랑, 1.2.4, 2022.02.20 회원 등급 추가 및 RESTFul API에 맞춘 URI 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.2.3, 2022.02.20 게시글 삭제 기능 구현
+ * @version 주니하랑, 1.2.4, 2022.02.20 회원 등급 추가 및 RESTFul API에 맞춘 URI 수정
  * @See ""
  * @see <a href=""></a>
  */
 
 @RequiredArgsConstructor @Slf4j @Api(tags = {"사용 설명서 관련 API"}) @ApiOperation(value = SwaggerApiInfo.POSTING)
-@RestController @RequestMapping(ServiceURIVersion.NOW_VERSION) public class ManualController {
+@RestController @RequestMapping(ServiceURIVersion.NOW_VERSION_PATERNAL) public class ManualController {
 
     private final ManualService manualService;
 
@@ -50,7 +51,7 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서를 등록합니다. \n 필수 : Tag를 제외한 모든 항목", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.등록 성공 \n 2. 등록 실패 \n 3.Token Error")})
 
-    @PostMapping("/family/manual") public ResponseEntity<DefaultResponse<ManualWriteRequestDTO>> writeManual(
+    @PostMapping("manual") public ResponseEntity<DefaultResponse<ManualWriteRequestDTO>> writeManual(
             @Valid @RequestBody ManualWriteRequestDTO systemManualWriteDTO, @RequestParam ("memberNo") Long memberNo) {
 
         log.info("ManualController가 동작 하였습니다!");
@@ -67,7 +68,7 @@ import javax.validation.Valid;
     @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
-    @GetMapping("/family/manual") public ResponseEntity<DefaultResponse<Page<Manual>>> manualListSearch (
+    @GetMapping("manual") public ResponseEntity<DefaultResponse<Page<Manual>>> manualListSearch (
             @PageableDefault Pageable pageable) {
 
         log.info("ManualController가 동작 하였습니다!");
@@ -87,7 +88,7 @@ import javax.validation.Valid;
 
     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @GetMapping("/family/manual/{manualNo}") public ResponseEntity<DefaultResponse<ManualDetailResponseDTO>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
+    @GetMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<ManualDetailResponseDTO>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
 
         log.info("ManualController가 동작 하였습니다!");
         log.info("manualDetailSearch (@PathVariable(\"manualNo\") Long manualNo)가 호출 되었습니다!");
@@ -103,7 +104,7 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1. 수정 성공 \n 2. 데이터 없음 \n 3.Token Error")})
 
-    @PutMapping("/family/manual/update/{manualNo}") public ResponseEntity<DefaultResponse> updateManual (
+    @PutMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse> updateManual (
             @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO,
             @PathVariable("manualNo") Long manualNo,
             @RequestParam("memberNo") Long memberNo) {
@@ -124,7 +125,7 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서에 대해 삭제 처리 합니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1. 삭제 성공 \n 2. 삭제 실패 \n 3. 데이터 없음 \n 3.Token Error")})
 
-    @DeleteMapping("/family/manual/delete/{manualNo}") public ResponseEntity<DefaultResponse<MaualDeleteResponeDTO>> deleteManual (
+    @DeleteMapping("/manual/{manualNo}") public ResponseEntity<DefaultResponse<MaualDeleteResponeDTO>> deleteManual (
             @PathVariable("manualNo") Long manualNo,
             @RequestParam("memberNo") Long memberNo
     ) {
