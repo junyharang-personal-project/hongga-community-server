@@ -1,17 +1,14 @@
 package org.comunity.hongga.repository.manual;
 
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
@@ -50,11 +47,12 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
 
     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @Query(value = "select ma " +
+    @Query(value = "select ma, mt " +
             "from Manual ma " +
-            "left join ma.writer w " +
-            "where ma.manualNo =:manualNo ")
-    Optional<Manual> findByManualDetail(@Param("manualNo") Long manualNo);
+            "left join ManualTag mt " +
+            "on mt.manual = ma " +
+            "where ma.manualNo =:manualNo")
+    Optional<ManualDetailResponseDTO> findByManualDetail(@Param("manualNo") Long manualNo);
 
     /**
      * 게시글 수정 전 해당 게시글 조회를 위한 Method

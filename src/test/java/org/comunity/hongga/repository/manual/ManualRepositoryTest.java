@@ -1,5 +1,6 @@
 package org.comunity.hongga.repository.manual;
 
+import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
@@ -176,12 +177,12 @@ public class ManualRepositoryTest {
 
         Long manualNo = 3L;
 
-    Optional<Manual> manual = manualRepository.findByManualDetail(manualNo);
+    Optional<ManualDetailResponseDTO> manual = manualRepository.findByManualDetail(manualNo);
 
         System.out.println("====================================================");
 
         if (manual.isPresent()) {
-            Manual result = manual.get();
+            ManualDetailResponseDTO result = manual.get();
             System.out.println(result);
         }
     } // 게시물_상세_조회() 끝

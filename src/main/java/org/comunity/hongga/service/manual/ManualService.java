@@ -6,6 +6,7 @@ import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
@@ -114,7 +115,7 @@ import java.util.Optional;
         } // if - else (manualList.getTotalElements() == 0) 끝
     } // manualListSearch(Pageable pageable, Long memberNo) 끝
 
-    public DefaultResponse<Manual> manualDetailSearch(Long manualNo) {
+    public DefaultResponse<ManualDetailResponseDTO> manualDetailSearch(Long manualNo) {
 
         // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
@@ -123,8 +124,8 @@ import java.util.Optional;
         log.info("manualDetailSearch(Long manualNo)이 호출 되었습니다!");
 
         log.info("manualQuerydslRepository.findByManualId(manualNo)를 호출하여 요청으로 들어온 설명서 고유 번호를 찾겠습니다!");
-//        Optional<ManualDetailResponseDTO> optionalManualDetailResponseDTO = manualQuerydslRepository.findByManualId(manualNo);
-        Optional<Manual> manualSearch = manualRepository.findByManualDetail(manualNo);
+        Optional<ManualDetailResponseDTO> manualSearch = manualQuerydslRepository.findByManualNo(manualNo);
+//        Optional<ManualDetailResponseDTO> manualSearch = manualRepository.findByManualDetail(manualNo);
 
         log.info("DB에서 찾은 자료가 존재 하는지 검증 하겠습니다!");
         if (manualSearch.isEmpty()) {

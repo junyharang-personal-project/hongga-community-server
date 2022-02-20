@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 import static org.comunity.hongga.model.entity.manual.QManual.manual;
+import static org.comunity.hongga.model.entity.manual.QManualTag.manualTag;
 import static org.comunity.hongga.model.entity.member.QMember.member;
 
 /**
@@ -97,4 +98,42 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 //
 //        return Optional.ofNullable(result);
 //    } // findByManualId(Long manualNo) 끝
+
+    public Optional<ManualDetailResponseDTO> findByManualNo(Long manualNo) {
+
+        log.debug("ManualQuerydslRepository가 동작 하였습니다!");
+        log.debug("메뉴얼 게시글 전체 조회 요청으로 findAllWithFetchJoin (Pageable pageable, Long memberNo)가 호출 되었습니다!");
+
+        log.info("ManualService에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
+
+        ManualDetailResponseDTO result = jpaQueryFactory
+                .select(Projections.constructor(ManualDetailResponseDTO.class,
+                        manual.manualNo,
+                        manual.title,
+                        manual.registerDate,
+                        manual.modifyDate,
+                        manual.writer,
+                        manual.content,
+
+                        manualTag.tagContent0,
+                        manualTag.tagContent1,
+                        manualTag.tagContent2,
+                        manualTag.tagContent3,
+                        manualTag.tagContent4,
+                        manualTag.tagContent5,
+                        manualTag.tagContent6,
+                        manualTag.tagContent7,
+                        manualTag.tagContent8,
+                        manualTag.tagContent9))
+
+                .from(manual)
+                .innerJoin(manualTag)
+                .on(manualTag.manual.manualNo.eq(manual.manualNo))
+                .where(manual.manualNo.eq(manualNo))
+                .fetchOne();
+
+        return Optional.ofNullable(result);
+
+    } // findByManualNo(Long manualNo) 끝
+
 } // class 끝

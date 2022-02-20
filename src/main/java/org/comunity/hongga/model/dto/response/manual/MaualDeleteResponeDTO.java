@@ -30,6 +30,16 @@ public class MaualDeleteResponeDTO {
     private LocalDateTime modifyDate;
     private Member writer;
     private String content;
-//    private String manualTag;
+
+    private String tagContent0;
+    private String tagContent1;
+    private String tagContent2;
+    private String tagContent3;
+    private String tagContent4;
+    private String tagContent5;
+    private String tagContent6;
+    private String tagContent7;
+    private String tagContent8;
+    private String tagContent9;
 
 } // class 끝
