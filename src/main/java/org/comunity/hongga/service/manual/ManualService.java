@@ -7,9 +7,10 @@ import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
+import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.manual.ManualRepository;
-//import org.comunity.hongga.repository.manual.ManualTagRepository;
+import org.comunity.hongga.repository.manual.ManualTagRepository;
 import org.comunity.hongga.repository.manual.querydsl.ManualQuerydslRepository;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.springframework.data.domain.Page;
@@ -40,7 +41,7 @@ import java.util.Optional;
 @Service public class ManualService {
 
     private final ManualRepository manualRepository;
-//    private final ManualTagRepository manualTagRepository;
+    private final ManualTagRepository manualTagRepository;
     private final MemberRepository memberRepository;
 
     private final ManualQuerydslRepository manualQuerydslRepository;
@@ -64,10 +65,22 @@ import java.util.Optional;
 
         Optional<Manual> writeManual = Optional.ofNullable(manualRepository.save(manualWriteRequestDTO.toEntity(manualWriteRequestDTO, writer)));
 
+        log.info("tagRepository의 save()를 호출하여 systemManualWriteRequestDTO에 담긴 Tag를 저장 하겠습니다!");
+
+        manualTagRepository.save(ManualTag.builder().manual(
+                writeManual.get()).tagContent0(manualWriteRequestDTO.getTagContent0())
+                        .tagContent1(manualWriteRequestDTO.getTagContent1())
+                        .tagContent2(manualWriteRequestDTO.getTagContent2())
+                        .tagContent3(manualWriteRequestDTO.getTagContent3())
+                        .tagContent4(manualWriteRequestDTO.getTagContent4())
+                        .tagContent5(manualWriteRequestDTO.getTagContent5())
+                        .tagContent6(manualWriteRequestDTO.getTagContent6())
+                        .tagContent7(manualWriteRequestDTO.getTagContent7())
+                        .tagContent8(manualWriteRequestDTO.getTagContent8())
+                        .tagContent9(manualWriteRequestDTO.getTagContent9())
+                        .build());
+
         // TODO - Tag 관련 내용 추가
-//        log.info("tagRepository의 save()를 호출하여 systemManualWriteRequestDTO에 담긴 Tag를 저장 하겠습니다!");
-//
-//        manualTagRepository.save(ManualTag.builder().manual(writeManual.get()).tagContent(manualWriteRequestDTO.getTagContent()).build());
 
         return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공");
 

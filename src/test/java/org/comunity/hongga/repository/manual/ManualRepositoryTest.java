@@ -1,7 +1,7 @@
 package org.comunity.hongga.repository.manual;
 
 import org.comunity.hongga.model.entity.manual.Manual;
-//import org.comunity.hongga.model.entity.manual.ManualTag;
+import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.MemberGrade;
 import org.comunity.hongga.repository.member.MemberRepository;
@@ -40,7 +40,7 @@ public class ManualRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired ManualRepository manualRepository;
-//    @Autowired ManualTagRepository manualTagRepository;
+    @Autowired ManualTagRepository manualTagRepository;
 
     @Test public void 메뉴얼_등록() {
 
@@ -72,24 +72,24 @@ public class ManualRepositoryTest {
         // when
         Manual saveManual = manualRepository.save(manual);
 
-//        ManualTag tags = ManualTag.builder()
-//                .manual(saveManual)
-//                .tagContent("시놀로지")
-//                .tagContent1("NAS")
-//                .tagContent2("Network")
-//                .tagContent3("Access")
-//                .tagContent4("Storage")
-//                .tagContent5("영화 보기")
-//                .tagContent6("클라우드")
-//                .tagContent7("노래 듣기")
-//                .tagContent8("Docker")
-//                .tagContent9("모두 다 됨")
-//                .build();
-//
-//        ManualTag saveManualTag = manualTagRepository.save(tags);
-//
-//        // then
-//        assertThat(tags).isEqualTo(saveManualTag);
+        ManualTag tags = ManualTag.builder()
+                .manual(saveManual)
+                .tagContent0("시놀로지")
+                .tagContent1("NAS")
+                .tagContent2("Network")
+                .tagContent3("Access")
+                .tagContent4("Storage")
+                .tagContent5("영화 보기")
+                .tagContent6("클라우드")
+                .tagContent7("노래 듣기")
+                .tagContent8("Docker")
+                .tagContent9("모두 다 됨")
+                .build();
+
+        ManualTag saveManualTag = manualTagRepository.save(tags);
+
+        // then
+        assertThat(tags).isEqualTo(saveManualTag);
 
     } // 메뉴얼_등록() 끝
 
@@ -123,21 +123,21 @@ public class ManualRepositoryTest {
 
             Manual saveManual = manualRepository.save(manual);
 
-//            ManualTag tags = ManualTag.builder()
-//                    .manual(saveManual)
-//                    .tagContent("시놀로지"+i)
-//                    .tagContent1("NAS"+i)
-//                    .tagContent2("Network"+i)
-//                    .tagContent3("Access"+i)
-//                    .tagContent4("Storage"+i)
-//                    .tagContent5("영화 보기"+i)
-//                    .tagContent6("클라우드"+i)
-//                    .tagContent7("노래 듣기"+i)
-//                    .tagContent8("Docker"+i)
-//                    .tagContent9("모두 다 됨"+i)
-//                    .build();
-//
-//            manualTagRepository.save(tags);
+            ManualTag tags = ManualTag.builder()
+                    .manual(saveManual)
+                    .tagContent0("시놀로지"+i)
+                    .tagContent1("NAS"+i)
+                    .tagContent2("Network"+i)
+                    .tagContent3("Access"+i)
+                    .tagContent4("Storage"+i)
+                    .tagContent5("영화 보기"+i)
+                    .tagContent6("클라우드"+i)
+                    .tagContent7("노래 듣기"+i)
+                    .tagContent8("Docker"+i)
+                    .tagContent9("모두 다 됨"+i)
+                    .build();
+
+            manualTagRepository.save(tags);
 
         });
 

@@ -58,7 +58,7 @@ public class ManualServiceTest {
                 .content(content)
                 .build();
 
-        ManualWriteRequestDTO manualWriteRequestDTO = new ManualWriteRequestDTO(title, content);
+        ManualWriteRequestDTO manualWriteRequestDTO = new ManualWriteRequestDTO(title, content, null, null, null, null, null, null, null, null, null, null);
 
         given(manualRepository.save(any())).willReturn(manual);
 
