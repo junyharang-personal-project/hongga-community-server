@@ -23,10 +23,11 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
  * <b>History:/b>
  *    주니하랑, 1.0.0, 2022.02.16 최초 작성
  *    주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경(주석 처리)
+ *    주니하랑, 1.2.0, 2022.02.20 Tag 동시 처리를 위한 수정 관련 기능 추가
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경(주석 처리)
+ * @version 주니하랑, 1.2.0, 2022.02.20 Tag 동시 처리를 위한 수정 관련 기능 추가
  * @See ""
  * @see <a href=""></a>
  */

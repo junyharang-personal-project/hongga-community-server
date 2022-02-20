@@ -207,6 +207,9 @@ import java.util.Optional;
         return dbInManualAndWriter.filter(manual -> manual.getManualNo().equals(manualNo))
                 .filter(manual -> manual.getWriter().getMemberNo().equals(memberNo)).map(manual -> {
 
+                    log.info("DB를 통해 해당 게시글의 관계 맺어진 Tag들을 먼저 모두 삭제 하겠습니다!");
+                    manualTagRepository.deleteById(manual.getManualNo());
+
                     log.info("DB를 통해 해당 게시글 삭제를 진행 하겠습니다!");
                     manualRepository.deleteById(manualNo);
 //                    manualRepository.deleteByManualNoAndMemberNo(manual.getManualNo());
