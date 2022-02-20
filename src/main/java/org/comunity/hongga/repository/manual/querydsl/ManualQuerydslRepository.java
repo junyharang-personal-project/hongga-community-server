@@ -2,11 +2,15 @@ package org.comunity.hongga.repository.manual.querydsl;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static org.comunity.hongga.model.entity.manual.QManual.manual;
@@ -35,6 +39,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 @Repository public class ManualQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
 
 //    public Page<ManualListResponseDTO> findAllWithFetchJoin (Pageable pageable) {    /* 전체 조회 / 페이징 처리 */
 //
@@ -135,5 +140,22 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
         return Optional.ofNullable(result);
 
     } // findByManualNo(Long manualNo) 끝
+
+    @Transactional public void updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
+
+        log.debug("ManualQuerydslRepository가 동작 하였습니다!");
+        log.debug("메뉴얼 게시글 수정 요청으로 updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)가 호출 되었습니다!");
+
+        log.info("ManualService에서 넘겨 받은 수정 사항 요청 값 제목과 내용 : " + manualUpdateRequestDTO.toString() + "게시글 번호 : " + manualNo + "요청 이용자 고유 번호 " + memberNo);
+
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, manual);
+
+        updateClause
+                .where(manual.manualNo.eq(manualNo), manual.writer.memberNo.eq(memberNo))
+                .set(manual.title, manualUpdateRequestDTO.getTitle())
+                .set(manual.content, manualUpdateRequestDTO.getContent())
+                .execute();
+
+    } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
 
 } // class 끝

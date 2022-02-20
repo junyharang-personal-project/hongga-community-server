@@ -1,6 +1,7 @@
 package org.comunity.hongga.model.dto.request.manual;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
@@ -19,12 +20,23 @@ import javax.persistence.Lob;
  * @see <a href=""></a>
  */
 
-@Builder @NoArgsConstructor @AllArgsConstructor @Data
+@Builder @NoArgsConstructor @AllArgsConstructor @Data @Slf4j
 public class ManualUpdateRequestDTO {
 
     private String title;
 
     // TODO - 글, 사진 (Editor 사용)
     private String content;
+
+    private String tagContent0;
+    private String tagContent1;
+    private String tagContent2;
+    private String tagContent3;
+    private String tagContent4;
+    private String tagContent5;
+    private String tagContent6;
+    private String tagContent7;
+    private String tagContent8;
+    private String tagContent9;
 
 } // class 끝

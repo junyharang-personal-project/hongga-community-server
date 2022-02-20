@@ -26,7 +26,6 @@ import javax.persistence.PersistenceContext;
     @PersistenceContext private EntityManager entityManager;
 
     @Bean public JPAQueryFactory jpaQueryFactory() { return new JPAQueryFactory(entityManager); } // jpaQueryFactory() 끝
-    @Bean
-    public ManualQuerydslRepository manualQuerydslRepository(){ return new ManualQuerydslRepository(jpaQueryFactory()); } // manualQuerydslRepository() 끝
+    @Bean public ManualQuerydslRepository manualQuerydslRepository(){ return new ManualQuerydslRepository(jpaQueryFactory(), entityManager); } // manualQuerydslRepository() 끝
 
 } // class 끝

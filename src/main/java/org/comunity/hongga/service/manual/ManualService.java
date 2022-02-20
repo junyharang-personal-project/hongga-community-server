@@ -13,6 +13,7 @@ import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.manual.ManualRepository;
 import org.comunity.hongga.repository.manual.ManualTagRepository;
 import org.comunity.hongga.repository.manual.querydsl.ManualQuerydslRepository;
+import org.comunity.hongga.repository.manual.querydsl.ManualTagQuerydslRepository;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,10 +31,11 @@ import java.util.Optional;
  *    주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  *    주니하랑, 1.2.0, 2022.02.18 목록 조회, 상세 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
  *    주니하랑, 1.2.1, 2022.02.19 수정 기능 구현
+ *    주니하랑, 1.2.2, 2022.02.19 수정 기능 Tag로 인한 Refactoring
  * </pre>
  *
  * @author 주니하랑
- * @version 1.2.1, 2022.02.19 수정 기능 구현
+ * @version 1.2.2, 2022.02.19 수정 기능 Tag로 인한 Refactoring
  * @See ""
  * @see <a href=""></a>
  */
@@ -46,6 +48,7 @@ import java.util.Optional;
     private final MemberRepository memberRepository;
 
     private final ManualQuerydslRepository manualQuerydslRepository;
+    private final ManualTagQuerydslRepository manualTagQuerydslRepository;
 
     public DefaultResponse writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo) {
 
@@ -152,7 +155,7 @@ import java.util.Optional;
         log.info("updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)이 호출 되었습니다!");
 
         log.info("memberRepository.findByManualNo(manualNo, memberNo)를 호출하여 요청으로 들어온 설명서 고유 번호와 해당 글의 작성자가 맞는지 여부를 찾겠습니다!");
-        Optional<Manual> findManual = manualRepository.findByManualNo(manualNo);
+        Optional<ManualDetailResponseDTO> findManual = manualQuerydslRepository.findByManualNo(manualNo);
 
         log.info("DB에서 찾은 값이 Null인지 검증 하겠습니다!");
         if (findManual.isEmpty()) {
@@ -167,12 +170,12 @@ import java.util.Optional;
                 .filter(manual -> manual.getManualNo().equals(manualNo)).map(manual -> {
 
                     log.info("요청으로 들어온 회원 고유 번호와 게시글 고유 번호가 DB에서 찾은 자료의 값과 일치 합니다!");
-                    log.info("manualRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo)를 호출하여 DB 값을 변경 하겠습니다!");
-                    Manual entity = findManual.get();
-                    entity.changeTitle(manualUpdateRequestDTO.getTitle());
-                    entity.changeContent(manualUpdateRequestDTO.getContent());
+                    log.info("manualQuerydslRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo)를 호출하여 게시글 수정 건에 대한 DB 값을 변경 하겠습니다!");
 
-                    manualRepository.save(entity);
+                    manualQuerydslRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo);
+
+                    log.info("manualTagQuerydslRepository.updateManualTag(manualUpdateRequestDTO, manual.getManualNo()를 호출하여 Tag 수정 건에 대한 DB 값을 변경 하겠습니다!");
+                    manualTagQuerydslRepository.updateManualTag(manualUpdateRequestDTO, manual.getManualNo());
 
                     log.info("DB에 해당 게시물 수정이 완료 되었습니다! 200 Code와 함께 \"수정 성공\" 반환 하겠습니다!");
 
