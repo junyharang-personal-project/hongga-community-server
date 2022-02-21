@@ -3,7 +3,7 @@ package org.comunity.hongga.controller.manual;
 import org.comunity.hongga.config.WebMvcConfig;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
-import org.comunity.hongga.service.manual.ManualService;
+import org.comunity.hongga.service.manual.ManualServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class manualControllerTest {
 
     @Autowired private MockMvc mockMvc;
 
-    @MockBean private ManualService manualService;
+    @MockBean private ManualServiceImpl manualService;
     @MockBean private WebMvcConfig webMvcConfig;
 
     @Test public void 메뉴얼_등록() throws Exception{

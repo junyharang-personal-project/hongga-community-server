@@ -8,6 +8,8 @@ import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.member.Member;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,6 +46,8 @@ public class ManualWriteRequestDTO {
 //    private String tagContent;                  // TAG
 
     // TODO - HashTAG 추가
+
+    private List<ManualImageDTO> imageDTOLIST = new ArrayList<>();
 
     @Builder public Manual toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
 

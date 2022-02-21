@@ -2,6 +2,7 @@ package org.comunity.hongga.repository.manual;
 
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
+import org.comunity.hongga.model.entity.manual.ManualImage;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.MemberGrade;
@@ -13,11 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,10 +31,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * <b>History:/b>
  *    주니하랑, 1.0.0, 2022.02.16 최초 작성
  *    주니하랑, 1.0.2, 2022.02.18 게시물 목록 조회, 상세 조회 코드 구현
+ *    주니하랑, 1.0.3, 2022.02.21 사진 관련 테스트 코드 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.2, 2022.02.18 게시물 목록 조회, 상세 조회 코드 구현
+ * @version 1.0.3, 2022.02.21 사진 관련 테스트 코드 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -42,6 +46,7 @@ public class ManualRepositoryTest {
     @Autowired MemberRepository memberRepository;
     @Autowired ManualRepository manualRepository;
     @Autowired ManualTagRepository manualTagRepository;
+    @Autowired ManualImageRepository manualImageRepository;
 
     @Test public void 메뉴얼_등록() {
 
@@ -94,6 +99,7 @@ public class ManualRepositoryTest {
 
     } // 메뉴얼_등록() 끝
 
+    @Commit @Transactional
     @Test public void 여러_게시물_등록() {
 
         IntStream.rangeClosed(1, 100).forEach(i -> {
@@ -140,6 +146,22 @@ public class ManualRepositoryTest {
 
             manualTagRepository.save(tags);
 
+            // 사진 추가 코드
+            // 1, 2, 3, 4 ..
+            int cnt = (int) (Math.random() * 5) + 1;
+
+            for(int count = 0; count < cnt; count++) {
+
+                ManualImage manualImage = ManualImage.builder()
+                        .uuid(UUID.randomUUID().toString())
+                        .manual(manual)
+                        .imgName("사진등록TEST" + count + ".jpg")
+                        .build();
+
+                manualImageRepository.save(manualImage);
+
+            } // for(int count = 0; count < cnt; count++) 끝
+
         });
 
     } // 여러_게시물_등록() 끝
@@ -177,14 +199,14 @@ public class ManualRepositoryTest {
 
         Long manualNo = 3L;
 
-    Optional<ManualDetailResponseDTO> manual = manualRepository.findByManualDetail(manualNo);
+    List<Object[]> manual = manualRepository.findByManualDetail(manualNo);
 
         System.out.println("====================================================");
 
-        if (manual.isPresent()) {
-            ManualDetailResponseDTO result = manual.get();
-            System.out.println(result);
-        }
+//        if (manual.isPresent()) {
+//            ManualDetailResponseDTO result = manual.get();
+//            System.out.println(result);
+//        }
     } // 게시물_상세_조회() 끝
 
     @Test public void 게시물_수정() {

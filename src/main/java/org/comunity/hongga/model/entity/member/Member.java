@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -33,12 +35,20 @@ import java.util.*;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberNo;
 
-    @Column(length = 50, unique = true, nullable = false) private String email;
-    @Column(nullable = false) private String password;
-    @Column(length = 6, nullable = false) private String name;
-    @Column(length = 10, nullable = false) private String nickname;
+    @Email @Column(length = 50, unique = true) @NotBlank @Size(message = "이메일 형식으로 입력해야 합니다!")
+    private String email;
 
-    @Column(nullable = false) private String phoneNumber;
+    @Size(min = 8, max = 20, message = "암호는 8자리 이상 20자리 이상이여야 합니다!")
+    private String password;
+
+    @NotBlank @Column(length = 6) @Size(min = 3, max = 6, message = "이름은 3자리 이상 5자리 이하여야 합니다!")
+    private String name;
+
+    @NotBlank @Column(length = 10, nullable = false) @Size(min = 2, max = 9, message = "별명은 2자리 이상 9자리 이하여야 합니다!")
+    private String nickname;
+
+    @NotBlank @Column(length = 14) @Size(message = "핸드폰 번호를 입력 해주세요!")
+    private String phoneNumber;
 
     private boolean activated;                                                  // 계정 활성화 여부
     @Column private String picture;                                             // 이용자 프로필 사진

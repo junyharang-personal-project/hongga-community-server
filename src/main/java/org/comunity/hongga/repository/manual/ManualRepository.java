@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,12 +48,12 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
 
     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @Query(value = "select ma, mt " +
+    @Query(value = "select ma, mt, mi " +
             "from Manual ma " +
-            "left join ManualTag mt " +
-            "on mt.manual = ma " +
+            "left outer join ManualTag mt on mt.manual = ma " +
+            "left outer join ManualImage mi on mi.manual = ma " +
             "where ma.manualNo =:manualNo")
-    Optional<ManualDetailResponseDTO> findByManualDetail(@Param("manualNo") Long manualNo);
+    List<Object[]> findByManualDetail(@Param("manualNo") Long manualNo);
 
     /**
      * 게시글 수정 전 해당 게시글 조회를 위한 Method
