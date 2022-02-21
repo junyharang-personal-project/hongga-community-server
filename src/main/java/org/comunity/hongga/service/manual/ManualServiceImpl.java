@@ -78,29 +78,69 @@ import java.util.Optional;
 
         Manual manual = (Manual) entityMap.get("manual");
 
-        ManualTag manualTag = (ManualTag) entityMap.get("manualTag");
+        List<ManualTag> manualTagList = (List<ManualTag>) entityMap.get("tagList");
 
         List<ManualImage> manualImageList = (List<ManualImage>) entityMap.get("imgList");
 
         log.info("manualRepository.save(manual)를 호출하여 ManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
         manualRepository.save(manual);
 
-        log.info("manualTagRepository.save(manualTag)를 호출하여 ManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
-        manualTagRepository.save(manualTag);
 
-        log.info("여러 이미지를 각각 저장하기 위해 ForEach문이 동작 합니다!");
-        if (manualImageList == null) {
+        if (manualImageList == null && manualTagList != null) {
 
-            log.info("요청 이용자가 사진을 첨부 하지 않았습니다!");
-            log.info("DB에 정상적으로 값이 저장 되었습니다! 200 CODE와 함께 \"게시물 등록 성공\" 반환하겠습니다!");
+            log.info("요청 이용자가 Image를 첨부하지 않고, TAG와 게시글만 입력 하였습니다!");
+
+            log.info("여러 메뉴얼 TAG를 각각 저장하기 위해 ForEach문이 동작 합니다!");
+
+            manualTagList.forEach(manualTag -> {
+
+                log.info("manualTagRepository.save(manualTag)를 호출하여 ManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
+                manualTagRepository.save(manualTag);
+
+            });
+
+        } else if (manualImageList != null && manualTagList == null) {
+                log.info("요청 이용자가 TAG를 입력하지 않고, Image와 게시글만 입력 하였습니다!");
+
+                log.info("여러 메뉴얼 Image를 각각 저장하기 위해 ForEach문이 동작 합니다!");
+
+                manualImageList.forEach(manualImage -> {
+
+                    log.info("manualImageRepository.save(manualImage) 이미지를 저장 중 입니다!");
+                    manualImageRepository.save(manualImage);
+
+                });
+
+                log.info("메뉴얼 글 제목과 내용, Image만 DB에 정상적으로 값이 저장 되었습니다! 200 CODE와 함께 \"게시물 등록 성공\" 반환하겠습니다!");
+                return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공", manual.getManualNo());
+
+        } else {
+
+            log.info("요청 이용자가 TAG와 Image를 입력 및 첨부하지 않았습니다!");
+            log.info("메뉴얼 글 제목과 내용만 DB에 정상적으로 값이 저장 되었습니다! 200 CODE와 함께 \"게시물 등록 성공\" 반환하겠습니다!");
             return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공", manual.getManualNo());
 
-        } // if (manualImageList == null && manualImageList.size() == 0) 끝
+        }
+
+        // if (manualImageList == null && manualImageList.size() == 0) 끝
+
+        log.info("요청 이용자가 게시글 제목, 내용, TAG, 사진 모두 입력 하였습니다!");
+
+        log.info("여러 메뉴얼 Image를 각각 저장하기 위해 ForEach문이 동작 합니다!");
 
         manualImageList.forEach(manualImage -> {
 
             log.info("manualImageRepository.save(manualImage) 이미지를 저장 중 입니다!");
             manualImageRepository.save(manualImage);
+
+        });
+
+        log.info("여러 메뉴얼 TAG를 각각 저장하기 위해 ForEach문이 동작 합니다!");
+
+        manualTagList.forEach(manualTag -> {
+
+            log.info("manualTagRepository.save(manualTag)를 호출하여 ManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
+            manualTagRepository.save(manualTag);
 
         });
 

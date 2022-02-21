@@ -32,22 +32,24 @@ public class ManualWriteRequestDTO {
     @NotEmpty private String title;             // 메뉴얼 게시글 제목
     @NotEmpty private String content;           // 메뉴얼 게시글 내용(글/사진)
 
-    private String tagContent0;
-    private String tagContent1;
-    private String tagContent2;
-    private String tagContent3;
-    private String tagContent4;
-    private String tagContent5;
-    private String tagContent6;
-    private String tagContent7;
-    private String tagContent8;
-    private String tagContent9;
+//    private String tagContent0;
+//    private String tagContent1;
+//    private String tagContent2;
+//    private String tagContent3;
+//    private String tagContent4;
+//    private String tagContent5;
+//    private String tagContent6;
+//    private String tagContent7;
+//    private String tagContent8;
+//    private String tagContent9;
 
 //    private String tagContent;                  // TAG
 
     // TODO - HashTAG 추가
 
     private List<ManualImageDTO> imageDTOLIST = new ArrayList<>();
+
+    private List<ManaualTagDTO> tagDTOLIST = new ArrayList<>();
 
     @Builder public Manual toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
 
