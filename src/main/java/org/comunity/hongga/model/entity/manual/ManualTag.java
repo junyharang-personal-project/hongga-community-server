@@ -29,41 +29,9 @@ import javax.validation.constraints.Size;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "manual_no")
     private Manual manual;
 
-    @Column(length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
+    @Column(length = 30) @Size(max = 10, message = "Tag는 10자리 이하만 등록할 수 있습니다!")
     private String tagContent;
 
-//    @Column(name = "tag_content1", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent1;
-//
-//    @Column(name = "tag_content2", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent2;
-//
-//    @Column(name = "tag_content3", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent3;
-//
-//    @Column(name = "tag_content4", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent4;
-//
-//    @Column(name = "tag_content5", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent5;
-//
-//    @Column(name = "tag_content6", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent6;
-//
-//    @Column(name = "tag_content7", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent7;
-//
-//    @Column(name = "tag_content8", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent8;
-//
-//    @Column(name = "tag_content9", length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private String tagContent9;
-//
-//
-//    @Builder public ManualTag(Manual manual, String tagContent) {
-//        this.manual = manual;
-//        this.tagContent = tagContent;
-//    } // 생성자 끝
 
 //    public void changeTag(String tagContent0, String tagContent1, String tagContent2, String tagContent3, String tagContent4, String tagContent5, String tagContent6, String tagContent7, String tagContent8, String tagContent9) {
 //

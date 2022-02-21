@@ -151,48 +151,6 @@ import java.util.Optional;
     } // writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo) 끝
 } // class 끝
 
-
-
-        // if (manualImageList == null && manualImageList.size() == 0) 끝
-
-
-
-//        log.info("DB에 정상적으로 값이 저장 되었습니다! 200 CODE와 함께 \"게시물 등록 성공\" 반환하겠습니다!");
-//        return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공", manual.getManualNo());
-
-//        if (manualWriteRequestDTO == null) {  /* 메뉴얼에 입력 값이 없다면? */
-//
-//            log.info("시스템 메뉴얼 등록에 입력 되지 않은 내용이 있습니다!");
-//
-//            return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 실패");
-//
-//        } // if문 끝
-//
-//        log.info("SystemManualRepository의 save()를 호출하여 systemManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
-//
-//        Optional<Manual> writeManual = Optional.ofNullable(manualRepository.save(manualWriteRequestDTO.toEntity(manualWriteRequestDTO, writer)));
-//
-//        log.info("tagRepository의 save()를 호출하여 systemManualWriteRequestDTO에 담긴 Tag를 저장 하겠습니다!");
-//
-//        manualTagRepository.save(ManualTag.builder().manual(
-//                writeManual.get()).tagContent0(manualWriteRequestDTO.getTagContent0())
-//                        .tagContent1(manualWriteRequestDTO.getTagContent1())
-//                        .tagContent2(manualWriteRequestDTO.getTagContent2())
-//                        .tagContent3(manualWriteRequestDTO.getTagContent3())
-//                        .tagContent4(manualWriteRequestDTO.getTagContent4())
-//                        .tagContent5(manualWriteRequestDTO.getTagContent5())
-//                        .tagContent6(manualWriteRequestDTO.getTagContent6())
-//                        .tagContent7(manualWriteRequestDTO.getTagContent7())
-//                        .tagContent8(manualWriteRequestDTO.getTagContent8())
-//                        .tagContent9(manualWriteRequestDTO.getTagContent9())
-//                        .build());
-//
-//        // TODO - Tag 관련 내용 추가
-//
-//        return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공");
-
-//    } // writeManual(SystemManualWriteRequestDTO systemManualWriteRequestDTO) 끝
-
 //    public DefaultResponse<Page<Manual>> manualListSearch(Pageable pageable) {
 //
 //        log.info("ManualService가 동작 하였습니다!");

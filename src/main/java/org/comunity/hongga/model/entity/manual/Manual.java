@@ -6,6 +6,8 @@ import org.comunity.hongga.model.entity.base.BaseDateTime;
 import org.comunity.hongga.model.entity.member.Member;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * 회원 DB 관련
@@ -14,10 +16,11 @@ import javax.persistence.*;
  *    주니하랑, 1.0.0, 2022.02.14 최초 작성
  *    주니하랑, 1.1.0, 2022.02.16 TAG 관련 추가
  *    주니하랑, 1.1.1, 2022.02.20 게시글 제목, 내용 수정 관련 Method 구현
+ *    주니하랑, 1.0.2, 2022.02.21 게시글 제목, 내용, Tag Validation Annotation 수정 및 추가
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.1.1, 2022.02.20 게시글 제목, 내용 수정 관련 Method 구현
+ * @version 주니하랑, 1.0.2, 2022.02.21 게시글 제목, 내용, Tag Validation Annotation 수정 및 추가
  * @See ""
  * @see <a href=""></a>
  */
@@ -30,10 +33,10 @@ import javax.persistence.*;
 
     @ManyToOne(targetEntity = Member.class) @JoinColumn(name = "member_no") private Member writer;
 
-    @Column(length = 100, nullable = false) private String title;
+    @Column(length = 100, nullable = false) @NotBlank private String title;
 
     // TODO - 글, 사진 (Editor 사용)
-    @Lob @Column(length = 65535, nullable = false) private String content;
+    @Lob @Column(length = 65535, nullable = false) @NotEmpty private String content;
 
     @Builder public Manual(Member writer, String title, String content) {
         this.writer = writer;
