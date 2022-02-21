@@ -80,16 +80,7 @@ public class ManualRepositoryTest {
 
         ManualTag tags = ManualTag.builder()
                 .manual(saveManual)
-                .tagContent0("시놀로지")
-                .tagContent1("NAS")
-                .tagContent2("Network")
-                .tagContent3("Access")
-                .tagContent4("Storage")
-                .tagContent5("영화 보기")
-                .tagContent6("클라우드")
-                .tagContent7("노래 듣기")
-                .tagContent8("Docker")
-                .tagContent9("모두 다 됨")
+                .tagContent("시놀로지")
                 .build();
 
         ManualTag saveManualTag = manualTagRepository.save(tags);
@@ -132,16 +123,7 @@ public class ManualRepositoryTest {
 
             ManualTag tags = ManualTag.builder()
                     .manual(saveManual)
-                    .tagContent0("시놀로지"+i)
-                    .tagContent1("NAS"+i)
-                    .tagContent2("Network"+i)
-                    .tagContent3("Access"+i)
-                    .tagContent4("Storage"+i)
-                    .tagContent5("영화 보기"+i)
-                    .tagContent6("클라우드"+i)
-                    .tagContent7("노래 듣기"+i)
-                    .tagContent8("Docker"+i)
-                    .tagContent9("모두 다 됨"+i)
+                    .tagContent("시놀로지"+i)
                     .build();
 
             manualTagRepository.save(tags);
@@ -155,7 +137,7 @@ public class ManualRepositoryTest {
                 ManualImage manualImage = ManualImage.builder()
                         .uuid(UUID.randomUUID().toString())
                         .manual(manual)
-                        .imgName("사진등록TEST" + count + ".jpg")
+                        .imgName("사진등록TEST"+count+".jpg")
                         .build();
 
                 manualImageRepository.save(manualImage);

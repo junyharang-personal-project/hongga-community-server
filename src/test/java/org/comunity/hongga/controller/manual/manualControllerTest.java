@@ -58,53 +58,53 @@ public class manualControllerTest {
 
     } // 메뉴얼_등록() 끝
 
-    @Test public void 게시글_전체조회() throws Exception {
-
-        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/family/manual")
-                .param("page", "0")).andExpect(status().isOk());
-
-    } // 게시글_전체조회() 끝
-
-
-    @Test public void 게시글_상세조회() throws Exception {
-
-        String manualNo = "30";
-        String memberNo = "1";
-
-        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/family/manual/detail/{manualNo}", manualNo)
-                .param("memberNo", memberNo)).andExpect(status().isOk());
-
-    } // 게시글_상세조회() 끝
-
-
-    @Test public void 게시글_수정() throws Exception {
-
-        String manualNo = "103";
-        String memberNo = "1";
-
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "수정 성공", null, null);
-
-        given(manualService.updateManual(any(), anyLong(), anyLong())).willReturn(defaultResponse);
-
-        mockMvc.perform(put(ServiceURIVersion.NOW_VERSION+"/family/manual/update/{manualNo}", manualNo).param("memberNo", memberNo)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\n" +
-                        " \"title\" : \"게시글 제목 Controller Test Code Test 중!\",\n" +
-                        " \"content\" : \"게시글 내용 Controller Test Code Test 중!\"\n" +
-                        "}")).andExpect(status().isOk());
-    } // 게시글_수정() 끝
-
-    @Test public void 게시글_삭제() throws Exception {
-
-        String manualNo = "99";
-        String memberNo = "99";
-
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
-
-        given(manualService.deleteManaul(any(), anyLong())).willReturn(defaultResponse);
-
-        mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/family/manual/delete/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
-
-    } // 게시글_삭제() 끝
+//    @Test public void 게시글_전체조회() throws Exception {
+//
+//        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/family/manual")
+//                .param("page", "0")).andExpect(status().isOk());
+//
+//    } // 게시글_전체조회() 끝
+//
+//
+//    @Test public void 게시글_상세조회() throws Exception {
+//
+//        String manualNo = "30";
+//        String memberNo = "1";
+//
+//        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/family/manual/detail/{manualNo}", manualNo)
+//                .param("memberNo", memberNo)).andExpect(status().isOk());
+//
+//    } // 게시글_상세조회() 끝
+//
+//
+//    @Test public void 게시글_수정() throws Exception {
+//
+//        String manualNo = "103";
+//        String memberNo = "1";
+//
+//        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "수정 성공", null, null);
+//
+//        given(manualService.updateManual(any(), anyLong(), anyLong())).willReturn(defaultResponse);
+//
+//        mockMvc.perform(put(ServiceURIVersion.NOW_VERSION+"/family/manual/update/{manualNo}", manualNo).param("memberNo", memberNo)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\n" +
+//                        " \"title\" : \"게시글 제목 Controller Test Code Test 중!\",\n" +
+//                        " \"content\" : \"게시글 내용 Controller Test Code Test 중!\"\n" +
+//                        "}")).andExpect(status().isOk());
+//    } // 게시글_수정() 끝
+//
+//    @Test public void 게시글_삭제() throws Exception {
+//
+//        String manualNo = "99";
+//        String memberNo = "99";
+//
+//        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
+//
+//        given(manualService.deleteManaul(any(), anyLong())).willReturn(defaultResponse);
+//
+//        mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/family/manual/delete/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
+//
+//    } // 게시글_삭제() 끝
 
 } // class 끝

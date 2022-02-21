@@ -1,7 +1,7 @@
 package org.comunity.hongga.service.manual;
 
 import org.comunity.hongga.constant.DefaultResponse;
-import org.comunity.hongga.model.dto.request.manual.ManaualTagDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualTagDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
@@ -42,38 +42,6 @@ public interface ManualService {
 
         entityMap.put("manual", manual);
 
-//        ManualTag manualTag = ManualTag.builder()
-//                .tagContent0(manualWriteRequestDTO.getTagContent0())
-//                .tagContent1(manualWriteRequestDTO.getTagContent1())
-//                .tagContent2(manualWriteRequestDTO.getTagContent2())
-//                .tagContent3(manualWriteRequestDTO.getTagContent3())
-//                .tagContent4(manualWriteRequestDTO.getTagContent4())
-//                .tagContent5(manualWriteRequestDTO.getTagContent5())
-//                .tagContent6(manualWriteRequestDTO.getTagContent6())
-//                .tagContent7(manualWriteRequestDTO.getTagContent7())
-//                .tagContent8(manualWriteRequestDTO.getTagContent8())
-//                .tagContent9(manualWriteRequestDTO.getTagContent9())
-//                .build();
-
-//        entityMap.put("manualTag", manualTag);
-
-        List<ManaualTagDTO> tagDTOLIST = manualWriteRequestDTO.getTagDTOLIST();
-
-        // TagDTO 처리
-        if (tagDTOLIST != null && tagDTOLIST.size() > 0) {
-
-            tagDTOLIST.stream().map(manaualTagDTO -> {
-
-                return ManualTag.builder()
-                        .tagContent(manaualTagDTO.getTagContent())
-                        .build();
-
-            }).collect(Collectors.toList());
-
-            entityMap.put("tagList", tagDTOLIST);
-
-        } // if (tagDTOLIST != null && tagDTOLIST.size() > 0) 끝
-
         List<ManualImageDTO> imageDTOLIST = manualWriteRequestDTO.getImageDTOLIST();
 
         // MovieImageDTO 처리
@@ -93,6 +61,24 @@ public interface ManualService {
             entityMap.put("imgList", manualImageList);
 
         } // if (imageDTOLIST != null && imageDTOLIST.size() > 0) 끝
+
+        List<ManualTagDTO> tagDTOLIST = manualWriteRequestDTO.getTagDTOLIST();
+
+        // TagDTO 처리
+        if (tagDTOLIST != null && tagDTOLIST.size() > 0) {
+
+            List<ManualTag> manualTagList = tagDTOLIST.stream().map(manualTagDTO -> {
+
+                return ManualTag.builder()
+                        .tagContent("#"+manualTagDTO.getTagContent())       // Hash Tag 처리를 위한 문자열 # 추가
+                        .manual(manual)
+                        .build();
+
+            }).collect(Collectors.toList());
+
+            entityMap.put("tagList", manualTagList);
+
+        } // if (tagDTOLIST != null && tagDTOLIST.size() > 0) 끝
 
         return entityMap;
     } // dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) 끝

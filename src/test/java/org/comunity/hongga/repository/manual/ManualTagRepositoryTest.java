@@ -51,18 +51,8 @@ public class ManualTagRepositoryTest {
         Member adminMember = memberRepository.save(testMember);
 
         ManualTag tags = ManualTag.builder()
-                .tagContent0("시놀로지")
-                .tagContent1("NAS")
-                .tagContent2("Network")
-                .tagContent3("Access")
-                .tagContent4("Storage")
-                .tagContent5("영화 보기")
-                .tagContent6("클라우드")
-                .tagContent7("노래 듣기")
-                .tagContent8("Docker")
-                .tagContent9("모두 다 됨")
+                .tagContent("시놀로지")
                 .build();
-
         // when
         ManualTag saveManualTag = manualTagRepository.save(tags);
 

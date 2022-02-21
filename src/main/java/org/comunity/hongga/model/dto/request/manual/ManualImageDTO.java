@@ -10,16 +10,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
- * 메뉴얼 사진 관련 요청 DTO
+ * 메뉴얼 사진 관련 DTO
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.21 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.21 이미지 처리를 위한 Method 추가
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.21 최초 작성
+ * @version 1.0.1, 2022.02.21 이미지 처리를 위한 Method 추가
  * @See ""
- * @see <a href=""></a>
+ * @see <a href="코드로 배우는 스프링 부트 웹 프로젝트 P.419"></a>
  */
 
 

@@ -29,6 +29,8 @@ import java.util.Optional;
 @Getter @NoArgsConstructor @AllArgsConstructor
 public class ManualWriteRequestDTO {
 
+    private Long manualNo;
+
     @NotEmpty private String title;             // 메뉴얼 게시글 제목
     @NotEmpty private String content;           // 메뉴얼 게시글 내용(글/사진)
 
@@ -49,7 +51,7 @@ public class ManualWriteRequestDTO {
 
     private List<ManualImageDTO> imageDTOLIST = new ArrayList<>();
 
-    private List<ManaualTagDTO> tagDTOLIST = new ArrayList<>();
+    private List<ManualTagDTO> tagDTOLIST = new ArrayList<>(10);
 
     @Builder public Manual toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
 
