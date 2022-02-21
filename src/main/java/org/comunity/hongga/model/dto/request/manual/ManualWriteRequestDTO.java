@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.member.Member;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +53,7 @@ public class ManualWriteRequestDTO {
 
     private List<ManualImageDTO> imageDTOLIST = new ArrayList<>();
 
+    @Column(length = 10) @Size(message = "Tag는 10자리 이하만 등록할 수 있으며, 최대 10개 까지 등록 가능 합니다!")
     private List<ManualTagDTO> tagDTOLIST = new ArrayList<>(10);
 
     @Builder public Manual toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {

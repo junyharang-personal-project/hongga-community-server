@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.21 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.21 Image, Hash Tag 처리를 위한 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.0.0, 2022.02.21 최초 작성
+ * @version 주니하랑, 1.0.1, 2022.02.21 Image, Hash Tag 처리를 위한 수정
  * @See ""
  * @see <a href="코드로 배우는 스프링 부트 웹 프로젝트 P.419"></a>
  */
-
 
 public interface ManualService {
 
