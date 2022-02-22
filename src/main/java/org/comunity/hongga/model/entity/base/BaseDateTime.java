@@ -32,11 +32,11 @@ import java.time.LocalDateTime;
 public class BaseDateTime {
 
     // 작성, 등록 일시
-    @CreatedDate @Column(name = "registerDate", updatable = false)
-    private LocalDateTime registerDate;
+    @CreatedDate @Column(name = "create_at", updatable = false)
+    private LocalDateTime createAt;
 
     // 수정, 변경 일시
-    @LastModifiedDate @Column(name = "modifyDate")
-    private LocalDateTime modifyDate;
+    @LastModifiedDate @Column(name = "update_at")
+    private LocalDateTime updateAt;
 
 } // class 끝

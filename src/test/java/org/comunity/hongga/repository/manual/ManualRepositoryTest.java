@@ -1,11 +1,13 @@
 package org.comunity.hongga.repository.manual;
 
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualImage;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.repository.manual.querydsl.ManualQuerydslRepository;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,7 @@ public class ManualRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired ManualRepository manualRepository;
+    @Autowired ManualQuerydslRepository manualQuerydslRepository;
     @Autowired ManualTagRepository manualTagRepository;
     @Autowired ManualImageRepository manualImageRepository;
 
@@ -156,7 +159,7 @@ public class ManualRepositoryTest {
 
         List<Object> arr = new ArrayList<>();
 
-        Page<Manual> result = manualRepository.findAllWithFetchJoin(pageable);
+        Page<ManualListSearchResponseDTO> result = manualQuerydslRepository.findAllWithMemberNickname(pageable);
 
         System.out.println(result);
 

@@ -4,9 +4,12 @@ import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.manual.ManualTagDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualImage;
 import org.comunity.hongga.model.entity.manual.ManualTag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +31,13 @@ import java.util.stream.Collectors;
  */
 
 public interface ManualService {
+
+    /**
+     * 글 등록
+     * @param manualWriteRequestDTO - Client에서 입력한 값을 담은 DTO
+     * @param memberNo - 글 작성 이용자 고유 번호
+     * @return DefaultResponse<Long> - 응답 관련 정리 해둔 Class를 통해 작성된 게시글의 Manual 고유 번호를 반환(DB에 PK값)
+     */
 
     DefaultResponse<Long> writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo);
 
@@ -83,4 +93,27 @@ public interface ManualService {
         return entityMap;
     } // dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) 끝
 
+    /**
+     * 전체 조회 (목록 조회)
+     * @param pageable - Paging 처리를 위한 객체
+     * @return DefaultResponse<Page<Manual>> - DB에서 조회된 게시글 목록을 페이징 처리하여 반환
+     * @see "코드로 배우는 스프링 부트 웹 프로젝트 P.437"
+     */
+
+    DefaultResponse<Page<ManualListSearchResponseDTO>> manualListSearch(Pageable pageable);
+
+//    default ManualListSearchResponseDTO entitiesToDTO(Manual manual) {
+//
+//        ManualListSearchResponseDTO manualListSearchResponseDTO = ManualListSearchResponseDTO.builder()
+//                .manualNo(manual.getManualNo())
+//                .writer(manual.getWriter())
+//                .title(manual.getTitle())
+//                .createAt(manual.getCreateAt())
+//                .updateAt(manual.getUpdateAt())
+//                // TODO - 좋아요 수 처리
+//                .build();
+//
+//        return manualListSearchResponseDTO;
+//
+//    }
 } // interface 끝

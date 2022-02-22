@@ -9,6 +9,7 @@ import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.MaualDeleteResponeDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.service.manual.ManualServiceImpl;
@@ -51,7 +52,6 @@ import javax.validation.Valid;
     private final ManualServiceImpl manualService;
 
 
-
     @ApiOperation(value = SwaggerApiInfo.WRITE_POSTS, notes = "사용 설명서 등록 서비스 입니다.")
     @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서를 등록합니다. \n 필수 : Tag를 제외한 모든 항목", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.등록 성공 \n 2. 등록 실패 \n 3.Token Error")})
@@ -69,24 +69,24 @@ import javax.validation.Valid;
 
 
 
-//    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_LIST, notes = "사용 설명서 전체 조회(목록) 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일")
-//    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
-//    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
-//
-//    @GetMapping("manual") public ResponseEntity<DefaultResponse<Page<Manual>>> manualListSearch (
-//            @PageableDefault Pageable pageable) {
-//
-//        log.info("ManualController가 동작 하였습니다!");
-//        log.info("manualListSearch (@PageableDefault Pageable pageable, @PathVariable(\"memberNo\") Long memberNo)가 호출 되었습니다!");
-//
-//        log.info("manualService.manualListSearch(pageable, memberNo)를 호출 하겠습니다!");
-//
-//        return new ResponseEntity<>(manualService.manualListSearch(pageable), HttpStatus.OK);
-//
-//    } // manualListSearch (@PageableDefault Pageable pageable, @PathVariable("memberNo") Long memberNo) 끝
-//
-//
-//
+    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_LIST, notes = "사용 설명서 전체 조회(목록) 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일")
+    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
+
+    @GetMapping("manual") public ResponseEntity<DefaultResponse<Page<ManualListSearchResponseDTO>>> manualListSearch (
+            @PageableDefault Pageable pageable) {
+
+        log.info("ManualController가 동작 하였습니다!");
+        log.info("manualListSearch (@PageableDefault Pageable pageable)가 호출 되었습니다!");
+
+        log.info("manualService.manualListSearch(pageable, memberNo)를 호출 하겠습니다!");
+
+        return new ResponseEntity<>(manualService.manualListSearch(pageable), HttpStatus.OK);
+
+    } // manualListSearch (@PageableDefault Pageable pageable, @PathVariable("memberNo") Long memberNo) 끝
+
+
+
 //    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_ONE_THING, notes = "사용 설명서 상세 조회 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용")
 //    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
 //        @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
