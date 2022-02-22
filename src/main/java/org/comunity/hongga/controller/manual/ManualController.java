@@ -47,9 +47,6 @@ import java.util.List;
 @RequiredArgsConstructor @Slf4j @Api(tags = {"사용 설명서 관련 API"}) @ApiOperation(value = SwaggerApiInfo.POSTING)
 @RestController @RequestMapping(ServiceURIVersion.NOW_VERSION_PATERNAL) public class ManualController {
 
-    @Value("${org.comunity.hongga.upload.path")
-    private String uploadPath;
-
     private final ManualServiceImpl manualService;
 
 
@@ -87,22 +84,22 @@ import java.util.List;
     } // manualListSearch (@PageableDefault Pageable pageable, @PathVariable("memberNo") Long memberNo) 끝
 
 
-    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_ONE_THING, notes = "사용 설명서 상세 조회 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용")
-    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
-        @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
+//    @ApiOperation(value = SwaggerApiInfo.GET_POSTS_ONE_THING, notes = "사용 설명서 상세 조회 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용")
+//    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
+//        @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \n 2. 데이터 없음 \n 3.Token Error")})
+//
+//     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
-
-    @GetMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<ManualDetailResponseDTO>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
-
-        log.info("ManualController가 동작 하였습니다!");
-        log.info("manualDetailSearch (@PathVariable(\"manualNo\") Long manualNo)가 호출 되었습니다!");
-
-        log.info("manualService.manualDetailSearch(manualNo)를 호출 하겠습니다!");
-
-//        return new ResponseEntity<>(manualService.manualDetailSearch(manualNo), HttpStatus.OK);
-
-    } // manualDetailSearch (@PathVariable("manualNo") Long manualNo) 끝
+//    @GetMapping("manual/{manualNo}") public ResponseEntity<ManualDetailResponseDTO> manualDetailSearch (@PathVariable("manualNo") Long manualNo, @RequestParam Long memberNo) {
+//
+//        log.info("ManualController가 동작 하였습니다!");
+//        log.info("manualDetailSearch (@PathVariable(\"manualNo\") Long manualNo)가 호출 되었습니다!");
+//
+//        log.info("manualService.manualDetailSearch(manualNo)를 호출 하겠습니다!");
+//
+//        return new ResponseEntity<>(manualService.manualDetailSearch(manualNo, memberNo), HttpStatus.OK);
+//
+//    } // manualDetailSearch (@PathVariable("manualNo") Long manualNo) 끝
 
 
 //    @ApiOperation(value = SwaggerApiInfo.MODIFY_POSTS, notes = "사용 설명서 수정 서비스 입니다.")

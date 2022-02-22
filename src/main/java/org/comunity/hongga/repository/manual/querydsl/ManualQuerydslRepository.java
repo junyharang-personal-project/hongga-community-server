@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.comunity.hongga.model.entity.manual.QManual.manual;
+import static org.comunity.hongga.model.entity.manual.QManualImage.manualImage;
 import static org.comunity.hongga.model.entity.manual.QManualTag.manualTag;
 import static org.comunity.hongga.model.entity.member.QMember.member;
 
@@ -82,40 +83,6 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
         return new PageImpl<>(manualList.subList(start, end), pageable, manualList.size());
 
     } // findAllWithFetchJoin (Pageable pageable, Long memberNo) 끝
-
-//    public Optional<ManualDetailResponseDTO> findByManualId(Long manualNo) {
-//
-//        log.info("ManualService에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
-//
-//        log.debug("ManualQuerydslRepository가 동작 하였습니다!");
-//        log.debug("메뉴얼 게시글 상세 조회 요청으로 findByManualId(Long manualNo)가 호출 되었습니다!");
-//
-//        ManualDetailResponseDTO result = jpaQueryFactory
-//                .select(Projections.constructor(ManualDetailResponseDTO.class,
-//                        manual.manualNo,
-//                        manual.title,
-//                        manual.registerDate,
-//                        manual.modifyDate,
-//                        member.nickname,
-//                        manual.content,
-//                        manualTag.tagContent,
-//                        manualTag.tagContent1,
-//                        manualTag.tagContent2,
-//                        manualTag.tagContent3,
-//                        manualTag.tagContent4,
-//                        manualTag.tagContent5,
-//                        manualTag.tagContent6,
-//                        manualTag.tagContent7,
-//                        manualTag.tagContent8,
-//                        manualTag.tagContent9))
-//
-//                .from(manual)
-//                .innerJoin(manualTag).on(manualTag.manual.manualNo.eq(manual.manualNo))
-//                .where(manual.manualNo.eq(manualNo))
-//                .fetchOne();
-//
-//        return Optional.ofNullable(result);
-//    } // findByManualId(Long manualNo) 끝
 
 //    public Optional<ManualDetailResponseDTO> findByManualNo(Long manualNo) {
 //

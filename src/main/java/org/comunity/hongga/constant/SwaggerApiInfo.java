@@ -35,5 +35,6 @@ public interface SwaggerApiInfo {
     String SIGN_UP = "회원 가입 서비스";
 
     String REPLACE_TOKEN = "JWT 재발행 서비스";
+    String FILE_UPLODER = "파일 업로드 서비스";
 
 } // interface 끝

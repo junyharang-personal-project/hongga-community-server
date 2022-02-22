@@ -28,15 +28,6 @@ public class ManualUpdateRequestDTO {
     // TODO - 글, 사진 (Editor 사용)
     private String content;
 
-    private String tagContent0;
-    private String tagContent1;
-    private String tagContent2;
-    private String tagContent3;
-    private String tagContent4;
-    private String tagContent5;
-    private String tagContent6;
-    private String tagContent7;
-    private String tagContent8;
-    private String tagContent9;
+    private String tagContent;
 
 } // class 끝

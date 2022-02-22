@@ -28,9 +28,9 @@ public class ManualDetailResponseDTO {
 
     private Long manualNo;
     private String title;
+    private String writer;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-    private String writer;
     private String content;
 
     private List<ManualImageDTO> imageDTOList = new ArrayList<>();

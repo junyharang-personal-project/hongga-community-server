@@ -184,7 +184,7 @@ public class ManualRepositoryTest {
 
         Long manualNo = 3L;
 
-    List<Object[]> manual = manualRepository.findByManualDetail(manualNo);
+    List<Object[]> manual = manualRepository.getManualWithAll(manualNo);
 
         System.out.println("====================================================");
 

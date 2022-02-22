@@ -40,12 +40,13 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
 
     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @Query(value = "select ma, mt, mi " +
+    @Query(value = "select ma.manualNo, ma.title, w.nickname, ma.createAt ,ma.updateAt, ma.content, mi, mt " +
             "from Manual ma " +
+            "inner join ma.writer, Member w " +
             "left outer join ManualTag mt on mt.manual = ma " +
             "left outer join ManualImage mi on mi.manual = ma " +
             "where ma.manualNo =:manualNo")
-    List<Object[]> findByManualDetail(@Param("manualNo") Long manualNo);
+    Optional<ManualDetailResponseDTO> findByManualDetail(@Param("manualNo") Long manualNo);
 
     /**
      * 게시글 수정 전 해당 게시글 조회를 위한 Method
@@ -73,4 +74,7 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
                    "and ma.writer.memberNo =:memberNo ")
     Optional<Manual> findByManualAndWriter(@Param("manualNo")Long manualNo, @Param("memberNo") Long memberNo);
 
+
+
+    List<Object[]> getManualWithAll(@Param("manualNo") Long manualNo);
 } // interface 끝
