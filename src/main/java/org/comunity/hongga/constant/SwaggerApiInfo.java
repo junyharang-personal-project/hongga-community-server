@@ -21,12 +21,14 @@ public interface SwaggerApiInfo {
     String WRITE_POSTS = "게시글 등록";
     String DELETE_POSTS = "게시글 삭제";
     String MODIFY_POSTS = "게시글 수정";
+    String POST_LIKE = "게시글 좋아요";
 
     String COMMENT = "댓글 서비스";
     String WRITE_COMMENT = "댓글 등록";
     String GET_COMMENT_LIST = "댓글 목록 조회";
     String DELETE_COMMENT = "댓글 삭제";
     String MODIFY_COMMENT = "댓글 수정";
+    String COMMENT_LIKE = "댓글 좋아요";
 
     String AUTHORIZE = "인증 서비스";
     String SIGN_IN = "로그인 서비스";

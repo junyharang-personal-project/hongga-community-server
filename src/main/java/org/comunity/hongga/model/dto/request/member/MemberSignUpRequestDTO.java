@@ -55,7 +55,7 @@ public class MemberSignUpRequestDTO {
                 .nickname(nickname)
                 .phoneNumber(phoneNumber)
                 .picture(picture)
-                .grade(MemberGrade.GUEST)
+                .grade(MemberGrade.ROLE_GUEST)
                 .aboutMe(aboutMe)
                 .activated(true)
                 .build();

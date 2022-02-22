@@ -29,7 +29,7 @@ public class ManualImageDTO {
 
     private String uuid;
 
-    private String imaName;
+    private String imgName;
 
     private String path;
 
@@ -43,7 +43,7 @@ public class ManualImageDTO {
 
             log.info("Manual Image 저장 위치를 encode하여 반환 시도 하겠습니다!");
 
-            return URLEncoder.encode(path+"/"+uuid+"_"+imaName,"UTF-8");
+            return URLEncoder.encode(path+"/"+uuid+"_"+imgName,"UTF-8");
 
         } catch (UnsupportedEncodingException e) {
 
@@ -65,7 +65,7 @@ public class ManualImageDTO {
 
         try{
 
-            return URLEncoder.encode(path+"/s_"+uuid+"_"+imaName,"UTF-8");
+            return URLEncoder.encode(path+"/s_"+uuid+"_"+imgName,"UTF-8");
 
         } catch (UnsupportedEncodingException e) {
 

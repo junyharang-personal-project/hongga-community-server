@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
  *    주니하랑, 1.0.1, 2022.02.20 회원 등급 추가
+ *    주니하랑, 1.0.2, 2022.02.22 Spring Security 체계에 맞는 문자열 체계 확립
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.02.20 회원 등급 추가
+ * @version 1.0.2, 2022.02.22 Spring Security 체계에 맞는 문자열 체계 확립
  * @See ""
  * @see <a href=""></a>
  */
@@ -21,13 +22,13 @@ import lombok.NoArgsConstructor;
 @Getter @NoArgsConstructor @AllArgsConstructor
 public enum MemberGrade {
 
-    GUEST("손님"),
-    FRIEND("친구"),
-    PATERNAL("친가"),
-    MATERNAL("외가"),
-    VALENTINE("애인"),
-    FAMILY("가족"),
-    ADMIN("관리자");
+    ROLE_GUEST("손님"),
+    ROLE_FRIEND("친구"),
+    ROLE_PATERNAL("친가"),
+    ROLE_MATERNAL("외가"),
+    ROLE_VALENTINE("애인"),
+    ROLE_FAMILY("가족"),
+    ROLE_ADMIN("관리자");
 
     private String description;
 

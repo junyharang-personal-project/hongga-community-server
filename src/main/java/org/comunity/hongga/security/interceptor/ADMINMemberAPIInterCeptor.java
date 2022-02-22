@@ -58,7 +58,7 @@ public class ADMINMemberAPIInterCeptor implements HandlerInterceptor {
         String memberGrade = claims.get("member_grade", String.class);
 
         log.info("이용자의 등급이 ADMIN이 아니라면 접근 제한 하겠습니다!");
-        if (memberGrade.equals(MemberGrade.GUEST.name()) || memberGrade.equals(MemberGrade.FAMILY.name())) {
+        if (memberGrade.equals(MemberGrade.ROLE_GUEST.name()) || memberGrade.equals(MemberGrade.ROLE_FAMILY.name())) {
 
             log.error("이용자의 등급이 ADMIN이 아닙니다! 접근 제한 하겠습니다!\");");
             response.sendError(403, "접근 권한이 없습니다!");

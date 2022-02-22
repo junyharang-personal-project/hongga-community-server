@@ -30,7 +30,7 @@ import java.util.*;
  */
 
 @Getter @NoArgsConstructor @AllArgsConstructor @ToString
-@Entity public class Member extends BaseDateTime {
+@Entity @Table(name = "tbl_member") public class Member extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberNo;

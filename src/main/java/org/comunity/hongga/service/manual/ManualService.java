@@ -4,6 +4,7 @@ import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.manual.ManualTagDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualImage;
@@ -61,7 +62,7 @@ public interface ManualService {
 
                 return ManualImage.builder()
                         .path(manualImageDTO.getPath())
-                        .imgName(manualImageDTO.getImaName())
+                        .imgName(manualImageDTO.getImgName())
                         .uuid(manualImageDTO.getUuid())
                         .manual(manual)
                         .build();
@@ -102,18 +103,52 @@ public interface ManualService {
 
     DefaultResponse<Page<ManualListSearchResponseDTO>> manualListSearch(Pageable pageable);
 
-//    default ManualListSearchResponseDTO entitiesToDTO(Manual manual) {
-//
-//        ManualListSearchResponseDTO manualListSearchResponseDTO = ManualListSearchResponseDTO.builder()
-//                .manualNo(manual.getManualNo())
-//                .writer(manual.getWriter())
-//                .title(manual.getTitle())
-//                .createAt(manual.getCreateAt())
-//                .updateAt(manual.getUpdateAt())
-//                // TODO - 좋아요 수 처리
-//                .build();
-//
-//        return manualListSearchResponseDTO;
-//
-//    }
+    /**
+     * 상세 조회
+     * @param manualNo - 검색을 위한 게시글 고유 번호
+     * @return DefaultResponse<ManualDetailResponseDTO> - DB에서 조회된 게시글 상세 정보 반환
+     * @see ""
+     */
+
+    ManualDetailResponseDTO manualDetailSearch(Long manualNo);
+
+    default ManualDetailResponseDTO entitiesToDTO(Manual manual, List<ManualImage> manualImageList, List<ManualTag> manualTagList) {
+
+        ManualDetailResponseDTO manualDetailResponseDTO = ManualDetailResponseDTO.builder()
+                .manualNo(manual.getManualNo())
+                .title(manual.getTitle())
+                .writer(manual.getWriter().getNickname())
+                .createAt(manual.getCreateAt())
+                .updateAt(manual.getUpdateAt())
+                .content(manual.getContent())
+                .build();
+
+        List<ManualImageDTO> manualImageDTOList = manualImageList.stream().map(manualImage -> {
+
+            return ManualImageDTO.builder()
+                    .imgName(manualImage.getImgName())
+                    .path(manualImage.getPath())
+                    .uuid(manualImage.getUuid())
+                    .build();
+
+        }).collect(Collectors.toList());
+
+        List<ManualTagDTO> manualTagDTOList = manualTagList.stream().map(manualTag -> {
+
+            return ManualTagDTO.builder()
+                    .tagContent(manualTag.getTagContent())
+                    .build();
+
+        }).collect(Collectors.toList());
+
+        manualDetailResponseDTO.setImageDTOList(manualImageDTOList);
+
+        manualDetailResponseDTO.setManualTagDTOList(manualTagDTOList);
+
+        return manualDetailResponseDTO;
+
+    } // entitiesToDTO(Manual manual, List<ManualImage>, List<ManualTag>) 끝
+
+//    DefaultResponse<List<Object[]>> manualDetailSearch(Long manualNo);
+
 } // interface 끝

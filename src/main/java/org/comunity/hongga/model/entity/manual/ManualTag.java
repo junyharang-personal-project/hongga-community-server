@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
  */
 
 @Getter @Builder @NoArgsConstructor @AllArgsConstructor @Slf4j @ToString(exclude = "manual")
-@Entity public class ManualTag {
+@Entity @Table(name = "tbl_manual_tag") public class ManualTag {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagNo;

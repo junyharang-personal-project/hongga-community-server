@@ -47,7 +47,7 @@ public class MemberRepositoryTest {
                 .picture(picture)
                 .aboutMe(aboutMe)
                 .activated(true)
-                .grade(MemberGrade.GUEST)
+                .grade(MemberGrade.ROLE_GUEST)
                 .build();
 
         //when

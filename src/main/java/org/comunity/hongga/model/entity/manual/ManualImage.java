@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter @Builder @NoArgsConstructor @AllArgsConstructor @ToString(exclude = "manual")
-@Entity public class ManualImage {
+@Entity @Table(name = "tbl_manual_image") public class ManualImage {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageNo;

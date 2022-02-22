@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -168,7 +169,6 @@ import java.util.Optional;
         log.info("manualQuerydslRepository.findAllWithMemberNickname(pageable)를 호출하여 데이터를 조회 하겠습니다!");
 
         Page<ManualListSearchResponseDTO> manualList = manualQuerydslRepository.findAllWithMemberNickname(pageable);
-//        Page<ManualListSearchResponseDTO> manualList = manualRepository.findAllWithFetchJoin(pageable);
 
         log.info("manualRepository.findAllWithFetchJoin(pageable)에서 조회된 DATA : " + manualList.toString());
 
@@ -187,9 +187,47 @@ import java.util.Optional;
 
         } // if - else (manualList.getTotalElements() == 0) 끝
     } // manualListSearch(Pageable pageable, Long memberNo) 끝
+
+
+    @Override
+    public ManualDetailResponseDTO manualDetailSearch(Long manualNo) {
+        log.info("ManualService가 동작 하였습니다!");
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
+        log.info("manualDetailSearch(Long manualNo)이 호출 되었습니다!");
+
+        List<Object[]> result = manualRepository.findByManualDetail(manualNo);
+
+        log.info("DB에서 찾은 결과 중  Manual Entity는 가장 앞 쪽에 배치하고, 모든 Row는 동일하게 배치 하여 처리 하겠습니다!");
+        Manual manual = (Manual) result.get(0)[0];
+
+        log.info("여러 이미지를 담을 ArrayList를 생성 하겠습니다!");
+        List<ManualImage> manualImageList = new ArrayList<>();
+
+        log.info("여러 Tag를 담을 ArrayList를 생성 하겠습니다!");
+        List<ManualTag> manualTagList = new ArrayList<>();
+
+        result.forEach(maualImage -> {
+
+            ManualImage manualImage = (ManualImage) maualImage[1];
+
+            manualImageList.add(manualImage);
+
+        });
+
+        result.forEach(manualTag -> {
+
+            ManualTag manualTag1 = (ManualTag) manualTag[2];
+
+            manualTagList.add(manualTag1);
+
+        });
+
+        return entitiesToDTO(manual, manualImageList, manualTagList);
+
+    } // manualDetailSearch(Long manualNo)
 } // class 끝
-//
-//    public DefaultResponse<ManualDetailResponseDTO> manualDetailSearch(Long manualNo) {
+
+//    public DefaultResponse<List<Object[]>> manualDetailSearch(Long manualNo) {
 //
 //        // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 //
@@ -211,14 +249,12 @@ import java.util.Optional;
 //
 //            log.info("이용자가 요청한 자료의 고유 번호가 존재 함으로, 200 Code와 함께 \"조회 성공\"을 반환 하겠습니다!");
 //
-//            return manualSearch.map(Manual -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", Manual))
-//                    .orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공"));
+//            return manualSearch.stream().map(Manual -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", Manual))
+//                    . orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공"));
 //
 //        } // if - else (optionalManualDetailResponseDTO.isEmpty()) 끝
-//
 //    } // manualDetailSearch(Long manualNo) 끝
-//
-//
+
 //    public DefaultResponse updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
 //
 //        log.info("ManualService가 동작 하였습니다!");

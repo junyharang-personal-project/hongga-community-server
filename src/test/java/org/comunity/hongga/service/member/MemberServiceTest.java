@@ -86,7 +86,7 @@ public class MemberServiceTest {
                 .phoneNumber(memberSignUpRequestDTO.getPhoneNumber())
                 .picture(memberSignUpRequestDTO.getPicture())
                 .aboutMe(memberSignUpRequestDTO.getAboutMe())
-                .grade(MemberGrade.GUEST)
+                .grade(MemberGrade.ROLE_GUEST)
                 .activated(memberSignUpRequestDTO.isActivated())
                 .build();
 
@@ -119,7 +119,7 @@ public class MemberServiceTest {
                 .phoneNumber(phoneNumber)
                 .picture(picture)
                 .aboutMe(aboutMe)
-                .grade(MemberGrade.GUEST)
+                .grade(MemberGrade.ROLE_GUEST)
                 .activated(activated)
                 .build();
 

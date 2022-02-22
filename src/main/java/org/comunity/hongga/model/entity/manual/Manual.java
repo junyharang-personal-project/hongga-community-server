@@ -25,7 +25,7 @@ import javax.validation.constraints.NotEmpty;
  * @see <a href=""></a>
  */
 
-@NoArgsConstructor @AllArgsConstructor @Getter @ToString @Slf4j
+@NoArgsConstructor @AllArgsConstructor @Getter @ToString @Slf4j @Table(name = "tbl_manual")
 @Entity public class Manual extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

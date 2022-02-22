@@ -58,7 +58,7 @@ public class FamilyMemberAPIInterCeptor implements HandlerInterceptor {
         String memberGrade = claims.get("member_grade", String.class);
 
         log.info("이용자의 등급이 FAMILY가 아니라면 접근 제한 하겠습니다!");
-        if (memberGrade.equals(MemberGrade.GUEST.name())) {
+        if (memberGrade.equals(MemberGrade.ROLE_GUEST.name())) {
 
             log.error("이용자의 등급이 GUEST 접근 제한 하겠습니다!\");");
             response.sendError(403, "접근 권한이 없습니다!");
