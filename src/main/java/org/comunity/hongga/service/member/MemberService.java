@@ -36,6 +36,7 @@ import java.util.Optional;
 @Service public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DefaultResponse signUp(MemberSignUpRequestDTO memberSignUpRequestDTO) {
 
@@ -46,8 +47,12 @@ import java.util.Optional;
         String requestEmail = memberSignUpRequestDTO.getEmail();
 
         // TODO - Password 암호화 처리 필요
+        log.info("이용자의 패스워드를 암호화 하겠습니다!");
+        memberSignUpRequestDTO.setPassword(passwordEncoder.encode(memberSignUpRequestDTO.getPassword())); ;
 
         Optional<String> checkEmail = memberRepository.findByEmail(requestEmail);
+
+
 
         return checkEmail.map(email -> DefaultResponse.response(HttpStatus.OK.value(), "이미 존재하는 Email 입니다!"))
                 .orElseGet(() -> {

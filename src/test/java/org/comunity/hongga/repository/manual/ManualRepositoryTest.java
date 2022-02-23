@@ -1,5 +1,6 @@
 package org.comunity.hongga.repository.manual;
 
+import com.github.javafaker.Faker;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
@@ -19,10 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,10 +32,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  *    주니하랑, 1.0.0, 2022.02.16 최초 작성
  *    주니하랑, 1.0.2, 2022.02.18 게시물 목록 조회, 상세 조회 코드 구현
  *    주니하랑, 1.0.3, 2022.02.21 사진 관련 테스트 코드 구현
+ *    주니하랑, 1.1.0, 2022.02.23 Facker를 통한 더미 데이터 생성 코드 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.3, 2022.02.21 사진 관련 테스트 코드 구현
+ * @version 1.1.0, 2022.02.23 Facker를 통한 더미 데이터 생성 코드 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -96,17 +95,20 @@ public class ManualRepositoryTest {
     @Commit @Transactional
     @Test public void 여러_게시물_등록() {
 
-        IntStream.rangeClosed(1, 100).forEach(i -> {
+        Faker faker = new Faker();
+        Faker fakerKOREALang = new Faker(new Locale("ko"));
+
+        IntStream.rangeClosed(1, 10).forEach(i -> {
 
             String picture = "sdoijgoij.jpg";
             String aboutMe = "안녕하세요! 우리 가족에게 언제나 좋은 일만 가득하길 바랍니다!";
 
             Member testMember = Member.builder()
-                    .email("test@hongga.com"+i)
+                    .email(faker.internet().emailAddress())
                     .password("hong123456"+i)
-                    .name("홍주니"+i)
-                    .nickname("주니하랑"+i)
-                    .phoneNumber("010-3939-4848")
+                    .name(fakerKOREALang.name().fullName())
+                    .nickname(faker.name().lastName())
+                    .phoneNumber(fakerKOREALang.phoneNumber().phoneNumber())
                     .picture(picture)
                     .aboutMe(aboutMe)
                     .grade(MemberGrade.ROLE_FAMILY)

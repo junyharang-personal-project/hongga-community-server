@@ -40,13 +40,28 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
 
     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @Query(value = "select ma.manualNo, ma.title, w.nickname, ma.createAt ,ma.updateAt, ma.content, mi, mt " +
-            "from Manual ma " +
-            "inner join ma.writer, Member w " +
-            "left outer join ManualTag mt on mt.manual = ma " +
-            "left outer join ManualImage mi on mi.manual = ma " +
-            "where ma.manualNo =:manualNo")
+    @Query("select m.manualNo as manualNo, m.title as title, m.createAt as createAt, m.updateAt as updateAt, m.content as content, mi.imgName as imgName, mi.path as imagePath, mi.uuid as imgUuid, mt.tagContent as tagContent " +
+            "from Manual m " +
+            "inner join m.writer, Member w " +
+            "left outer join ManualImage mi " +
+            "on mi.manual = m " +
+            "left outer join ManualTag mt " +
+            "on mt.manual = m " +
+            "where m.manualNo =:manualNo " +
+            "group by m.manualNo "
+    )
     List<Object[]> findByManualDetail(@Param("manualNo") Long manualNo);
+
+//    @Query(value = "SELECT m.manualNo as manualNo, m.title as title, w.nickname as nickname, m.createAt as createAt, m.updateAt as updateAt, m.content as content, mi.imgName as imgName, mi.path as imagePath, mi.uuid as imgUuid, mt.tagContent as tagContent " +
+//            "FROM Manual AS m " +
+//            "inner join m.writer, Member w " +
+////            "on m.writer = w.memberNo " +
+//            "left join ManualImage AS mi " +
+//            "ON m.manualNo = mi.manual.manualNo " +
+//            "left join ManualTag as mt " +
+//            "on m.manualNo = mt.manual.manualNo " +
+//            "where m.manualNo =:manualNo")
+//    List<Object[]> findByManualDetail(@Param("manualNo") Long manualNo);
 
     /**
      * 게시글 수정 전 해당 게시글 조회를 위한 Method

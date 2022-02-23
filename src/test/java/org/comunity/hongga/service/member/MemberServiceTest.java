@@ -52,15 +52,15 @@ public class MemberServiceTest {
     @Mock Execution execution;
     @Mock JwtUtil jwtUtil;
 
-    @Before public void setting() {
+//    @Before public void setting() {
+//
+//        MockitoAnnotations.openMocks(this);
+//        mockHttpSession = new MockHttpSession();
+//        httpServletRequest = new MockHttpServletRequest();
+//        jwtUtil = new JwtUtil("7KeA6riI7J2Aand07YWM7Iqk7Yq47KSR7J6F64uI64uk7J206rGw7LC465Oc65+96rKM7Ja066C16rOg7Z6Y65Oc64Sk7JqU67O17J6h7ZWc6rKDCg==");
+//        memberService = new MemberService(memberRepository, pwd);
 
-        MockitoAnnotations.openMocks(this);
-        mockHttpSession = new MockHttpSession();
-        httpServletRequest = new MockHttpServletRequest();
-        jwtUtil = new JwtUtil("7KeA6riI7J2Aand07YWM7Iqk7Yq47KSR7J6F64uI64uk7J206rGw7LC465Oc65+96rKM7Ja066C16rOg7Z6Y65Oc64Sk7JqU67O17J6h7ZWc6rKDCg==");
-        memberService = new MemberService(memberRepository);
-
-    } // setting() 끝
+//    } // setting() 끝
 
     @After public void clean() { mockHttpSession.clearAttributes(); } // clean() 끝
 

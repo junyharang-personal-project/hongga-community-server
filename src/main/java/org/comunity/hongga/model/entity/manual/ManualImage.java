@@ -14,7 +14,7 @@ import javax.persistence.*;
     private String imgName;
     private String path;
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "manual_no")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Manual manual;
 
 } // class 끝

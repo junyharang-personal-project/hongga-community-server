@@ -1,9 +1,6 @@
 package org.comunity.hongga.model.dto.request.member;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.MemberGrade;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +23,7 @@ import javax.validation.constraints.Size;
  * @see <a href=""></a>
  */
 
-@Getter @NoArgsConstructor @AllArgsConstructor
+@Data
 public class MemberSignUpRequestDTO {
 
     @Email @NotEmpty private String email;

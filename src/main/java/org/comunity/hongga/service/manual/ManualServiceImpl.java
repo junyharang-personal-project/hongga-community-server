@@ -168,9 +168,9 @@ import java.util.Optional;
 
         Page<ManualListSearchResponseDTO> manualList = manualQuerydslRepository.findAllWithMemberNickname(pageable);
 
-        log.info("manualRepository.findAllWithFetchJoin(pageable)에서 조회된 DATA : " + manualList.toString());
+        log.info("manualQuerydslRepository.findAllWithMemberNickname(pageable)에서 조회된 DATA : " + manualList.toString());
 
-        log.info("manualRepository.findAllWithFetchJoin(pageable)를 통해 조회된 데이터가 없는지 검증 하겠습니다!");
+        log.info("manualQuerydslRepository.findAllWithMemberNickname(pageable)를 통해 조회된 데이터가 없는지 검증 하겠습니다!");
         if (manualList.getTotalElements() == 0) {
 
             log.info("조회 된 데이터가 없습니다! 200 Code와 함께 message로 \"데이터 없음\"을 반환 하겠습니다!");
@@ -192,31 +192,52 @@ import java.util.Optional;
 
         List<Object[]> result = manualRepository.findByManualDetail(manualNo);
 
-        Manual manual = (Manual) result.get(0)[0];
+        log.info("DB에서 검색 된 값 (result) : " + result.toString());
 
-        List<ManualImage> manualImageList = new ArrayList<>();
+        try {
 
-        result.forEach(imageArray -> {
+            log.info("DB에서 조회된 결과를 Manual 객체에 담겠습니다!");
 
-            ManualImage manualImage = (ManualImage) imageArray[1];
+            Manual manual = (Manual) result.get(0)[0];
 
-            manualImageList.add(manualImage);
+            List<ManualImage> manualImageList = new ArrayList<>();
 
-        });
+                   result.forEach(imageArray -> {
 
-        List<ManualTag> manualTagList = new ArrayList<>();
+                ManualImage manualImage = (ManualImage) imageArray[1];
 
-        result.forEach(tagArray -> {
+                manualImageList.add(manualImage);
 
-            ManualTag manualTag = (ManualTag) tagArray[2];
+            });
 
-            manualTagList.add(manualTag);
+            List<ManualTag> manualTagList = new ArrayList<>();
 
-        });
+            result.forEach(tagArray -> {
 
-        ManualDetailResponseDTO manualDetailResponseDTO = entitiesToDTO(manual, manualImageList, manualTagList);
+                ManualTag manualTag = (ManualTag) tagArray[2];
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualDetailResponseDTO);
+                manualTagList.add(manualTag);
+
+            });
+
+            ManualDetailResponseDTO manualDetailResponseDTO = entitiesToDTO(manual, manualImageList, manualTagList);
+
+            return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualDetailResponseDTO);
+
+        } catch (Exception e) {
+
+            log.info("DB에서 조회된 결과의 이상으로 Exception이 발생 되었습니다!");
+
+            e.printStackTrace();
+
+            log.warn("문제 내용 : " + e.getMessage());
+
+            return DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "조회 실패");
+
+        } // try-catch 끝
+
+
+
 
     } // manualDetailSearch(Long manualNo) 끝
 } // class 끝

@@ -38,8 +38,7 @@ import java.util.*;
     @Email @Column(length = 50, unique = true) @NotBlank @Size(message = "이메일 형식으로 입력해야 합니다!")
     private String email;
 
-    @Size(min = 8, max = 20, message = "암호는 8자리 이상 20자리 이상이여야 합니다!")
-    private String password;
+    @Column(length = 255) private String password;
 
     @NotBlank @Column(length = 6) @Size(min = 3, max = 6, message = "이름은 3자리 이상 5자리 이하여야 합니다!")
     private String name;

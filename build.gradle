@@ -75,6 +75,9 @@ dependencies {
     // https://mvnrepository.com/artifact/net.coobird/thumbnailator
     implementation 'net.coobird:thumbnailator:0.4.16'
 
+    // 테스트 더미 데이터 만들기 의존성 추가
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+
 
 }
 
