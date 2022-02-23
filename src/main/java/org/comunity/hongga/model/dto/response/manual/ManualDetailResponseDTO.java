@@ -28,7 +28,7 @@ public class ManualDetailResponseDTO {
 
     private Long manualNo;
     private String title;
-    private String writer;
+    private String nickname;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private String content;

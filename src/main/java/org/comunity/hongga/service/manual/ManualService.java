@@ -110,45 +110,42 @@ public interface ManualService {
      * @see ""
      */
 
-//    ManualDetailResponseDTO manualDetailSearch(Long manualNo, Long memberNo);
-//
-//    default ManualDetailResponseDTO entitiesToDTO(Manual manual, List<ManualImage> manualImageList, List<ManualTag> manualTagList) {
-//
-//        ManualDetailResponseDTO manualDetailResponseDTO = ManualDetailResponseDTO.builder()
-//                .manualNo(manual.getManualNo())
-//                .title(manual.getTitle())
-//                .writer(manual.getWriter().getNickname())
-//                .createAt(manual.getCreateAt())
-//                .updateAt(manual.getUpdateAt())
-//                .content(manual.getContent())
-//                .build();
-//
-//        List<ManualImageDTO> manualImageDTOList = manualImageList.stream().map(manualImage -> {
-//
-//            return ManualImageDTO.builder()
-//                    .imgName(manualImage.getImgName())
-//                    .path(manualImage.getPath())
-//                    .uuid(manualImage.getUuid())
-//                    .build();
-//
-//        }).collect(Collectors.toList());
-//
-//        List<ManualTagDTO> manualTagDTOList = manualTagList.stream().map(manualTag -> {
-//
-//            return ManualTagDTO.builder()
-//                    .tagContent(manualTag.getTagContent())
-//                    .build();
-//
-//        }).collect(Collectors.toList());
-//
-//        manualDetailResponseDTO.setImageDTOList(manualImageDTOList);
-//
-//        manualDetailResponseDTO.setManualTagDTOList(manualTagDTOList);
-//
-//        return manualDetailResponseDTO;
+    DefaultResponse<ManualDetailResponseDTO> manualDetailSearch (Long manualNo);
 
-//    } // entitiesToDTO(Manual manual, List<ManualImage>, List<ManualTag>) 끝
+    default ManualDetailResponseDTO entitiesToDTO(Manual manual, List<ManualImage> manualImageList, List<ManualTag> manualTagList) {
 
-//    DefaultResponse<List<Object[]>> manualDetailSearch(Long manualNo);
+        ManualDetailResponseDTO manualDetailResponseDTO = ManualDetailResponseDTO.builder()
+                .manualNo(manual.getManualNo())
+                .title(manual.getTitle())
+                .nickname(manual.getWriter().getNickname())
+                .createAt(manual.getCreateAt())
+                .updateAt(manual.getUpdateAt())
+                .content(manual.getContent())
+                .build();
+
+        List<ManualImageDTO> manualImageDTOList = manualImageList.stream().map(manualImage -> {
+
+            return ManualImageDTO.builder()
+                    .imgName(manualImage.getImgName())
+                    .path(manualImage.getPath())
+                    .uuid(manualImage.getUuid())
+                    .build();
+
+        }).collect(Collectors.toList());
+
+        List<ManualTagDTO> manualTagDTOS = manualTagList.stream().map(manualTag -> {
+
+            return ManualTagDTO.builder()
+                    .tagContent(manualTag.getTagContent())
+                    .build();
+
+        }).collect(Collectors.toList());
+
+        manualDetailResponseDTO.setImageDTOList(manualImageDTOList);
+        manualDetailResponseDTO.setManualTagDTOList(manualTagDTOS);
+
+        return manualDetailResponseDTO;
+
+    } // entitiesToDTO(Manual manual, List<ManualImage> manualImageList, List<ManualTag> manualTagList) 끝
 
 } // interface 끝

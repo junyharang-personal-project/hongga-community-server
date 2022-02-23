@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualImage;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -52,7 +54,7 @@ import java.util.Optional;
     private final MemberRepository memberRepository;
 
     private final ManualQuerydslRepository manualQuerydslRepository;
-    private final ManualTagQuerydslRepository manualTagQuerydslRepository;
+//    private final ManualTagQuerydslRepository manualTagQuerydslRepository;
     private final ManualImageRepository manualImageRepository;
 
     /**
@@ -185,37 +187,38 @@ import java.util.Optional;
     } // manualListSearch(Pageable pageable, Long memberNo) 끝
 
 
-//    @Override
-//    public ManualDetailResponseDTO manualDetailSearch(Long manualNo, Long memberNo) {
-//        log.info("ManualService가 동작 하였습니다!");
-//        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
-//        log.info("manualDetailSearch(Long manualNo, Long memberNo)이 호출 되었습니다!");
-//
-//        List<Object[]> result = manualQuerydslRepository.findByManualId(manualNo);
-//
-//        Manual manual = (Manual) result.get(0)[0];
-//
-//        List<ManualImage> manualImageList = new ArrayList<>();
-//
-//        List<ManualTag> manualTagList = new ArrayList<>();
-//
-//        result.forEach(imageArr -> {
-//
-//            ManualImage manualImage = (ManualImage) imageArr[1];
-//            manualImageList.add(manualImage);
-//
-//        });
-//
-//        result.forEach(tagArr -> {
-//
-//            ManualTag manualTag = (ManualTag) tagArr[1];
-//            manualTagList.add(manualTag);
-//
-//        });
-//
-//        return entitiesToDTO(manual, manualImageList, manualTagList);
-//
-//    } // manualDetailSearch(Long manualNo)
+    @Override
+    public DefaultResponse<ManualDetailResponseDTO> manualDetailSearch(Long manualNo) {
+
+        List<Object[]> result = manualRepository.findByManualDetail(manualNo);
+
+        Manual manual = (Manual) result.get(0)[0];
+
+        List<ManualImage> manualImageList = new ArrayList<>();
+
+        result.forEach(imageArray -> {
+
+            ManualImage manualImage = (ManualImage) imageArray[1];
+
+            manualImageList.add(manualImage);
+
+        });
+
+        List<ManualTag> manualTagList = new ArrayList<>();
+
+        result.forEach(tagArray -> {
+
+            ManualTag manualTag = (ManualTag) tagArray[2];
+
+            manualTagList.add(manualTag);
+
+        });
+
+        ManualDetailResponseDTO manualDetailResponseDTO = entitiesToDTO(manual, manualImageList, manualTagList);
+
+        return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualDetailResponseDTO);
+
+    } // manualDetailSearch(Long manualNo) 끝
 } // class 끝
 
 //    public DefaultResponse<List<Object[]>> manualDetailSearch(Long manualNo) {

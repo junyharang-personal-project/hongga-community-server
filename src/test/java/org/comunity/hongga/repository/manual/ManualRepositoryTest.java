@@ -65,7 +65,7 @@ public class ManualRepositoryTest {
                     .phoneNumber("010-3939-4848")
                     .picture(picture)
                     .aboutMe(aboutMe)
-                    .grade(MemberGrade.ADMIN)
+                    .grade(MemberGrade.ROLE_ADMIN)
                     .activated(true)
                     .build();
 
@@ -109,7 +109,7 @@ public class ManualRepositoryTest {
                     .phoneNumber("010-3939-4848")
                     .picture(picture)
                     .aboutMe(aboutMe)
-                    .grade(MemberGrade.FAMILY)
+                    .grade(MemberGrade.ROLE_FAMILY)
                     .activated(true)
                     .build();
 
@@ -184,7 +184,7 @@ public class ManualRepositoryTest {
 
         Long manualNo = 3L;
 
-    List<Object[]> manual = manualRepository.getManualWithAll(manualNo);
+    List<Object[]> manual = manualRepository.findByManualDetail(manualNo);
 
         System.out.println("====================================================");
 

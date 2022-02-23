@@ -14,9 +14,9 @@ public class ManualListSearchResponseDTO {
 
     private Long manualNo;
 
-    private String nickname;
-
     private String title;
+
+    private String nickname;
 
     private LocalDateTime createAt;
 

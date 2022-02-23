@@ -46,7 +46,7 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
             "left outer join ManualTag mt on mt.manual = ma " +
             "left outer join ManualImage mi on mi.manual = ma " +
             "where ma.manualNo =:manualNo")
-    Optional<ManualDetailResponseDTO> findByManualDetail(@Param("manualNo") Long manualNo);
+    List<Object[]> findByManualDetail(@Param("manualNo") Long manualNo);
 
     /**
      * 게시글 수정 전 해당 게시글 조회를 위한 Method
@@ -76,5 +76,5 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
 
 
 
-    List<Object[]> getManualWithAll(@Param("manualNo") Long manualNo);
+//    List<Object[]> getManualWithAll(@Param("manualNo") Long manualNo);
 } // interface 끝
