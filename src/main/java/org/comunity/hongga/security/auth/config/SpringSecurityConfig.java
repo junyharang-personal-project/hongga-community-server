@@ -38,6 +38,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
     // TODO - Password 암호화 처리 필요
 
+    @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); } // passwordEncoder() 끝
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
