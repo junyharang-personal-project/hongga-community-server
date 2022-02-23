@@ -68,11 +68,19 @@ import java.util.Optional;
 
         Optional<String> loginEmail = memberRepository.findByEmail(memberSignInRequestDTO.getEmail());
 
+
+
         return loginEmail.map(email -> {
 
             Optional<Member> loginMember = memberRepository.findByMember(email, memberSignInRequestDTO.getPassword());
 
             return loginMember.map(member -> {
+
+                if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) {
+
+                    DefaultResponse.response(HttpStatus.OK.value(), "비밀번호를 확인 해 주세요!");
+
+                } // if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) 끝
 
                 String accessToken = JwtUtil.createAccessToken(member.getMemberNo(), member.getGrade());
 
