@@ -95,23 +95,28 @@ public class manualControllerTest {
     } // 게시글_상세조회() 끝
 
 
-//    @Test public void 게시글_수정() throws Exception {
-//
-//        String manualNo = "103";
-//        String memberNo = "1";
-//
-//        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "수정 성공", null, null);
-//
-//        given(manualService.updateManual(any(), anyLong(), anyLong())).willReturn(defaultResponse);
-//
-//        mockMvc.perform(put(ServiceURIVersion.NOW_VERSION+"/family/manual/update/{manualNo}", manualNo).param("memberNo", memberNo)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\n" +
-//                        " \"title\" : \"게시글 제목 Controller Test Code Test 중!\",\n" +
-//                        " \"content\" : \"게시글 내용 Controller Test Code Test 중!\"\n" +
-//                        "}")).andExpect(status().isOk());
-//    } // 게시글_수정() 끝
-//
+    @Test public void 게시글_수정() throws Exception {
+
+        String manualNo = "103";
+        String memberNo = "1";
+
+        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "수정 성공", null, null);
+
+        given(manualService.updateManual(any(), anyLong(), anyLong())).willReturn(defaultResponse);
+
+        mockMvc.perform(patch(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\n" +
+                        " \"title\" : \"게시글 제목 Controller Test Code Test 중!\",\n" +
+                        " \"content\" : \"게시글 내용 Controller Test Code Test 중!\",\n" +
+                        " \"imageName\": \"abc.jsp\",\n" +
+                        " \"path\": \"/home/junyharang/upload\",\n" +
+                        " \"tagContent\": \"메뉴얼\",\n" +
+                        " \"title\": \"시놀로지NAS 사용법\",\n" +
+                        " \"uuid\": \"c13ba02e-9a93-453d-a6b6-b4d75621fe43\"\n" +
+                        "}")).andExpect(status().isOk());
+    } // 게시글_수정() 끝
+
 //    @Test public void 게시글_삭제() throws Exception {
 //
 //        String manualNo = "99";
