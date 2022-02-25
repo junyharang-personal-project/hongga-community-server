@@ -117,17 +117,17 @@ public class manualControllerTest {
                         "}")).andExpect(status().isOk());
     } // 게시글_수정() 끝
 
-//    @Test public void 게시글_삭제() throws Exception {
-//
-//        String manualNo = "99";
-//        String memberNo = "99";
-//
-//        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
-//
-//        given(manualService.deleteManaul(any(), anyLong())).willReturn(defaultResponse);
-//
-//        mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/family/manual/delete/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
-//
-//    } // 게시글_삭제() 끝
+    @Test public void 게시글_삭제() throws Exception {
+
+        String manualNo = "99";
+        String memberNo = "99";
+
+        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
+
+        given(manualService.deleteManaul(any(), anyLong())).willReturn(defaultResponse);
+
+        mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
+
+    } // 게시글_삭제() 끝
 
 } // class 끝
