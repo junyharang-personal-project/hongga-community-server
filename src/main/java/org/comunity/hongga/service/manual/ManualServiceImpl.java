@@ -236,11 +236,11 @@ import java.util.stream.Collectors;
         log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + "메뉴얼 고유 번호 : " + manualNo.toString()  + "," + "작성자 고유 번호 : " + memberNo.toString());
 
         log.info("DB를 통해 이용자가 요청한 게시글 존재 여부와 해당 게시글의 작성자가 이용자인지 찾아 보겠습니다!");
-        Optional<Manual> dbInManualAndWriter = manualRepository.findById(manualNo);
+        Optional<Manual> dbInManual = manualRepository.findById(manualNo);
 
         log.info("DB를 통해 찾은 해당 게시글이 존재하는 지 검증 하겠습니다!");
 
-        if (dbInManualAndWriter.isEmpty()) {
+        if (dbInManual.isEmpty()) {
 
             log.info("DB를 통해 찾아 본 결과 해당 게시글이 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
 
@@ -249,7 +249,7 @@ import java.util.stream.Collectors;
 
         log.info("DB를 통해 찾아 본 결과 해당 게시글이 존재 합니다!");
 
-        return dbInManualAndWriter.filter(manual -> manual.getManualNo().equals(manualNo))
+        return dbInManual.filter(manual -> manual.getManualNo().equals(manualNo))
                 .filter(manual -> manual.getWriter().getMemberNo().equals(memberNo)).map(manual -> {
 
                     log.info("DB를 통해 해당 게시글의 관계 맺어진 사진들을 먼저 모두 삭제 하겠습니다!");

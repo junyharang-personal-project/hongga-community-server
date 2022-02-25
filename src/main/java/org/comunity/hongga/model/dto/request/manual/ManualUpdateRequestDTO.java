@@ -1,11 +1,11 @@
 package org.comunity.hongga.model.dto.request.manual;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.model.entity.member.Member;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
 import java.time.LocalDateTime;
 
 /**

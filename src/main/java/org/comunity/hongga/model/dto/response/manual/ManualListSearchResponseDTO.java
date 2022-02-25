@@ -9,6 +9,19 @@ import org.comunity.hongga.model.entity.member.Member;
 
 import java.time.LocalDateTime;
 
+/**
+ * 사용 설명서 목록 조회 관련 DTO
+ * <pre>
+ * <b>History:</b>
+ *    주니하랑, 1.0.0, 2022.02.23 최초 작성
+ *    * </pre>
+ *
+ * @author 주니하랑
+ * @version 1.0.0, 2022.02.23 최초 작성
+ * @See ""
+ * @see <a href=""></a>
+ */
+
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ManualListSearchResponseDTO {
 

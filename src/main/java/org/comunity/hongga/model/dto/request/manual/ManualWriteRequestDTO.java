@@ -23,10 +23,11 @@ import java.util.Optional;
  *    주니하랑, 1.0.0, 2022.02.14 최초 작성
  *    주니하랑, 1.0.1, 2022.02.16 TAG 추가
  *    주니하랑, 1.0.2, 2022.02.21 게시글 제목, 내용, Tag Validation Annotation 수정 및 추가
+ *    주니하랑, 1.0.3, 2022.02.25 글 등록 시 작성자가 DB에 들어가지 않는 문제로 N개의 Image 처리, Tag 처리 잠시 포기
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.2, 1.0.2, 2022.02.21 게시글 제목, 내용, Tag Validation Annotation 수정 및 추가
+ * @version 1.0.3, 2022.02.25 글 등록 시 작성자가 DB에 들어가지 않는 문제로 N개의 Image 처리, Tag 처리 잠시 포기
  * @See ""
  * @see <a href=""></a>
  */

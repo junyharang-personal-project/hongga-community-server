@@ -8,12 +8,10 @@ import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualDeleteResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
-import org.comunity.hongga.model.dto.response.manual.MaualDeleteResponeDTO;
-import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.service.manual.ManualServiceImpl;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -51,7 +49,7 @@ import java.util.List;
 
 
     @ApiOperation(value = SwaggerApiInfo.WRITE_POSTS, notes = "사용 설명서 등록 서비스 입니다.")
-    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서를 등록합니다. \n 필수 : Tag를 제외한 모든 항목", readOnly = true)
+    @ApiParam(name = "memberNo", value = "작성자의 고유 번호를 통해 게시글을 등록 합니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.등록 성공 \n 2. 등록 실패 \n 3.Token Error")})
 
     @PostMapping("manual") public ResponseEntity<DefaultResponse<Long>> writeManual(
@@ -68,7 +66,7 @@ import java.util.List;
 
 
     @ApiOperation(value = SwaggerApiInfo.GET_POSTS_LIST, notes = "사용 설명서 전체 조회(목록) 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 모두 목록으로 조회합니다. \n 필수 : 작성자(닉네임), 제목, 작성일, 수정일")
-    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
+    @ApiParam(name = "pageable", value = "페이징 처리를 위한 객체를 매개 변수로 줍니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.조회 성공 \n 2.데이터 없음 \n 3.Token Error")})
 
     @GetMapping("manual") public ResponseEntity<DefaultResponse<Page<ManualListSearchResponseDTO>>> manualListSearch (
@@ -85,7 +83,7 @@ import java.util.List;
 
 
     @ApiOperation(value = SwaggerApiInfo.GET_POSTS_ONE_THING, notes = "사용 설명서 상세 조회 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용")
-    @ApiParam(name = "Manual", value = "Manual 인스턴스 Type으로 반환합니다.", readOnly = true)
+    @ApiParam(name = "manualNo", value = "상세 조회 하고자 하는 게시글 번호를 매개 변수로 주입 합니다.", readOnly = true)
         @ApiResponses(value = { @ApiResponse(code=200, message = "1.조회 성공 \n 2.데이터 없음 \n 3.Token Error")})
 
      // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
@@ -103,7 +101,7 @@ import java.util.List;
 
 
     @ApiOperation(value = SwaggerApiInfo.MODIFY_POSTS, notes = "사용 설명서 수정 서비스 입니다.")
-    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용", readOnly = true)
+    @ApiParam(name = "manualNo, memberNo", value = "수정 하고자 하는 게시글의 고유 번호와 수정 요청한 이용자 고유 번호 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.수정 성공 \n 2.데이터 없음 \n 3.Token Error")})
 
     @PatchMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<Long>> updateManual (
@@ -124,10 +122,10 @@ import java.util.List;
 
 
     @ApiOperation(value = SwaggerApiInfo.DELETE_POSTS, notes = "사용 설명서 삭제 서비스 입니다.")
-    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서에 대해 삭제 처리 합니다.", readOnly = true)
+    @ApiParam(name = "manualNo, memberNo", value = "삭제 대상 게시물 고유 번호와 요청 이용자 고유 번호 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.삭제 성공 \n 2.삭제 실패\n 1) 해당 게시글 작성자 삭제 요청자 불일치 \n 2) 삭제 요청한 게시글 DB 미 존재 \n 3.데이터 없음 \n 4.Token Error")})
 
-    @DeleteMapping("/manual/{manualNo}") public ResponseEntity<DefaultResponse<MaualDeleteResponeDTO>> deleteManual (
+    @DeleteMapping("/manual/{manualNo}") public ResponseEntity<DefaultResponse<ManualDeleteResponseDTO>> deleteManual (
             @PathVariable("manualNo") Long manualNo,
             @RequestParam("memberNo") Long memberNo
     ) {

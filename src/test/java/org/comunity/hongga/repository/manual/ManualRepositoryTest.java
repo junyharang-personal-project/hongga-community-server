@@ -106,7 +106,7 @@ public class ManualRepositoryTest {
             Member testMember = Member.builder()
                     .email(faker.internet().emailAddress())
                     .password("hong123456"+i)
-                    .name(fakerKOREALang.name().fullName())
+                    .name(fakerKOREALang.name().lastName()+fakerKOREALang.name().firstName())
                     .nickname(fakerKOREALang.name().fullName())
                     .phoneNumber(fakerKOREALang.phoneNumber().phoneNumber())
                     .picture(picture)
