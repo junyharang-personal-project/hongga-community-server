@@ -76,14 +76,14 @@ public class manualControllerTest {
 
     } // 메뉴얼_등록() 끝
 
-//    @Test public void 게시글_전체조회() throws Exception {
-//
-//        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/family/manual")
-//                .param("page", "0")).andExpect(status().isOk());
-//
-//    } // 게시글_전체조회() 끝
-//
-//
+    @Test public void 게시글_목록_조회() throws Exception {
+
+        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/paternal/manual")
+                .param("page", "0")).andExpect(status().isOk());
+
+    } // 게시글_전체조회() 끝
+
+
 //    @Test public void 게시글_상세조회() throws Exception {
 //
 //        String manualNo = "30";
