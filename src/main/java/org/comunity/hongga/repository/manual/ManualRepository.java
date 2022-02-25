@@ -33,32 +33,6 @@ import java.util.Optional;
 public interface ManualRepository extends JpaRepository<Manual, Long> {
 
     /**
-     * 상세 조회 Method
-     * @param manualNo 특정 게시글 조회를 위한 게시글 고유 번호
-     * @return Optional<Manual> 조회 된 게시글과 작성자 반환
-     */
-
-    // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
-
-    @Query("select m.manualNo as manualNo, m.title as title, m.createAt as createAt, m.updateAt as updateAt, m.content as content " +
-            "from Manual m " +
-            "inner join m.writer, Member w " +
-            "where m.manualNo =:manualNo " +
-            "group by m.manualNo ")
-    Optional<Manual> findByManualDetail(@Param("manualNo") Long manualNo);
-
-//    @Query(value = "SELECT m.manualNo as manualNo, m.title as title, w.nickname as nickname, m.createAt as createAt, m.updateAt as updateAt, m.content as content, mi.imgName as imgName, mi.path as imagePath, mi.uuid as imgUuid, mt.tagContent as tagContent " +
-//            "FROM Manual AS m " +
-//            "inner join m.writer, Member w " +
-////            "on m.writer = w.memberNo " +
-//            "left join ManualImage AS mi " +
-//            "ON m.manualNo = mi.manual.manualNo " +
-//            "left join ManualTag as mt " +
-//            "on m.manualNo = mt.manual.manualNo " +
-//            "where m.manualNo =:manualNo")
-//    List<Object[]> findByManualDetail(@Param("manualNo") Long manualNo);
-
-    /**
      * 게시글 수정 전 해당 게시글 조회를 위한 Method
      * @param manualNo 특정 게시글 조회를 위한 게시글 고유 번호
      * @return Optional<Manual> 조회 된 게시글 반환

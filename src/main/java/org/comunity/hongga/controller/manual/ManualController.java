@@ -121,23 +121,23 @@ import java.util.List;
 //        return new ResponseEntity<>(manualService.updateManual(manualUpdateRequestDTO, manualNo, memberNo), HttpStatus.OK);
 //
 //    } // updateManual ( @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO, @PathVariable("manualNo") Long manualNo,@RequestParam("memberNo") Long memberNo) 끝
-//
-//
-//    @ApiOperation(value = SwaggerApiInfo.DELETE_POSTS, notes = "사용 설명서 삭제 서비스 입니다.")
-//    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서에 대해 삭제 처리 합니다.", readOnly = true)
-//    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 삭제 성공 \n 2. 삭제 실패 \n 3. 데이터 없음 \n 3.Token Error")})
-//
-//    @DeleteMapping("/manual/{manualNo}") public ResponseEntity<DefaultResponse<MaualDeleteResponeDTO>> deleteManual (
-//            @PathVariable("manualNo") Long manualNo,
-//            @RequestParam("memberNo") Long memberNo
-//    ) {
-//
-//        log.info("ManualController가 동작 하였습니다!");
-//        log.info("deleteManual (@PathVariable(\"manualNo\") Long manualNo, @RequestParam(\"memberNo\") Long memberNo) 가 호출 되었습니다!");
-//
-//        log.info("요청으로 들어온 값 삭제 게시글 번호" + manualNo.toString() + "\n 삭제를 요청한 회원 고유 번호 : " + memberNo.toString());
-//
-//        return new ResponseEntity<>(manualService.deleteManaul(manualNo, memberNo), HttpStatus.OK);
-//
-//    } // deleteManual (@PathVariable("manualNo") Long manualNo, @RequestParam("memberNo") Long memberNo) 끝
+
+
+    @ApiOperation(value = SwaggerApiInfo.DELETE_POSTS, notes = "사용 설명서 삭제 서비스 입니다.")
+    @ApiParam(name = "MemberSignUpDTO", value = "가족 간에 사용하는 물건에 대해 사용 설명서에 대해 삭제 처리 합니다.", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 삭제 성공 \n 2. 삭제 실패 \n 3. 데이터 없음 \n 3.Token Error")})
+
+    @DeleteMapping("/manual/{manualNo}") public ResponseEntity<DefaultResponse<MaualDeleteResponeDTO>> deleteManual (
+            @PathVariable("manualNo") Long manualNo,
+            @RequestParam("memberNo") Long memberNo
+    ) {
+
+        log.info("ManualController가 동작 하였습니다!");
+        log.info("deleteManual (@PathVariable(\"manualNo\") Long manualNo, @RequestParam(\"memberNo\") Long memberNo) 가 호출 되었습니다!");
+
+        log.info("요청으로 들어온 값 삭제 게시글 번호" + manualNo.toString() + "\n 삭제를 요청한 회원 고유 번호 : " + memberNo.toString());
+
+        return new ResponseEntity<>(manualService.deleteManaul(manualNo, memberNo), HttpStatus.OK);
+
+    } // deleteManual (@PathVariable("manualNo") Long manualNo, @RequestParam("memberNo") Long memberNo) 끝
 } // class 끝

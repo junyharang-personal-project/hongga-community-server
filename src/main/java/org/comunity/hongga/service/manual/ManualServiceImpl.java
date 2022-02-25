@@ -40,12 +40,13 @@ import java.util.stream.Collectors;
  *    주니하랑, 1.2.1, 2022.02.19 수정 기능 구현
  *    주니하랑, 1.2.2, 2022.02.19 수정 기능 Tag로 인한 Refactoring
  *    주니하랑, 1.3.0, 2022.02.21 사진 등록 처리로 인한 Refactoring
+ *    주니하랑, 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
  * </pre>
  *
  * @author 주니하랑
- * @version 1.3.0, 2022.02.21 사진 등록 처리로 인한 Refactoring
+ * @version 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
  * @See ""
- * @see <a href="코드로 배우는 스프링 부트 웹 프로젝트 P.419"></a>
+ * @see <a href=""></a>
  */
 
 @RequiredArgsConstructor @Slf4j
@@ -214,7 +215,7 @@ import java.util.stream.Collectors;
                 .orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 실패"));
 
     } // manualDetailSearch(Long manualNo) 끝
-} // class 끝
+
 
 //    public DefaultResponse updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
 //
@@ -251,41 +252,46 @@ import java.util.stream.Collectors;
 //                }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "수정 실패"));
 //
 //    } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
-//
-//    public DefaultResponse deleteManaul(Long manualNo, Long memberNo) {
-//
-//        log.info("ManualService가 동작 하였습니다!");
-//        log.info("deleteManaul(Long manualNo, Long memberNo)");
-//        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualNo.toString()  + "," + memberNo.toString());
-//
-//        log.info("DB를 통해 이용자가 요청한 게시글 존재 여부와 해당 게시글의 작성자가 이용자인지 찾아 보겠습니다!");
-//        Optional<Manual> dbInManualAndWriter = manualRepository.findByManualAndWriter(manualNo, memberNo);
-//
-//        log.info("DB를 통해 찾은 해당 게시글이 존재하는 지 검증 하겠습니다!");
-//
-//        if (dbInManualAndWriter.isEmpty()) {
-//
-//            log.info("DB를 통해 찾아 본 결과 해당 게시글이 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
-//
-//            return DefaultResponse.response(HttpStatus.OK.value(), "내용 없음");
-//        } // if (dbInManualAndWriter.isEmpty()) 끝
-//
-//        log.info("DB를 통해 찾아 본 결과 해당 게시글이 존재 합니다!");
-//
-//        return dbInManualAndWriter.filter(manual -> manual.getManualNo().equals(manualNo))
-//                .filter(manual -> manual.getWriter().getMemberNo().equals(memberNo)).map(manual -> {
-//
-//                    log.info("DB를 통해 해당 게시글의 관계 맺어진 Tag들을 먼저 모두 삭제 하겠습니다!");
-//                    manualTagRepository.deleteById(manual.getManualNo());
-//
-//                    log.info("DB를 통해 해당 게시글 삭제를 진행 하겠습니다!");
-//                    manualRepository.deleteById(manualNo);
-////                    manualRepository.deleteByManualNoAndMemberNo(manual.getManualNo());
-//
-//                    log.info("삭제가 정상 적으로 처리 되었습니다! 200 Code와 함께 \"삭제 성공\" 반환 하겠습니다!");
-//                    return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공");
-//
-//                }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "삭제 실패"));
-//
-//    } // deleteManaul(Long manualNo, Long memberNo) 끝
+
+    @Override
+    public DefaultResponse deleteManaul(Long manualNo, Long memberNo) {
+
+        log.info("ManualService가 동작 하였습니다!");
+        log.info("deleteManaul(Long manualNo, Long memberNo)");
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualNo.toString()  + "," + memberNo.toString());
+
+        log.info("DB를 통해 이용자가 요청한 게시글 존재 여부와 해당 게시글의 작성자가 이용자인지 찾아 보겠습니다!");
+        Optional<Manual> dbInManualAndWriter = manualRepository.findByManualAndWriter(manualNo, memberNo);
+
+        log.info("DB를 통해 찾은 해당 게시글이 존재하는 지 검증 하겠습니다!");
+
+        if (dbInManualAndWriter.isEmpty()) {
+
+            log.info("DB를 통해 찾아 본 결과 해당 게시글이 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
+
+            return DefaultResponse.response(HttpStatus.OK.value(), "내용 없음");
+        } // if (dbInManualAndWriter.isEmpty()) 끝
+
+        log.info("DB를 통해 찾아 본 결과 해당 게시글이 존재 합니다!");
+
+        return dbInManualAndWriter.filter(manual -> manual.getManualNo().equals(manualNo))
+                .filter(manual -> manual.getWriter().getMemberNo().equals(memberNo)).map(manual -> {
+
+                    log.info("DB를 통해 해당 게시글의 관계 맺어진 사진들을 먼저 모두 삭제 하겠습니다!");
+                    manualImageRepository.deleteByManualNo(manual.getManualNo());
+
+                    log.info("DB를 통해 해당 게시글의 관계 맺어진 Tag들을 먼저 모두 삭제 하겠습니다!");
+                    manualTagRepository.deleteByManualNo(manual.getManualNo());
+
+                    log.info("DB를 통해 해당 게시글 삭제를 진행 하겠습니다!");
+                    manualRepository.deleteById(manualNo);
+//                    manualRepository.deleteByManualNoAndMemberNo(manual.getManualNo());
+
+                    log.info("삭제가 정상 적으로 처리 되었습니다! 200 Code와 함께 \"삭제 성공\" 반환 하겠습니다!");
+                    return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공");
+
+                }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "삭제 실패"));
+
+    } // deleteManaul(Long manualNo, Long memberNo) 끝
+} // class 끝
 

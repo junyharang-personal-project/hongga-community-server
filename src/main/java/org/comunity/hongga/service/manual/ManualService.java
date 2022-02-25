@@ -21,14 +21,20 @@ import java.util.stream.Collectors;
  * 사용 설명서 관련 비즈니스 로직
  * <pre>
  * <b>History:</b>
- *    주니하랑, 1.0.0, 2022.02.21 최초 작성
- *    주니하랑, 1.0.1, 2022.02.21 Image, Hash Tag 처리를 위한 수정
+ *    주니하랑, 1.0.0, 2022.02.15 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.16 Tag 등록 추가
+ *    주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
+ *    주니하랑, 1.2.0, 2022.02.18 목록 조회, 상세 조회 동적 Query용 Query dsl 대신 JPQL로 변경으로 인한 manualListSearch() 반환 Type 변경
+ *    주니하랑, 1.2.1, 2022.02.19 수정 기능 구현
+ *    주니하랑, 1.2.2, 2022.02.19 수정 기능 Tag로 인한 Refactoring
+ *    주니하랑, 1.3.0, 2022.02.21 사진 등록 처리로 인한 Refactoring
+ *    주니하랑, 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.0.1, 2022.02.21 Image, Hash Tag 처리를 위한 수정
+ * @version 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
  * @See ""
- * @see <a href="코드로 배우는 스프링 부트 웹 프로젝트 P.419"></a>
+ * @see <a href=""></a>
  */
 
 public interface ManualService {
@@ -41,6 +47,43 @@ public interface ManualService {
      */
 
     DefaultResponse<Long> writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo);
+
+
+
+    /**
+     * 전체 조회 (목록 조회)
+     * @param pageable - Paging 처리를 위한 객체
+     * @return DefaultResponse<Page<Manual>> - DB에서 조회된 게시글 목록을 페이징 처리하여 반환
+     * @see "코드로 배우는 스프링 부트 웹 프로젝트 P.437"
+     */
+
+    DefaultResponse<Page<ManualListSearchResponseDTO>> manualListSearch(Pageable pageable);
+
+    /**
+     * 상세 조회
+     * @param manualNo - 검색을 위한 게시글 고유 번호
+     * @return DefaultResponse<ManualDetailResponseDTO> - DB에서 조회된 게시글 상세 정보 반환
+     * @see ""
+     */
+
+    DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch (Long manualNo);
+
+    /**
+     * 게시글 삭제
+     * @param manualNo - 검색을 위한 게시글 고유 번호
+     * @return DefaultResponse - 삭제 관련 처리에 대한 HTTP 응답에 맞는 코드와 메시지 전달
+     * @see ""
+     */
+
+    DefaultResponse deleteManaul(Long manualNo, Long memberNo);
+
+
+    /**
+     * DTO 객체 Entity 객체 변환기
+     * @param manualWriteRequestDTO - 게시글 작성 내용을 담은 DTO 객체
+     * @return Map<String, Object> - 게시글과 Image, Tag 등 여러 내용을 담아 반환 하기 위한 Map
+     * @see ""
+     */
 
     default Map<String, Object> dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) {
 
@@ -93,23 +136,5 @@ public interface ManualService {
 
         return entityMap;
     } // dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) 끝
-
-    /**
-     * 전체 조회 (목록 조회)
-     * @param pageable - Paging 처리를 위한 객체
-     * @return DefaultResponse<Page<Manual>> - DB에서 조회된 게시글 목록을 페이징 처리하여 반환
-     * @see "코드로 배우는 스프링 부트 웹 프로젝트 P.437"
-     */
-
-    DefaultResponse<Page<ManualListSearchResponseDTO>> manualListSearch(Pageable pageable);
-
-    /**
-     * 상세 조회
-     * @param manualNo - 검색을 위한 게시글 고유 번호
-     * @return DefaultResponse<ManualDetailResponseDTO> - DB에서 조회된 게시글 상세 정보 반환
-     * @see ""
-     */
-
-    DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch (Long manualNo);
 
 } // interface 끝
