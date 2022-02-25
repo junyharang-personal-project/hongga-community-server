@@ -59,8 +59,8 @@ import java.util.*;
     // 자기 소개
     @Column(length = 200) @Size(message = "자기 소개는 최대 200자까지 작성 가능 합니다!") private String aboutMe;
 
-    @Builder public Member(String email, String password, String name, String nickname, String phoneNumber, MemberGrade grade, String picture, String aboutMe, boolean activated) {
-
+    @Builder public Member(Long memberNo, String email, String password, String name, String nickname, String phoneNumber, MemberGrade grade, String picture, String aboutMe, boolean activated) {
+        this.memberNo = memberNo;
         this.email = email;
         this.password = password;
         this.name = name;

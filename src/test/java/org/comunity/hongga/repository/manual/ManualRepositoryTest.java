@@ -181,7 +181,7 @@ public class ManualRepositoryTest {
 
     } // 전체_게시물_조회()
 
-@Transactional
+//@Transactional
 //@Test public void 게시물_상세_조회() {
 //
 //        Long manualNo = 3L;
@@ -196,42 +196,42 @@ public class ManualRepositoryTest {
 ////        }
 //    } // 게시물_상세_조회() 끝
 //
-//    @Test public void 게시물_수정() {
-//
-//        // given
-//        Optional<Manual> result = manualRepository.findByManualNo(103L);
-//
-//        if (result.isEmpty()) {
-//            System.out.println("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
-//        } // if (result.isEmpty()) 끝
-//
-//        Manual manual = result.get();
-//
-//        manual.changeTitle("Manual Reposiroty 수정 Test");
-//        manual.changeContent("수정 Test Code Test 중 입니다!");
-//
-//        // when
-//        Manual saveManual = manualRepository.save(manual);
-//
-//
-//        // then
-//        assertThat(saveManual.toString()).isEqualTo(manual.toString());
-//
-//    } // 게시물_수정() 끝
-
-    @Test public void 게시글_삭제() {
+    @Test public void 게시물_수정() {
 
         // given
-        Optional<Manual> result = manualRepository.findByManualNo(98L);
+        Optional<Manual> result = manualQuerydslRepository.findByManualNo(11L, 13L);
 
         if (result.isEmpty()) {
             System.out.println("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
         } // if (result.isEmpty()) 끝
 
+        Manual manual = result.get();
+
+        manual.changeTitle("Manual Reposiroty 수정 Test");
+        manual.changeContent("수정 Test Code Test 중 입니다!");
+
         // when
-        manualRepository.deleteById(98L);
+        Manual saveManual = manualRepository.save(manual);
 
 
-    } // 게시글_삭제() 끝
+        // then
+        assertThat(saveManual.toString()).isEqualTo(manual.toString());
+
+    } // 게시물_수정() 끝
+
+//    @Test public void 게시글_삭제() {
+//
+//        // given
+//        Optional<Manual> result = manualQuerydslRepository.findByManualNo(98L, 3L);
+//
+//        if (result.isEmpty()) {
+//            System.out.println("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
+//        } // if (result.isEmpty()) 끝
+//
+//        // when
+//        manualRepository.deleteById(98L);
+//
+//
+//    } // 게시글_삭제() 끝
 
 } // class 끝끝

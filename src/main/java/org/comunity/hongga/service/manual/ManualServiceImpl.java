@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualDeleteResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
@@ -15,7 +17,9 @@ import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.manual.ManualImageRepository;
 import org.comunity.hongga.repository.manual.ManualRepository;
 import org.comunity.hongga.repository.manual.ManualTagRepository;
+import org.comunity.hongga.repository.manual.querydsl.ManualImageQuerydslRepository;
 import org.comunity.hongga.repository.manual.querydsl.ManualQuerydslRepository;
+import org.comunity.hongga.repository.manual.querydsl.ManualTagQuerydslRespository;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,10 +45,11 @@ import java.util.stream.Collectors;
  *    주니하랑, 1.2.2, 2022.02.19 수정 기능 Tag로 인한 Refactoring
  *    주니하랑, 1.3.0, 2022.02.21 사진 등록 처리로 인한 Refactoring
  *    주니하랑, 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
+ *    주니하랑, 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
  * </pre>
  *
  * @author 주니하랑
- * @version 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
+ * @version 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
  * @See ""
  * @see <a href=""></a>
  */
@@ -53,12 +58,13 @@ import java.util.stream.Collectors;
 @Service public class ManualServiceImpl implements ManualService{
 
     private final ManualRepository manualRepository;
+    private final ManualImageRepository manualImageRepository;
     private final ManualTagRepository manualTagRepository;
     private final MemberRepository memberRepository;
 
     private final ManualQuerydslRepository manualQuerydslRepository;
-//    private final ManualTagQuerydslRepository manualTagQuerydslRepository;
-    private final ManualImageRepository manualImageRepository;
+    private final ManualImageQuerydslRepository manualImageQuerydslRepository;
+    private final ManualTagQuerydslRespository manualTagQuerydslRespository;
 
     /**
      * 글 등록
@@ -84,82 +90,32 @@ import java.util.stream.Collectors;
 
         } // if (manualWriteRequestDTO == null)
 
-        Map<String, Object> entityMap = dtoToEntity(manualWriteRequestDTO);
-
-        Manual manual = (Manual) entityMap.get("manual");
-
-        List<ManualImage> manualImageList = (List<ManualImage>) entityMap.get("imgList");
-
-        List<ManualTag> manualTagList = (List<ManualTag>) entityMap.get("tagList");
-
         log.info("manualRepository.save(manual)를 호출하여 ManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
-        manualRepository.save(manual);
+
+        Optional<Manual> saveManual = Optional.ofNullable(manualRepository.save(manualWriteRequestDTO.toEntity(manualWriteRequestDTO, writer)));
 
 
-        if ((manualImageList == null) && (manualTagList != null)) {
+        manualImageRepository.save(ManualImage.builder()
+                .manual(saveManual.get()).uuid(manualWriteRequestDTO.getUuid())
+                .manual(saveManual.get()).imgName(manualWriteRequestDTO.getImgName())
+                .manual(saveManual.get()).path(manualWriteRequestDTO.getPath())
+                .build());
 
-            log.info("요청 이용자가 Image를 첨부하지 않고, TAG와 게시글만 입력 하였습니다!");
+        manualTagRepository.save(ManualTag.builder()
+                .manual(saveManual.get()).tagContent(manualWriteRequestDTO.getTagContent())
+                .build());
 
-            log.info("여러 메뉴얼 TAG를 각각 저장하기 위해 ForEach문이 동작 합니다!");
+        return DefaultResponse.response(HttpStatus.OK.value(), "등록 성공", memberNo);
 
-            manualTagList.forEach(manualTag -> {
-
-                log.info("manualTagRepository.save(manualTag)를 호출하여 ManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
-                manualTagRepository.save(manualTag);
-
-            });
-
-        } else if ((manualImageList != null) && (manualTagList == null)) {
-            log.info("요청 이용자가 TAG를 입력하지 않고, Image와 게시글만 입력 하였습니다!");
-
-            log.info("여러 메뉴얼 Image를 각각 저장하기 위해 ForEach문이 동작 합니다!");
-
-            manualImageList.forEach(manualImage -> {
-
-                log.info("manualImageRepository.save(manualImage) 이미지를 저장 중 입니다!");
-                manualImageRepository.save(manualImage);
-
-            });
-
-            log.info("메뉴얼 글 제목과 내용, Image만 DB에 정상적으로 값이 저장 되었습니다! 200 CODE와 함께 \"게시물 등록 성공\" 반환하겠습니다!");
-            return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공", manual.getManualNo());
-
-        } else if ((manualImageList != null) && (manualTagList != null)) {
-
-            log.info("요청 이용자가 게시글 제목, 내용, TAG, 사진 모두 입력 하였습니다!");
-
-            log.info("여러 메뉴얼 Image를 각각 저장하기 위해 ForEach문이 동작 합니다!");
-
-            manualImageList.forEach(manualImage -> {
-
-                log.info("manualImageRepository.save(manualImage) 이미지를 저장 중 입니다!");
-                manualImageRepository.save(manualImage);
-
-            });
-
-            log.info("여러 메뉴얼 TAG를 각각 저장하기 위해 ForEach문이 동작 합니다!");
-
-            manualTagList.forEach(manualTag -> {
-
-                log.info("manualTagRepository.save(manualTag)를 호출하여 ManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
-                manualTagRepository.save(manualTag);
-
-            });
-
-            log.info("메뉴얼 글 제목과 내용, Image만 DB에 정상적으로 값이 저장 되었습니다! 200 CODE와 함께 \"게시물 등록 성공\" 반환하겠습니다!");
-            return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공", manual.getManualNo());
-
-        } else {
-
-            log.info("요청 이용자가 TAG와 Image를 입력 및 첨부하지 않았습니다!");
-            log.info("메뉴얼 글 제목과 내용만 DB에 정상적으로 값이 저장 되었습니다! 200 CODE와 함께 \"게시물 등록 성공\" 반환하겠습니다!");
-            return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 성공", manual.getManualNo());
-
-        }
-
-        return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 실패", manual.getManualNo());
     } // writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo) 끝
 
+
+    /**
+     * 전체 조회 (목록 조회)
+     * @param pageable - Paging 처리를 위한 객체
+     * @return DefaultResponse<Page<Manual>> - DB에서 조회된 게시글 목록을 페이징 처리하여 반환
+     * @see "코드로 배우는 스프링 부트 웹 프로젝트 P.437"
+     */
 
     @Override
     public DefaultResponse<Page<ManualListSearchResponseDTO>> manualListSearch(Pageable pageable) {
@@ -189,6 +145,12 @@ import java.util.stream.Collectors;
         } // if - else (manualList.getTotalElements() == 0) 끝
     } // manualListSearch(Pageable pageable, Long memberNo) 끝
 
+    /**
+     * 상세 조회
+     * @param manualNo - 검색을 위한 게시글 고유 번호
+     * @return DefaultResponse<ManualDetailResponseDTO> - DB에서 조회된 게시글 상세 정보 반환
+     * @see ""
+     */
 
     @Override
     public DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch(Long manualNo) {
@@ -201,13 +163,13 @@ import java.util.stream.Collectors;
         log.info("DB에서 조회된 값은 다음과 같습니다! \n " +dbFindDetailManual.get().toString());
 
 
-    if (dbFindDetailManual.isEmpty()) {
+    if (dbFindDetailManual.get().size() == 0) {
 
         log.info("DB에서 찾은 메뉴얼 게시글 상세 번호 " + manualNo + "에 대한 게시글이 조회 되지 않았습니다!");
 
         log.info("403 CODE와 함께 \"내용 없음\" 반환 하겠습니다!");
 
-        DefaultResponse.response(HttpStatus.NOT_FOUND.value(), "내용 없음");
+        return DefaultResponse.response(HttpStatus.NOT_FOUND.value(), "내용 없음");
 
     } // if (dbFindDetailManual.isEmpty()) 끝
 
@@ -216,52 +178,65 @@ import java.util.stream.Collectors;
 
     } // manualDetailSearch(Long manualNo) 끝
 
+    @Override
+    public DefaultResponse<Long> updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
 
-//    public DefaultResponse updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
-//
-//        log.info("ManualService가 동작 하였습니다!");
-//        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualUpdateRequestDTO.toString() + "," + manualNo.toString()  + "," + memberNo.toString());
-//        log.info("updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)이 호출 되었습니다!");
-//
-//        log.info("memberRepository.findByManualNo(manualNo, memberNo)를 호출하여 요청으로 들어온 설명서 고유 번호와 해당 글의 작성자가 맞는지 여부를 찾겠습니다!");
-//        Optional<ManualDetailResponseDTO> findManual = manualQuerydslRepository.findByManualNo(manualNo);
-//
-//        log.info("DB에서 찾은 값이 Null인지 검증 하겠습니다!");
-//        if (findManual.isEmpty()) {
-//
-//            log.info("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
-//            DefaultResponse.response(HttpStatus.OK.value(), "내용 없음");
-//
-//        } // if (findManual.isEmpty()) 문 끝
-//
-//        log.info("요청으로 들어온 이용자의 고유 번호가 DB에 저장된 해당 글의 작성자 고유 번호와 일치한지 검증 하겠습니다! \n 그런 뒤 요청으로 들어온 게시물 고유 번호와 DB에서 찾은 게시물 고유 번호가 일치한지 검증 하겠습니다!");
-//        return findManual.filter(manual -> manual.getWriter().getMemberNo().equals(memberNo))
-//                .filter(manual -> manual.getManualNo().equals(manualNo)).map(manual -> {
-//
-//                    log.info("요청으로 들어온 회원 고유 번호와 게시글 고유 번호가 DB에서 찾은 자료의 값과 일치 합니다!");
-//                    log.info("manualQuerydslRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo)를 호출하여 게시글 수정 건에 대한 DB 값을 변경 하겠습니다!");
-//
-//                    manualQuerydslRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo);
-//
-//                    log.info("manualTagQuerydslRepository.updateManualTag(manualUpdateRequestDTO, manual.getManualNo()를 호출하여 Tag 수정 건에 대한 DB 값을 변경 하겠습니다!");
-//                    manualTagQuerydslRepository.updateManualTag(manualUpdateRequestDTO, manual.getManualNo());
-//
-//                    log.info("DB에 해당 게시물 수정이 완료 되었습니다! 200 Code와 함께 \"수정 성공\" 반환 하겠습니다!");
-//
-//                    return DefaultResponse.response(HttpStatus.OK.value(), "수정 성공");
-//                }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "수정 실패"));
-//
-//    } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
+        log.info("ManualService가 동작 하였습니다!");
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualUpdateRequestDTO.toString() + "," + "수정 대상 게시물 고유 번호 : " + manualNo.toString()  + "," + "수정 요청 이용자 고유 번호 : " + memberNo.toString());
+        log.info("updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)이 호출 되었습니다!");
+
+        log.info("memberRepository.findByManualNo(manualNo, memberNo)를 호출하여 요청으로 들어온 설명서 고유 번호와 해당 글의 작성자가 맞는지 여부를 찾겠습니다!");
+//        Optional<List<ManualDetailResponseDTO>> findManual = manualQuerydslRepository.findByManualNo(manualNo);
+        Optional<Manual> findManual = manualQuerydslRepository.findByManualNo(manualNo, memberNo);
+
+        log.info("DB에서 찾은 값이 Null인지 검증 하겠습니다! \n DB에서 찾은 값 : " + findManual.get().toString());
+
+        if (findManual.isEmpty()) {
+
+            log.info("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
+            DefaultResponse.response(HttpStatus.OK.value(), "내용 없음");
+
+        } // if (findManual.isEmpty()) 문 끝
+
+        log.info("요청으로 들어온 이용자의 고유 번호가 DB에 저장된 해당 글의 작성자 고유 번호와 일치한지 검증 하겠습니다! \n 그런 뒤 요청으로 들어온 게시물 고유 번호와 DB에서 찾은 게시물 고유 번호가 일치한지 검증 하겠습니다!");
+
+        return findManual.filter(manual -> manual.getWriter().getMemberNo().equals(memberNo))
+                .filter(manual -> manual.getManualNo().equals(manualNo))
+                .map(manual -> {
+
+                    log.info("요청으로 들어온 회원 고유 번호와 게시글 고유 번호가 DB에서 찾은 자료의 값과 일치 합니다!");
+                    log.info("manualQuerydslRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo)를 호출하여 게시글 수정 건에 대한 DB 값을 변경 하겠습니다!");
+
+                    manualQuerydslRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo);
+
+                    log.info("manualImageRepository.updateManualImage(manualUpdateRequestDTO, manual.getManualNo())를 호출하여 Image 수정 건에 대한 DB 값을 변경 하겠습니다!");
+                    manualImageQuerydslRepository.updateManualImage(manualUpdateRequestDTO, manual.getManualNo());
+
+                    log.info("manualTagQuerydslRepository.updateManualTag(manualUpdateRequestDTO, manual.getManualNo())를 호출하여 Tag 수정 건에 대한 DB 값을 변경 하겠습니다!");
+                    manualTagQuerydslRespository.updateManualTag(manualUpdateRequestDTO, manual.getManualNo());
+
+                    log.info("DB에 해당 게시물 수정이 완료 되었습니다! 200 Code와 함께 \"수정 성공\" 반환 하겠습니다!");
+
+                    return DefaultResponse.response(HttpStatus.OK.value(), "수정 성공", manual.getManualNo());
+                }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "수정 실패"));
+
+    } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
+
+    /**
+     * 게시글 삭제
+     * @param manualNo - 검색을 위한 게시글 고유 번호
+     * @return DefaultResponse - 삭제 관련 처리에 대한 HTTP 응답에 맞는 코드와 메시지 전달
+     * @see ""
+     */
 
     @Override
     public DefaultResponse deleteManaul(Long manualNo, Long memberNo) {
 
-        log.info("ManualService가 동작 하였습니다!");
-        log.info("deleteManaul(Long manualNo, Long memberNo)");
-        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualNo.toString()  + "," + memberNo.toString());
+        log.info("ManualService의 deleteManaul(Long manualNo, Long memberNo)가 동작 하였습니다!");
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + "메뉴얼 고유 번호 : " + manualNo.toString()  + "," + "작성자 고유 번호 : " + memberNo.toString());
 
         log.info("DB를 통해 이용자가 요청한 게시글 존재 여부와 해당 게시글의 작성자가 이용자인지 찾아 보겠습니다!");
-        Optional<Manual> dbInManualAndWriter = manualRepository.findByManualAndWriter(manualNo, memberNo);
+        Optional<Manual> dbInManualAndWriter = manualRepository.findById(manualNo);
 
         log.info("DB를 통해 찾은 해당 게시글이 존재하는 지 검증 하겠습니다!");
 
@@ -285,7 +260,6 @@ import java.util.stream.Collectors;
 
                     log.info("DB를 통해 해당 게시글 삭제를 진행 하겠습니다!");
                     manualRepository.deleteById(manualNo);
-//                    manualRepository.deleteByManualNoAndMemberNo(manual.getManualNo());
 
                     log.info("삭제가 정상 적으로 처리 되었습니다! 200 Code와 함께 \"삭제 성공\" 반환 하겠습니다!");
                     return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공");

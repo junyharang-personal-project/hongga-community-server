@@ -40,11 +40,11 @@ import java.util.List;
     // TODO - 글, 사진 (Editor 사용)
     @Lob @Column(length = 65535, nullable = false) @NotEmpty private String content;
 
-    @OneToMany(mappedBy = "manual")
-    private List<ManualImage> manualImageList = new LinkedList<>();
-
-    @OneToMany(mappedBy = "manual")
-    private List<ManualTag> manualTagList = new LinkedList<>();
+//    @OneToMany(mappedBy = "manual")
+//    private List<ManualImage> manualImageList = new LinkedList<>();
+//
+//    @OneToMany(mappedBy = "manual")
+//    private List<ManualTag> manualTagList = new LinkedList<>();
 
     @Builder public Manual(Member writer, String title, String content) {
         this.writer = writer;

@@ -43,20 +43,20 @@ public class manualControllerTest {
     @MockBean private ManualServiceImpl manualService;
     @MockBean private WebMvcConfig webMvcConfig;
 
-    @Test public void 메뉴얼_등록() throws Exception{
-        String memberNo = "1";
+//    @Test public void 메뉴얼_등록() throws Exception{
+//        String memberNo = "1";
+//
+//        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "게시물 등록 성공", null, null);
+//        given(manualService.writeManual(any(), anyLong())).willReturn(defaultResponse);
+//
+//        mockMvc.perform(post(ServiceURIVersion.NOW_VERSION+"/family/manual/{memberNo}", memberNo)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\n" +
+//                        " \"title\": \"Synology NAS 사용법\",\n" +
+//                        " \"content\": \"이 제품은 이렇게 사용 하시면 삶의 질이 향상 되요!\"\n" +
+//                        "}")).andDo(print()).andExpect(status().isOk());
 
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "게시물 등록 성공", null, null);
-        given(manualService.writeManual(any(), anyLong())).willReturn(defaultResponse);
-
-        mockMvc.perform(post(ServiceURIVersion.NOW_VERSION+"/family/manual/{memberNo}", memberNo)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\n" +
-                        " \"title\": \"Synology NAS 사용법\",\n" +
-                        " \"content\": \"이 제품은 이렇게 사용 하시면 삶의 질이 향상 되요!\"\n" +
-                        "}")).andDo(print()).andExpect(status().isOk());
-
-    } // 메뉴얼_등록() 끝
+//    } // 메뉴얼_등록() 끝
 
 //    @Test public void 게시글_전체조회() throws Exception {
 //

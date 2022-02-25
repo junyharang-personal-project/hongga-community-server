@@ -15,10 +15,11 @@ import java.util.Optional;
  * <pre>
  * <b>History:/b>
  *    주니하랑, 1.0.0, 2022.02.16 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.25 삭제 Query 작성 및 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.16 최초 작성
+ * @version 1.0.1, 2022.02.25 삭제 Query 작성 및 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -27,6 +28,12 @@ public interface ManualTagRepository extends JpaRepository<ManualTag, Long> {
 
     @Query(value = "select mt from ManualTag mt join fetch mt.manual where mt.manual.manualNo =:manualNo")
     Optional<ManualTag> findByManualNo(@Param("manualNo") Long manualNo);
+
+    /**
+     * 사진 삭제
+     * @param manualNo - 삭제 대상 게시글 고유 번호 해당 고유 번호와 매칭된 사진 삭제 처리
+     * @see ""
+     */
 
     @Modifying @Transactional
     @Query(value = "delete from ManualTag where manual.manualNo =:manualNo")

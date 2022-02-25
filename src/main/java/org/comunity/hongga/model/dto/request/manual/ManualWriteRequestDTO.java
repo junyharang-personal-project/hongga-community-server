@@ -37,20 +37,29 @@ public class ManualWriteRequestDTO {
     private Long manualNo;
 
     @NotBlank private String title;             // 메뉴얼 게시글 제목
-    @Lob @Column(length = 65535, nullable = false) @NotEmpty private String content;           // 메뉴얼 게시글 내용(글/사진)
+
+    private String writer;
+
+    @Lob @Column(length = 65535, nullable = false) @NotEmpty private String content;   // 메뉴얼 게시글 내용(글/사진)
+
+    private String uuid;
+    private String imgName;
+    private String path;
+
+    private String tagContent;
 
     private List<ManualImageDTO> imageDTOLIST = new ArrayList<>();
 
     @Column(length = 30) @Size(max = 10, message = "Tag는 10자리 이하만 등록할 수 있습니다!")
     private List<ManualTagDTO> tagDTOLIST = new ArrayList<>(10);
 
-    @Builder public Manual toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> writer) {
+    @Builder public Manual toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> member) {
 
         return Manual.builder()
-                .writer(writer.get())
                 .title(writeRequestDTO.title)
+                .writer(member.get())
                 .content(writeRequestDTO.content)
                 .build();
 
-    } // toEntity(SystemManualWriteRequestDTO writeRequestDTO, Optional<Member> member) 끝
+    } // toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> member)
 } // class 끝

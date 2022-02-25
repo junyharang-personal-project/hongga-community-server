@@ -8,6 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
+import org.comunity.hongga.model.entity.manual.Manual;
+import org.comunity.hongga.model.entity.manual.QManual;
+import org.comunity.hongga.model.entity.member.Member;
+import org.comunity.hongga.model.entity.member.QMember;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +28,7 @@ import static org.comunity.hongga.model.entity.manual.QManualTag.manualTag;
 import static org.comunity.hongga.model.entity.member.QMember.member;
 
 /**
- * Manual TAG Query dsl Repository
+ * Manual Query dsl Repository
  * <pre>
  * <b>History:/b>
  *    주니하랑, 1.0.0, 2022.02.16 최초 작성
@@ -37,10 +41,6 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
  * @version 주니하랑, 1.2.1, 2022.02.22 목록 조회 동적 Query용 Query dsl으로 다시 변환
  * @See ""
  * @see <a href=""></a>
- */
-
-/**
-@param // pageable - 페이징 처리를 위한 객체, memberNo - 회원 고유 번호
  */
 
 @RequiredArgsConstructor @Slf4j
@@ -85,6 +85,12 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     } // findAllWithFetchJoin (Pageable pageable, Long memberNo) 끝
 
+    /**
+     * 상세 조회 Method
+     * @param manualNo 상세 조회 대상 게시글 고유 번호
+     * @return Optional<List<ManualDetailResponseDTO>> 조회된 게시물 목록(Tag, Image는 N개)를 List에 담아 반환
+     */
+
     @Transactional(readOnly = true) // 트랜잭션 범위는 유지하되, 조회 기능만 남겨 조회 속도 개선을 위해 사용
     public Optional<List<ManualDetailResponseDTO>> findByManualNo(Long manualNo) {
 
@@ -113,4 +119,48 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
         return Optional.ofNullable(result);
 
     } // findByManualNo(Long manualNo) 끝
+
+    /**
+     * 게시글 수정 전 해당 게시글 조회를 위한 Method
+     * @param manualNo 특정 게시글 조회를 위한 게시글 고유 번호
+     * @return Optional<Manual> 조회 된 게시글 반환
+     */
+
+    @Transactional(readOnly = true)
+    public Optional<Manual> findByManualNo(Long manualNo, Long memberNo) {
+
+        Manual result = jpaQueryFactory
+                .select(QManual.manual)
+                .from(manual)
+                .innerJoin(manual.writer, member)
+                .where(QManual.manual.manualNo.eq(manualNo), QManual.manual.writer.memberNo.eq(memberNo))
+                .fetchOne();
+
+        return Optional.ofNullable(result);
+
+    } // findByManualNo(Long manualNo, Long memberNo)
+
+
+    /**
+     * 게시글 수정 Method
+     * @param manualUpdateRequestDTO 수정 요청 이용자가 제목, 내용에 대해 수정한 값을 담은 DTO 객체
+     * @param manualNo 수정 대상 게시글 고유 번호
+     * @param memberNo 수정 요청 이용자 고유 번호
+     */
+
+    @Transactional public void updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
+
+        log.info("ManualTagQuerydslRespository의 updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)가 호출 되었습니다!");
+
+        log.info("이용자의 요청에 따라 게시글 수정 합니다!");
+
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, manual);
+
+        updateClause.where(manual.manualNo.eq(manualNo), manual.writer.memberNo.eq(memberNo))
+                .set(manual.title, manualUpdateRequestDTO.getTitle())
+                .set(manual.content, manualUpdateRequestDTO.getContent())
+                .set(manual.updateAt, manualUpdateRequestDTO.getUpdateAt())
+                .execute();
+
+    } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
 } // class 끝

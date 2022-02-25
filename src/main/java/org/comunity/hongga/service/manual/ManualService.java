@@ -3,6 +3,7 @@ package org.comunity.hongga.service.manual;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.manual.ManualTagDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
@@ -29,10 +30,11 @@ import java.util.stream.Collectors;
  *    주니하랑, 1.2.2, 2022.02.19 수정 기능 Tag로 인한 Refactoring
  *    주니하랑, 1.3.0, 2022.02.21 사진 등록 처리로 인한 Refactoring
  *    주니하랑, 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
+ *    주니하랑, 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
  * </pre>
  *
  * @author 주니하랑
- * @version 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
+ * @version 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
  * @See ""
  * @see <a href=""></a>
  */
@@ -67,6 +69,16 @@ public interface ManualService {
      */
 
     DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch (Long manualNo);
+
+    /**
+     * 게시글 삭제
+     * @param manualNo - 수정 대상 게시글 고유 번호
+     * @param memberNo - 수정 요청 회원 고유 번호
+     * @return DefaultResponse<Long> - 대상 게시글 고유 번호 반환
+     * @see ""
+     */
+
+    DefaultResponse<Long> updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo);
 
     /**
      * 게시글 삭제

@@ -1,18 +1,24 @@
 package org.comunity.hongga.repository.manual;
 
 import com.querydsl.core.types.Projections;
+import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualDeleteResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
+import org.comunity.hongga.model.entity.manual.QManual;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.comunity.hongga.model.entity.member.QMember.member;
 
 /**
  * Manual Repository
@@ -30,35 +36,4 @@ import java.util.Optional;
  * @see <a href=""></a>
  */
 
-public interface ManualRepository extends JpaRepository<Manual, Long> {
-
-    /**
-     * 게시글 수정 전 해당 게시글 조회를 위한 Method
-     * @param manualNo 특정 게시글 조회를 위한 게시글 고유 번호
-     * @return Optional<Manual> 조회 된 게시글 반환
-     */
-
-    @Query(value = "select ma " +
-            "from Manual ma " +
-            "where ma.manualNo =:manualNo ")
-    Optional<Manual> findByManualNo(@Param("manualNo") Long manualNo);
-
-
-    /**
-     * 게시글 삭제 전 해당 게시글 조회를 위한 Method
-     * @param manualNo 해당 게시글 삭제를 위한 게시글 고유 번호
-     * @param memberNo 해당 게시글 작성자 고유 번호
-     * @return Optional<Manual> 수정 된 게시글 반환
-     */
-
-    @Query(value = "select ma " +
-                   "from Manual ma " +
-                   "left join ma.writer w " +
-                   "where ma.manualNo =:manualNo " +
-                   "and ma.writer.memberNo =:memberNo ")
-    Optional<Manual> findByManualAndWriter(@Param("manualNo")Long manualNo, @Param("memberNo") Long memberNo);
-
-
-
-//    List<Object[]> getManualWithAll(@Param("manualNo") Long manualNo);
-} // interface 끝
+public interface ManualRepository extends JpaRepository<Manual, Long> {} // interface 끝
