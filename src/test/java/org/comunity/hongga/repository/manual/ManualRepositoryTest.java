@@ -181,25 +181,27 @@ public class ManualRepositoryTest {
 
     } // 전체_게시물_조회()
 
-//@Transactional
-//@Test public void 게시물_상세_조회() {
-//
-//        Long manualNo = 3L;
-//
-//    List<Object[]> manual = manualRepository.findByManualDetail(manualNo);
-//
-//        System.out.println("====================================================");
-//
-////        if (manual.isPresent()) {
-////            ManualDetailResponseDTO result = manual.get();
-////            System.out.println(result);
-////        }
-//    } // 게시물_상세_조회() 끝
-//
+@Transactional
+@Test public void 게시물_상세_조회() {
+
+        Long manualNo = 4L;
+
+    Optional<List<ManualDetailResponseDTO>> dbFindDetailManual = manualQuerydslRepository.findByManualNo(manualNo);
+
+        System.out.println("====================================================");
+
+        if (dbFindDetailManual.isPresent()) {
+            List<ManualDetailResponseDTO> result = dbFindDetailManual.get();
+
+            result.forEach((responseDTO) -> System.out.println(result));
+
+        } // if (dbFindDetailManual.isPresent()) 끝
+    } // 게시물_상세_조회() 끝
+
     @Test public void 게시물_수정() {
 
         // given
-        Optional<Manual> result = manualQuerydslRepository.findByManualNo(11L, 13L);
+        Optional<Manual> result = manualQuerydslRepository.findByManualNo(9L, 11L);
 
         if (result.isEmpty()) {
             System.out.println("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
@@ -219,19 +221,25 @@ public class ManualRepositoryTest {
 
     } // 게시물_수정() 끝
 
-//    @Test public void 게시글_삭제() {
-//
-//        // given
-//        Optional<Manual> result = manualQuerydslRepository.findByManualNo(98L, 3L);
-//
-//        if (result.isEmpty()) {
-//            System.out.println("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
-//        } // if (result.isEmpty()) 끝
-//
-//        // when
-//        manualRepository.deleteById(98L);
-//
-//
-//    } // 게시글_삭제() 끝
+    @Test public void 게시글_삭제() {
 
+        Long manualNo = 10L;
+
+        // given
+        Optional<Manual> result = manualRepository.findById(manualNo);
+
+        if (result.isEmpty()) {
+            System.out.println("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
+        } // if (result.isEmpty()) 끝
+
+        // when
+        System.out.println("DB를 통해 해당 게시글의 관계 맺어진 사진들을 먼저 모두 삭제 하겠습니다!");
+        manualImageRepository.deleteByManualNo(manualNo);
+
+        System.out.println("DB를 통해 해당 게시글의 관계 맺어진 Tag들을 먼저 모두 삭제 하겠습니다!");
+        manualTagRepository.deleteByManualNo(manualNo);
+
+        manualRepository.deleteById(manualNo);
+
+    } // 게시글_삭제() 끝
 } // class 끝끝

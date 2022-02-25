@@ -9,7 +9,7 @@ import org.comunity.hongga.model.entity.member.Member;
 
 import java.time.LocalDateTime;
 
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ManualListSearchResponseDTO {
 
     private Long manualNo;
