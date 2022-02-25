@@ -8,6 +8,8 @@ import org.comunity.hongga.model.entity.member.Member;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 회원 DB 관련
@@ -37,6 +39,12 @@ import javax.validation.constraints.NotEmpty;
 
     // TODO - 글, 사진 (Editor 사용)
     @Lob @Column(length = 65535, nullable = false) @NotEmpty private String content;
+
+    @OneToMany(mappedBy = "manual")
+    private List<ManualImage> manualImageList = new LinkedList<>();
+
+    @OneToMany(mappedBy = "manual")
+    private List<ManualTag> manualTagList = new LinkedList<>();
 
     @Builder public Manual(Member writer, String title, String content) {
         this.writer = writer;

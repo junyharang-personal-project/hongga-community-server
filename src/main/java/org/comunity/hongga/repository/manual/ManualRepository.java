@@ -40,17 +40,12 @@ public interface ManualRepository extends JpaRepository<Manual, Long> {
 
     // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @Query("select m.manualNo as manualNo, m.title as title, m.createAt as createAt, m.updateAt as updateAt, m.content as content, mi.imgName as imgName, mi.path as imagePath, mi.uuid as imgUuid, mt.tagContent as tagContent " +
+    @Query("select m.manualNo as manualNo, m.title as title, m.createAt as createAt, m.updateAt as updateAt, m.content as content " +
             "from Manual m " +
             "inner join m.writer, Member w " +
-            "left outer join ManualImage mi " +
-            "on mi.manual = m " +
-            "left outer join ManualTag mt " +
-            "on mt.manual = m " +
             "where m.manualNo =:manualNo " +
-            "group by m.manualNo "
-    )
-    List<Object[]> findByManualDetail(@Param("manualNo") Long manualNo);
+            "group by m.manualNo ")
+    Optional<Manual> findByManualDetail(@Param("manualNo") Long manualNo);
 
 //    @Query(value = "SELECT m.manualNo as manualNo, m.title as title, w.nickname as nickname, m.createAt as createAt, m.updateAt as updateAt, m.content as content, mi.imgName as imgName, mi.path as imagePath, mi.uuid as imgUuid, mt.tagContent as tagContent " +
 //            "FROM Manual AS m " +

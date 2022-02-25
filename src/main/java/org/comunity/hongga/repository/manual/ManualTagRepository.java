@@ -23,7 +23,7 @@ import java.util.Optional;
 
 public interface ManualTagRepository extends JpaRepository<ManualTag, Long> {
 
-    @Query(value = "select t from ManualTag t join fetch t.manual where t.manual.manualNo =:manualNo")
+    @Query(value = "select mt from ManualTag mt join fetch mt.manual where mt.manual.manualNo =:manualNo")
     Optional<ManualTag> findByManualNo(@Param("manualNo") Long manualNo);
 
 } // interface 끝

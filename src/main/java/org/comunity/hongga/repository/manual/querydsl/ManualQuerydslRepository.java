@@ -55,6 +55,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
      * @return Page<ManualListSearchResponseDTO> 조회된 게시물 목록을 페이징 처리 하여 반환
      */
 
+    @Transactional(readOnly = true) // 트랜잭션 범위는 유지하되, 조회 기능만 남겨 조회 속도 개선을 위해 사용
     public Page<ManualListSearchResponseDTO> findAllWithMemberNickname (Pageable pageable) {    /* 전체 조회 / 페이징 처리 */
 
         log.info("ManualService에서 넘겨 받은 요청 값 확인 : " + pageable.toString());
@@ -84,58 +85,32 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     } // findAllWithFetchJoin (Pageable pageable, Long memberNo) 끝
 
-//    public Optional<ManualDetailResponseDTO> findByManualNo(Long manualNo) {
-//
-//        log.debug("ManualQuerydslRepository가 동작 하였습니다!");
-//        log.debug("메뉴얼 게시글 전체 조회 요청으로 findAllWithFetchJoin (Pageable pageable, Long memberNo)가 호출 되었습니다!");
-//
-//        log.info("ManualService에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
-//
-//        ManualDetailResponseDTO result = jpaQueryFactory
-//                .select(Projections.constructor(ManualDetailResponseDTO.class,
-//                        manual.manualNo,
-//                        manual.title,
-//                        manual.registerDate,
-//                        manual.modifyDate,
-//                        manual.writer,
-//                        manual.content,
-//
-//                        manualTag.tagContent0,
-//                        manualTag.tagContent1,
-//                        manualTag.tagContent2,
-//                        manualTag.tagContent3,
-//                        manualTag.tagContent4,
-//                        manualTag.tagContent5,
-//                        manualTag.tagContent6,
-//                        manualTag.tagContent7,
-//                        manualTag.tagContent8,
-//                        manualTag.tagContent9))
-//
-//                .from(manual)
-//                .innerJoin(manualTag)
-//                .on(manualTag.manual.manualNo.eq(manual.manualNo))
-//                .where(manual.manualNo.eq(manualNo))
-//                .fetchOne();
-//
-//        return Optional.ofNullable(result);
-//
-//    } // findByManualNo(Long manualNo) 끝
-//
-//    @Transactional public void updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
-//
-//        log.debug("ManualQuerydslRepository가 동작 하였습니다!");
-//        log.debug("메뉴얼 게시글 수정 요청으로 updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)가 호출 되었습니다!");
-//
-//        log.info("ManualService에서 넘겨 받은 수정 사항 요청 값 제목과 내용 : " + manualUpdateRequestDTO.toString() + "게시글 번호 : " + manualNo + "요청 이용자 고유 번호 " + memberNo);
-//
-//        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, manual);
-//
-//        updateClause
-//                .where(manual.manualNo.eq(manualNo), manual.writer.memberNo.eq(memberNo))
-//                .set(manual.title, manualUpdateRequestDTO.getTitle())
-//                .set(manual.content, manualUpdateRequestDTO.getContent())
-//                .execute();
-//
-//    } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
+    @Transactional(readOnly = true) // 트랜잭션 범위는 유지하되, 조회 기능만 남겨 조회 속도 개선을 위해 사용
+    public Optional<List<ManualDetailResponseDTO>> findByManualNo(Long manualNo) {
 
+        List<ManualDetailResponseDTO> result = jpaQueryFactory
+                .select(Projections.constructor(ManualDetailResponseDTO.class,
+                        manual.manualNo,
+                        manual.title,
+                        member.nickname,
+                        manual.createAt,
+                        manual.updateAt,
+                        manual.content,
+                        manualImage.uuid,
+                        manualImage.path,
+                        manualImage.imgName,
+                        manualTag.tagContent
+                ))
+                .from(manual)
+                .innerJoin(manual.writer, member)
+                .leftJoin(manualImage)
+                .on(manualImage.manual.manualNo.eq(manual.manualNo))
+                .leftJoin(manualTag)
+                .on(manualTag.manual.manualNo.eq(manual.manualNo))
+                .where(manual.manualNo.eq(manualNo))
+                .fetch();
+
+        return Optional.ofNullable(result);
+
+    } // findByManualNo(Long manualNo) 끝
 } // class 끝

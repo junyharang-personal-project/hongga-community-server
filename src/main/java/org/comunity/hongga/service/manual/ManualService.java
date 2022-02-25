@@ -110,42 +110,6 @@ public interface ManualService {
      * @see ""
      */
 
-    DefaultResponse<ManualDetailResponseDTO> manualDetailSearch (Long manualNo);
-
-    default ManualDetailResponseDTO entitiesToDTO(Manual manual, List<ManualImage> manualImageList, List<ManualTag> manualTagList) {
-
-        ManualDetailResponseDTO manualDetailResponseDTO = ManualDetailResponseDTO.builder()
-                .manualNo(manual.getManualNo())
-                .title(manual.getTitle())
-                .nickname(manual.getWriter().getNickname())
-                .createAt(manual.getCreateAt())
-                .updateAt(manual.getUpdateAt())
-                .content(manual.getContent())
-                .build();
-
-        List<ManualImageDTO> manualImageDTOList = manualImageList.stream().map(manualImage -> {
-
-            return ManualImageDTO.builder()
-                    .imgName(manualImage.getImgName())
-                    .path(manualImage.getPath())
-                    .uuid(manualImage.getUuid())
-                    .build();
-
-        }).collect(Collectors.toList());
-
-        List<ManualTagDTO> manualTagDTOS = manualTagList.stream().map(manualTag -> {
-
-            return ManualTagDTO.builder()
-                    .tagContent(manualTag.getTagContent())
-                    .build();
-
-        }).collect(Collectors.toList());
-
-        manualDetailResponseDTO.setImageDTOList(manualImageDTOList);
-        manualDetailResponseDTO.setManualTagDTOList(manualTagDTOS);
-
-        return manualDetailResponseDTO;
-
-    } // entitiesToDTO(Manual manual, List<ManualImage> manualImageList, List<ManualTag> manualTagList) 끝
+    DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch (Long manualNo);
 
 } // interface 끝

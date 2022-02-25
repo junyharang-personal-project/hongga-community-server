@@ -90,7 +90,7 @@ import java.util.List;
 
      // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @GetMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<ManualDetailResponseDTO>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
+    @GetMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<List<ManualDetailResponseDTO>>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
 
         log.info("ManualController가 동작 하였습니다!");
         log.info("manualDetailSearch (@PathVariable(\"manualNo\") Long manualNo)가 호출 되었습니다!");

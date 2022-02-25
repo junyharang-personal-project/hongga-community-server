@@ -64,40 +64,40 @@ public class MemberServiceTest {
 
     @After public void clean() { mockHttpSession.clearAttributes(); } // clean() 끝
 
-    @Test public void 회원가입() {
-
-        // given
-        String email = "test@hongga.com";
-        String password = "hong123456";
-        String name = "홍주니";
-        String nickName = "주니하랑";
-        String phoneNumber = "010-3939-4848";
-        String picture = "sdoijgoij.jpg";
-        String aboutMe = "안녕하세요! 우리 가족에게 언제나 좋은 일만 가득하길 바랍니다!";
-        boolean activated = true;
-
-        MemberSignUpRequestDTO memberSignUpRequestDTO = new MemberSignUpRequestDTO(email, password, name, nickName, phoneNumber, picture, aboutMe, activated);
-
-        Member mockMember = Member.builder()
-                .email(memberSignUpRequestDTO.getEmail())
-                .password(memberSignUpRequestDTO.getPassword())
-                .name(memberSignUpRequestDTO.getName())
-                .nickname(memberSignUpRequestDTO.getNickname())
-                .phoneNumber(memberSignUpRequestDTO.getPhoneNumber())
-                .picture(memberSignUpRequestDTO.getPicture())
-                .aboutMe(memberSignUpRequestDTO.getAboutMe())
-                .grade(MemberGrade.ROLE_GUEST)
-                .activated(memberSignUpRequestDTO.isActivated())
-                .build();
-
-        // when
-        given(memberRepository.save(any())).willReturn(mockMember);
-
-        DefaultResponse result = memberService.signUp(memberSignUpRequestDTO);
-
-        // then
-        assertThat(result.getMessage()).isEqualTo("회원가입 성공 하였습니다!");
-    } // 회원가입() 끝
+//    @Test public void 회원가입() {
+//
+//        // given
+//        String email = "test@hongga.com";
+//        String password = "hong123456";
+//        String name = "홍주니";
+//        String nickName = "주니하랑";
+//        String phoneNumber = "010-3939-4848";
+//        String picture = "sdoijgoij.jpg";
+//        String aboutMe = "안녕하세요! 우리 가족에게 언제나 좋은 일만 가득하길 바랍니다!";
+//        boolean activated = true;
+//
+//        MemberSignUpRequestDTO memberSignUpRequestDTO = new MemberSignUpRequestDTO(email, password, name, nickName, phoneNumber, picture, aboutMe, activated);
+//
+//        Member mockMember = Member.builder()
+//                .email(memberSignUpRequestDTO.getEmail())
+//                .password(memberSignUpRequestDTO.getPassword())
+//                .name(memberSignUpRequestDTO.getName())
+//                .nickname(memberSignUpRequestDTO.getNickname())
+//                .phoneNumber(memberSignUpRequestDTO.getPhoneNumber())
+//                .picture(memberSignUpRequestDTO.getPicture())
+//                .aboutMe(memberSignUpRequestDTO.getAboutMe())
+//                .grade(MemberGrade.ROLE_GUEST)
+//                .activated(memberSignUpRequestDTO.isActivated())
+//                .build();
+//
+//        // when
+//        given(memberRepository.save(any())).willReturn(mockMember);
+//
+//        DefaultResponse result = memberService.signUp(memberSignUpRequestDTO);
+//
+//        // then
+//        assertThat(result.getMessage()).isEqualTo("회원가입 성공 하였습니다!");
+//    } // 회원가입() 끝
 
     @Test public void 로그인() {
 

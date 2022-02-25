@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
+import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 사용 설명서 관련 비즈니스 로직
@@ -188,87 +190,31 @@ import java.util.Optional;
 
 
     @Override
-    public DefaultResponse<ManualDetailResponseDTO> manualDetailSearch(Long manualNo) {
+    public DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch(Long manualNo) {
 
-        List<Object[]> result = manualRepository.findByManualDetail(manualNo);
+    Optional<List<ManualDetailResponseDTO>> dbFindDetailManual = manualQuerydslRepository.findByManualNo(manualNo);
 
-        log.info("DB에서 검색 된 값 (result) : " + result.toString());
-
-        try {
-
-            log.info("DB에서 조회된 결과를 Manual 객체에 담겠습니다!");
-
-            Manual manual = (Manual) result.get(0)[0];
-
-            List<ManualImage> manualImageList = new ArrayList<>();
-
-                   result.forEach(imageArray -> {
-
-                ManualImage manualImage = (ManualImage) imageArray[1];
-
-                manualImageList.add(manualImage);
-
-            });
-
-            List<ManualTag> manualTagList = new ArrayList<>();
-
-            result.forEach(tagArray -> {
-
-                ManualTag manualTag = (ManualTag) tagArray[2];
-
-                manualTagList.add(manualTag);
-
-            });
-
-            ManualDetailResponseDTO manualDetailResponseDTO = entitiesToDTO(manual, manualImageList, manualTagList);
-
-            return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualDetailResponseDTO);
-
-        } catch (Exception e) {
-
-            log.info("DB에서 조회된 결과의 이상으로 Exception이 발생 되었습니다!");
-
-            e.printStackTrace();
-
-            log.warn("문제 내용 : " + e.getMessage());
-
-            return DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "조회 실패");
-
-        } // try-catch 끝
+    // TODO - 한 개의 게시글에 N개의 사진과 N개의 Tag가 있을 경우 여러번 게시글이 조회 되는 문제 해결 해야 함. 즉, 한 개에 게시글에 N개의 TAG와 Image 정보가 나올 수 있도록
 
 
+        log.info("DB에서 조회된 값은 다음과 같습니다! \n " +dbFindDetailManual.get().toString());
 
+
+    if (dbFindDetailManual.isEmpty()) {
+
+        log.info("DB에서 찾은 메뉴얼 게시글 상세 번호 " + manualNo + "에 대한 게시글이 조회 되지 않았습니다!");
+
+        log.info("403 CODE와 함께 \"내용 없음\" 반환 하겠습니다!");
+
+        DefaultResponse.response(HttpStatus.NOT_FOUND.value(), "내용 없음");
+
+    } // if (dbFindDetailManual.isEmpty()) 끝
+
+        return dbFindDetailManual.map(manualDetailResponseDTO -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualDetailResponseDTO))
+                .orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 실패"));
 
     } // manualDetailSearch(Long manualNo) 끝
 } // class 끝
-
-//    public DefaultResponse<List<Object[]>> manualDetailSearch(Long manualNo) {
-//
-//        // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
-//
-//        log.info("ManualService가 동작 하였습니다!");
-//        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualNo.toString());
-//        log.info("manualDetailSearch(Long manualNo)이 호출 되었습니다!");
-//
-//        log.info("manualQuerydslRepository.findByManualId(manualNo)를 호출하여 요청으로 들어온 설명서 고유 번호를 찾겠습니다!");
-////        Optional<ManualDetailResponseDTO> manualSearch = manualQuerydslRepository.findByManualNo(manualNo);
-//        List<Object[]> manualSearch = manualRepository.findByManualDetail(manualNo);
-//
-//        log.info("DB에서 찾은 자료가 존재 하는지 검증 하겠습니다!");
-//        if (manualSearch.isEmpty()) {
-//
-//            log.info("이용자가 요청한 자료의 고유 번호가 DB에 존재하지 않습니다! 200 Code와 함께 \"데이터 없음\"을 반환 하겠습니다!");
-//            return DefaultResponse.response(HttpStatus.OK.value(), "데이터 없음");
-//
-//        } else {
-//
-//            log.info("이용자가 요청한 자료의 고유 번호가 존재 함으로, 200 Code와 함께 \"조회 성공\"을 반환 하겠습니다!");
-//
-//            return manualSearch.stream().map(Manual -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", Manual))
-//                    . orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공"));
-//
-//        } // if - else (optionalManualDetailResponseDTO.isEmpty()) 끝
-//    } // manualDetailSearch(Long manualNo) 끝
 
 //    public DefaultResponse updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
 //

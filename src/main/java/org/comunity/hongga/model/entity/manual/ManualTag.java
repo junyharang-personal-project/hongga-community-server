@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
  * @see <a href=""></a>
  */
 
-@Getter @Builder @NoArgsConstructor @AllArgsConstructor @Slf4j @ToString(exclude = "manual")
+@Getter @NoArgsConstructor @AllArgsConstructor @Slf4j @ToString(exclude = "manual")
 @Entity @Table(name = "tbl_manual_tag") public class ManualTag {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,14 @@ import javax.validation.constraints.Size;
 
     @Column(length = 30) @Size(max = 10, message = "Tag는 10자리 이하만 등록할 수 있습니다!")
     private String tagContent;
+
+    @Builder
+    public ManualTag(Manual manual, String tagContent) {
+
+        this.manual = manual;
+        this.tagContent = tagContent;
+
+    } // 생성자 끝
 
 
 //    public void changeTag(String tagContent0, String tagContent1, String tagContent2, String tagContent3, String tagContent4, String tagContent5, String tagContent6, String tagContent7, String tagContent8, String tagContent9) {
