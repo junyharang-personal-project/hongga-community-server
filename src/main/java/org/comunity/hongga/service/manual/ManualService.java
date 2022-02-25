@@ -51,7 +51,6 @@ public interface ManualService {
     DefaultResponse<Long> writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo);
 
 
-
     /**
      * 전체 조회 (목록 조회)
      * @param pageable - Paging 처리를 위한 객체
@@ -88,65 +87,5 @@ public interface ManualService {
      */
 
     DefaultResponse deleteManaul(Long manualNo, Long memberNo);
-
-
-    /**
-     * DTO 객체 Entity 객체 변환기
-     * @param manualWriteRequestDTO - 게시글 작성 내용을 담은 DTO 객체
-     * @return Map<String, Object> - 게시글과 Image, Tag 등 여러 내용을 담아 반환 하기 위한 Map
-     * @see ""
-     */
-
-    default Map<String, Object> dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) {
-
-        HashMap<String, Object> entityMap = new HashMap<>();
-
-        Manual manual = Manual.builder()
-                .title(manualWriteRequestDTO.getTitle())
-                .content(manualWriteRequestDTO.getContent())
-                .build();
-
-        entityMap.put("manual", manual);
-
-        List<ManualImageDTO> imageDTOLIST = manualWriteRequestDTO.getImageDTOLIST();
-
-        // MovieImageDTO 처리
-        if (imageDTOLIST != null && imageDTOLIST.size() > 0) {
-
-            List<ManualImage> manualImageList = imageDTOLIST.stream().map(manualImageDTO -> {
-
-                return ManualImage.builder()
-                        .path(manualImageDTO.getPath())
-                        .imgName(manualImageDTO.getImgName())
-                        .uuid(manualImageDTO.getUuid())
-                        .manual(manual)
-                        .build();
-
-            }).collect(Collectors.toList());
-
-            entityMap.put("imgList", manualImageList);
-
-        } // if (imageDTOLIST != null && imageDTOLIST.size() > 0) 끝
-
-        List<ManualTagDTO> tagDTOLIST = manualWriteRequestDTO.getTagDTOLIST();
-
-        // TagDTO 처리
-        if (tagDTOLIST != null && tagDTOLIST.size() > 0) {
-
-            List<ManualTag> manualTagList = tagDTOLIST.stream().map(manualTagDTO -> {
-
-                return ManualTag.builder()
-                        .tagContent("#"+manualTagDTO.getTagContent())       // Hash Tag 처리를 위한 문자열 # 추가
-                        .manual(manual)
-                        .build();
-
-            }).collect(Collectors.toList());
-
-            entityMap.put("tagList", manualTagList);
-
-        } // if (tagDTOLIST != null && tagDTOLIST.size() > 0) 끝
-
-        return entityMap;
-    } // dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) 끝
 
 } // interface 끝
