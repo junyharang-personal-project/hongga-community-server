@@ -5,9 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.PrimitiveIterator;
 
 /**
- * 메뉴얼 댓글 작성 기능 응답 관련 DTO
+ * 메뉴얼 댓글 작성 기능 목록 조회 응답 관련 DTO
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.26 최초 작성
@@ -20,9 +21,10 @@ import java.time.LocalDateTime;
  */
 
 @Getter @NoArgsConstructor @AllArgsConstructor
-public class ManualCommentWriterResponseDTO {
+public class ManualCommentListSearchResponseDTO {
 
     private Long no;                // 댓글 고유 번호
+    private Long manualNo;          // 게시글 고유 번호
     private String nickname;        // 작성자 별명
     private String commentContent;  // 댓글 내용
     private LocalDateTime creatAt;  // 댓글 작성일

@@ -3,13 +3,18 @@ package org.comunity.hongga.service.manual.comment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
+import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentListSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentWriterResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.manual.ManualRepository;
 import org.comunity.hongga.repository.manual.comment.ManualCommentRepository;
+import org.comunity.hongga.repository.manual.comment.querydsl.ManualCommentQuerydslRepository;
 import org.comunity.hongga.repository.member.MemberRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +25,11 @@ import java.util.Optional;
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.26 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
  *    * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.26 최초 작성
+ * @version 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -32,6 +38,7 @@ import java.util.Optional;
 @Service public class ManualCommentServiceImpl implements ManualCommentService{
 
     private final ManualCommentRepository commentRepository;
+    private final ManualCommentQuerydslRepository commentQuerydslRepository;
     private final MemberRepository memberRepository;
     private final ManualRepository manualRepository;
 
@@ -88,4 +95,36 @@ import java.util.Optional;
         return DefaultResponse.response(HttpStatus.OK.value(), "등록 성공");
 
     } // writeManualComment(ManualCommentWriteRequestDTO writeRequestDTO, Long manualNo, Long memberNo) 끝
+
+
+    /**
+     * 전체 조회 (목록 조회)
+     * @Param manualNo - 댓글의 의존 대상 게시글 고유 번호
+     * @param pageable - Paging 처리를 위한 객체
+     * @return DefaultResponse<Page<ManualCommentListSearchResponseDTO>> - DB에서 조회된 댓글 목록을 페이징 처리하여 반환
+     * @see ""
+     */
+
+    @Override
+    public DefaultResponse<Page<ManualCommentListSearchResponseDTO>> manualListSearch(Long manualNo, Pageable pageable) {
+
+        log.info("ManualCommentServiceImpl의 manualListSearch(Long manualNo, Pageable pageable)가 호출 되었습니다!");
+
+        Page<ManualCommentListSearchResponseDTO> allWithManualAndWriter = commentQuerydslRepository.findAllWithManualAndWriter(manualNo, pageable);
+
+        log.info("DB를 통해 메뉴얼 댓글 목록을 모두 조회 하겠습니다!");
+
+        log.info("조회된 결과 값 : " + allWithManualAndWriter.toString());
+
+        if (allWithManualAndWriter.getTotalElements() == 0) {
+
+            log.info("이런! DB에 해당 게시글에 댓글이 하나도 없네요!");
+
+            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "댓글 없음");
+
+        } // if (allWithManualAndWriter.getTotalElements() == 0) 끝
+
+        return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", allWithManualAndWriter, new Pagination(allWithManualAndWriter));
+
+    } // manualListSearch(Long manualNo, Pageable pageable) 끝
 } // class 끝

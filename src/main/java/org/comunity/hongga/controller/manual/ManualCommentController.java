@@ -7,8 +7,13 @@ import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentWriteRequestDTO;
+import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentListSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentWriterResponseDTO;
 import org.comunity.hongga.service.manual.comment.ManualCommentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +23,11 @@ import org.springframework.web.bind.annotation.*;
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.26 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
  *    * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.26 최초 작성
+ * @version 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -48,4 +54,19 @@ import org.springframework.web.bind.annotation.*;
 
     } // writeComment @RequestBody ManualCommentWriteRequestDTO writeRequestDTO, @PathVariable("manualNo") Long manualNo, @RequestParam("memberNo") Long memberNo) 끝
 
+    @ApiOperation(value = SwaggerApiInfo.GET_COMMENT_LIST, notes = "사용 설명서 댓글 목록 조회 서비스 입니다.")
+    @ApiParam(name = "manualNo, pageable", value = "등록할 댓글이 의존할 게시글 고유 번호, 페이징 처리를 위한 객체", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1.조회 성공 \n 2. 조회 실패 \n 3.Token Error")})
+
+    @GetMapping("/manual/comment/{manualNo}") public ResponseEntity<DefaultResponse<Page<ManualCommentListSearchResponseDTO>>> manualCommentListSearch (
+            @PathVariable("manualNo") Long manualNo,
+            @PageableDefault(sort = "no", direction = Sort.Direction.DESC)Pageable pageable) {     // 최신 댓글 내림차순으로 페이지 당 10개씩 조회
+
+        log.info("ManualCommentController의 manualCommentListSearch (@PathVariable(\"manualNo\") Long manualNo,@PageableDefault(sort = \"no\", direction = Sort.Direction.DESC)Pageable pageable)가 호출 되었습니다!");
+
+        log.info("manualListSearch(manualNo, pageable)를 호출 하겠습니다!");
+
+        return new ResponseEntity<>(commentService.manualListSearch(manualNo, pageable), HttpStatus.OK);
+
+    } // manualCommentListSearch (@PathVariable("manualNo") Long manualNo,@PageableDefault(sort = "no", direction = Sort.Direction.DESC)Pageable pageable)
 } // class 끝

@@ -54,8 +54,8 @@ public interface ManualService {
     /**
      * 전체 조회 (목록 조회)
      * @param pageable - Paging 처리를 위한 객체
-     * @return DefaultResponse<Page<Manual>> - DB에서 조회된 게시글 목록을 페이징 처리하여 반환
-     * @see "코드로 배우는 스프링 부트 웹 프로젝트 P.437"
+     * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - DB에서 조회된 게시글 목록을 페이징 처리하여 반환
+     * @see ""
      */
 
     DefaultResponse<Page<ManualListSearchResponseDTO>> manualListSearch(Pageable pageable);
@@ -70,7 +70,7 @@ public interface ManualService {
     DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch (Long manualNo);
 
     /**
-     * 게시글 삭제
+     * 게시글 수정
      * @param manualNo - 수정 대상 게시글 고유 번호
      * @param memberNo - 수정 요청 회원 고유 번호
      * @return DefaultResponse<Long> - 대상 게시글 고유 번호 반환
