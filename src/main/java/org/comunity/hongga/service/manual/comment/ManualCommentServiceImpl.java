@@ -29,10 +29,11 @@ import java.util.Optional;
  *    주니하랑, 1.0.0, 2022.02.26 최초 작성
  *    주니하랑, 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
  *    주니하랑, 1.0.2, 2022.02.26 댓글 수정 기능 구현
+ *    주니하랑, 1.0.3, 2022.02.26 댓글 삭제 기능 구현
  *    * </pre>
  *
  * @author 주니하랑
- * @version 1.0.2, 2022.02.26 댓글 수정 기능 구현
+ * @version 1.0.3, 2022.02.26 댓글 삭제 기능 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -218,8 +219,10 @@ import java.util.Optional;
 
                     commentQuerydslRepository.deleteByManualCommentNo(manualComment.getManualCommentNo(), manualComment.getWriter().getMemberNo());
 
+                    log.info("삭제가 완료 되었습니다! \n 200 Code와 함께 \"삭제 성공\" 반환 하겠습니다!");
+
                     return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공", manualCommentNo);
 
                 }).orElseGet(() -> DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "삭제 실패"));
-    }
+    } // deleteManualComment(Long manualNo, Long manualCommentNo, Long memberNo) 끝
 } // class 끝
