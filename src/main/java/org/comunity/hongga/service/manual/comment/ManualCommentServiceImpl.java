@@ -28,10 +28,11 @@ import java.util.Optional;
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.26 최초 작성
  *    주니하랑, 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
+ *    주니하랑, 1.0.2, 2022.02.26 댓글 수정 기능 구현
  *    * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
+ * @version 1.0.2, 2022.02.26 댓글 수정 기능 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -149,7 +150,7 @@ import java.util.Optional;
 
         Optional<ManualComment> dbInComment = commentQuerydslRepository.findByManualCommentId(manualCommentNo);
 
-        log.info("DB에서 조회된 결과 값 : " + dbInComment.get().toString());
+        log.info("DB에서 조회된 결과 값 : " + dbInComment.get());
 
         if (dbInComment.isEmpty()) {
 
@@ -177,5 +178,48 @@ import java.util.Optional;
 
                 }).orElseGet(() -> DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "수정 실패", manualCommentNo));
 
-    } // updateManualComment(ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO, Long manualNo, Long manualCommentNo, Long memberNo) 끝
+    } // updateManualComment(ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO, Long manualNo, Long manualCommentNo, Long memberNo) 끝제
+
+    /**
+     * 댓글 삭제
+     * @param manualNo - 댓글이 의존된 게시글 고유 번호
+     * @param manualCommentNo - 삭제 대상 댓글 고유 번호
+     * @param memberNo - 삭제 요청 이용자의 고유 번호
+     * @return DefaultRespons<Long> - HTTP 응답 처리 및 댓글 수정 처리에 대한 댓글 고유 번호 반환
+     * @see ""
+     */
+
+    @Override
+    public DefaultResponse<Long> deleteManualComment(Long manualNo, Long manualCommentNo, Long memberNo) {
+
+        log.info("ManualCommentServiceImpl의 deleteManualComment(Long manualNo, Long manualCommentNo, Long memberNo)");
+        log.info("DB에서 이용자가 수정 요청한 댓글이 존재하는지 찾아 보겠습니다!");
+
+        Optional<ManualComment> dbInComment = commentQuerydslRepository.findByManualCommentId(manualCommentNo);
+
+        log.info("DB에서 조회된 결과 값 : " + dbInComment.get());
+
+        if (dbInComment.isEmpty()) {
+
+            log.info("이용자가 삭제 요청한 댓글이 DB에 존재하지 않습니다!");
+            log.info("204 Code와 함께 \"댓글 없음\" 반환 하겠습니다!");
+
+            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "댓글 없음");
+
+        } // if (dbInComment.isEmpty()) 끝
+
+        log.info("DB에서 찾은 댓글 값이 매개 변수 중 게시글 고유 번호, 댓글 고유 번호, 삭제 요청자 고유 번호와 일치하는지 검사 하겠습니다!");
+
+        return dbInComment.filter(manualComment -> manualComment.getManual().getManualNo().equals(manualNo))
+                          .filter(manualComment -> manualComment.getWriter().getMemberNo().equals(memberNo))
+                .map(manualComment -> {
+
+                    log.info("DB에서 찾은 댓글 값이 매개 변수 내용과 일치 합니다! DB에 수정 요청을 하겠습니다!");
+
+                    commentQuerydslRepository.deleteByManualCommentNo(manualComment.getManualCommentNo(), manualComment.getWriter().getMemberNo());
+
+                    return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공", manualCommentNo);
+
+                }).orElseGet(() -> DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "삭제 실패"));
+    }
 } // class 끝

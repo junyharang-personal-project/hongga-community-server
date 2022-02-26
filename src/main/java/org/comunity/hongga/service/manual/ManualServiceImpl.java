@@ -230,7 +230,7 @@ import java.util.stream.Collectors;
      */
 
     @Override
-    public DefaultResponse deleteManaul(Long manualNo, Long memberNo) {
+    public DefaultResponse<Long> deleteManaul(Long manualNo, Long memberNo) {
 
         log.info("ManualService의 deleteManaul(Long manualNo, Long memberNo)가 동작 하였습니다!");
         log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + "메뉴얼 고유 번호 : " + manualNo.toString()  + "," + "작성자 고유 번호 : " + memberNo.toString());
@@ -262,7 +262,7 @@ import java.util.stream.Collectors;
                     manualRepository.deleteById(manualNo);
 
                     log.info("삭제가 정상 적으로 처리 되었습니다! 200 Code와 함께 \"삭제 성공\" 반환 하겠습니다!");
-                    return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공");
+                    return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공", manualNo);
 
                 }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "삭제 실패"));
 

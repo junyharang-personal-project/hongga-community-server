@@ -1,5 +1,6 @@
 package org.comunity.hongga.model.dto.response.manual;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
  * @see <a href=""></a>
  */
 
-@Data @NoArgsConstructor @Builder
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ManualDeleteResponseDTO {
 
     private Long manualNo;
@@ -34,20 +35,4 @@ public class ManualDeleteResponseDTO {
     private String imgName;
     private String tagContent;
 
-
-
-    public ManualDeleteResponseDTO(Long manualNo, String title, Member member, LocalDateTime createAt, LocalDateTime updateAt, String content, String imageUuid, String imagePath, String imgName, String tagContent) {
-
-        this.manualNo = manualNo;
-        this.title = title;
-        this.writer = member;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
-        this.content = content;
-        this.imageUuid = imageUuid;
-        this.imagePath = imagePath;
-        this.imgName = imgName;
-        this.tagContent = tagContent;
-
-    } // 생성자 끝
 } // class 끝
