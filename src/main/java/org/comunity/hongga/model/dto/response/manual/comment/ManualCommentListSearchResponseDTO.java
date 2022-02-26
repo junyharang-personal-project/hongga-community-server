@@ -23,7 +23,7 @@ import java.util.PrimitiveIterator;
 @Getter @NoArgsConstructor @AllArgsConstructor
 public class ManualCommentListSearchResponseDTO {
 
-    private Long no;                // 댓글 고유 번호
+    private Long manualCommentNo;                // 댓글 고유 번호
     private Long manualNo;          // 게시글 고유 번호
     private String nickname;        // 작성자 별명
     private String commentContent;  // 댓글 내용

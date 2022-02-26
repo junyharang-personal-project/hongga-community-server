@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
+import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentListSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentWriterResponseDTO;
@@ -17,6 +18,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * 메뉴얼 댓글 Router
@@ -69,4 +72,22 @@ import org.springframework.web.bind.annotation.*;
         return new ResponseEntity<>(commentService.manualListSearch(manualNo, pageable), HttpStatus.OK);
 
     } // manualCommentListSearch (@PathVariable("manualNo") Long manualNo,@PageableDefault(sort = "no", direction = Sort.Direction.DESC)Pageable pageable)
+
+    @ApiOperation(value = SwaggerApiInfo.MODIFY_POSTS, notes = "사용 설명서 댓글 수정 서비스 입니다.")
+    @ApiParam(name = "manualNo, pageable", value = "등록할 댓글이 의존할 게시글 고유 번호, 페이징 처리를 위한 객체", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1.조회 성공 \n 2. 조회 실패 \n 3.Token Error")})
+
+    @PatchMapping("/manual/comment/{manualNo}") public ResponseEntity<DefaultResponse<Long>> updateManualComment (
+            @PathVariable("manualNo") Long manualNo,
+            @RequestParam("manualCommentNo") Long manualCommentNo,
+            @RequestParam("memberNo") Long memberNo,
+            @Valid @RequestBody ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO) {
+
+        log.info("ManualCommentController의 updateManualComment (@PathVariable(\"manualNo\") Long ManualNo, @RequestParam(\"manualCommentNo\") Long manualCommentNo,@RequestParam(\"memberNo\") Long memberNo, @Valid @RequestBody ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO)가 호출 되었습니다!");
+
+        log.info("manualListSearch(manualNo, pageable)를 호출 하겠습니다!");
+
+        return new ResponseEntity<>(commentService.updateManualComment(manualCommentUpdateRequestDTO, manualNo, manualCommentNo, memberNo), HttpStatus.OK);
+
+    } // updateManualComment (@PathVariable("manualNo") Long ManualNo, @RequestParam("manualCommentNo") Long manualCommentNo,@RequestParam("memberNo") Long memberNo, @Valid @RequestBody ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO) 끝
 } // class 끝

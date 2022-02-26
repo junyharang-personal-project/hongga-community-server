@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
+import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentListSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentWriterResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
+import org.comunity.hongga.model.entity.manual.comment.ManualComment;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.manual.ManualRepository;
 import org.comunity.hongga.repository.manual.comment.ManualCommentRepository;
@@ -126,5 +128,54 @@ import java.util.Optional;
 
         return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", allWithManualAndWriter, new Pagination(allWithManualAndWriter));
 
-    } // manualListSearch(Long manualNo, Pageable pageable) 끝
+    } // manualListSearch(Long manualNo, Pageable pageable) 끝환
+
+
+    /**
+     * 댓글 수정
+     * @param manualCommentUpdateRequestDTO - 수정할 내용이 담긴 DTO
+     * @param manualNo - 댓글이 의존된 게시글 고유 번호
+     * @param manualCommentNo - 수정 대상 댓글 고유 번호
+     * @param memberNo - 수정 요청 이용자의 고유 번호
+     * @return DefaultResponse<Long> - HTTP 응답 처리 및 댓글 수정 처리에 대한 댓글 고유 번호 반환
+     * @see ""
+     */
+
+    @Override
+    public DefaultResponse<Long> updateManualComment(ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO, Long manualNo, Long manualCommentNo, Long memberNo) {
+
+        log.info("ManualCommentServiceImpl의 updateManualComment(ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO, Long manualNo, Long manualCommentNo, Long memberNo)");
+        log.info("DB에서 이용자가 수정 요청한 댓글이 존재하는지 찾아 보겠습니다!");
+
+        Optional<ManualComment> dbInComment = commentQuerydslRepository.findByManualCommentId(manualCommentNo);
+
+        log.info("DB에서 조회된 결과 값 : " + dbInComment.get().toString());
+
+        if (dbInComment.isEmpty()) {
+
+            log.info("이용자가 수정 요청한 댓글이 DB에 존재하지 않습니다!");
+            log.info("204 Code와 함께 \"댓글 없음\" 반환 하겠습니다!");
+
+            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "댓글 없음", manualCommentNo);
+
+        } // if (dbInComment.isEmpty()) 끝
+
+        log.info("DB에서 찾은 댓글 값이 매개 변수 중 게시글 고유 번호, 댓글 고유 번호, 수정 요청자 고유 번호와 일치하는지 검사하겠습니다!");
+
+        return dbInComment.filter(manualComment -> manualComment.getManual().getManualNo().equals(manualNo))
+                          .filter(manualComment -> manualComment.getManualCommentNo().equals(manualCommentNo))
+                          .filter(manualComment -> manualComment.getWriter().getMemberNo().equals(memberNo))
+                .map(manualComment -> {
+
+                    log.info("DB에서 찾은 댓글 값이 매개 변수 내용과 일치 합니다! DB에 수정 요청을 하겠습니다!");
+
+                    commentQuerydslRepository.updateManualCommnet(manualCommentUpdateRequestDTO, manualComment.getManualCommentNo(), manualComment.getWriter().getMemberNo());
+
+                    log.info("수정이 완료 되었습니다! \n 200 Code와 함께 \"수정 성공\" 반환 하겠습니다!");
+
+                    return DefaultResponse.response(HttpStatus.OK.value(), "수정 성공", manualCommentNo);
+
+                }).orElseGet(() -> DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "수정 실패", manualCommentNo));
+
+    } // updateManualComment(ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO, Long manualNo, Long manualCommentNo, Long memberNo) 끝
 } // class 끝

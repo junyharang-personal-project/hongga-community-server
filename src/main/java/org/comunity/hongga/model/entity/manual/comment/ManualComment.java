@@ -31,7 +31,7 @@ import java.util.Objects;
 @Entity public class ManualComment extends BaseDateTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long no;
+    private Long manualCommentNo;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Manual.class) @JoinColumn(name = "manual_no")
     private Manual manual;
@@ -48,23 +48,5 @@ import java.util.Objects;
         this.commentContent = commentContent;
 
     } // 생성자 끝
-
-    public ManualComment updateComment (ManualCommentUpdateRequestDTO updateRequestDTO) {
-
-        log.info("ManualReply의 updateReply (ManualReplyUpdateRequestDTO updateRequestDTO)이 호출 되었습니다!");
-
-        if (!Objects.equals(this.commentContent, updateRequestDTO.getCommentContent())) {
-
-            log.info("이용자가 댓글 수정을 요청했으며, DB에 저장되어 있는 댓글 내용과 달라 변경 하도록 하겠습니다!");
-
-            this.commentContent = updateRequestDTO.getCommentContent();
-
-            log.info("수정이 정상적으로 완료 되었습니다!");
-
-        } // updateReply (ManualReplyUpdateRequestDTO updateRequestDTO)
-
-        return this;
-
-    } // updateReply (ManualReplyUpdateRequestDTO updateRequestDTO) 끝
 
 } // class 끝

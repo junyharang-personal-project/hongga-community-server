@@ -2,17 +2,23 @@ package org.comunity.hongga.repository.manual.comment.querydsl;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentListSearchResponseDTO;
+import org.comunity.hongga.model.entity.manual.comment.ManualComment;
+import org.comunity.hongga.model.entity.manual.comment.QManualComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.comunity.hongga.model.entity.manual.QManual.manual;
 import static org.comunity.hongga.model.entity.manual.comment.QManualComment.manualComment;
@@ -38,7 +44,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
         List<ManualCommentListSearchResponseDTO> manualCommentList = jpaQueryFactory
                 .select(Projections.constructor(ManualCommentListSearchResponseDTO.class,
-                        manualComment.no,
+                        manualComment.manualCommentNo,
                         manual.manualNo,
                         member.nickname,
                         manualComment.commentContent,
@@ -48,7 +54,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
                 .innerJoin(manualComment.writer, member)
                 .innerJoin(manualComment.manual, manual)
                 .where(manualComment.manual.manualNo.eq(manualNo))
-                .orderBy(manualComment.no.desc())
+                .orderBy(manualComment.manualCommentNo.desc())
                 .fetch();
 
         int start = (int) pageable.getOffset();
@@ -58,8 +64,33 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     } // findAllWithManualAndWriter(Long manualNo, Pageable pageable) 끝
 
+    @Transactional
+    public void updateManualCommnet(ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO, Long manualCommentNo, Long memberNo) {
 
+        log.info("ManualCommentQuerydslRepository의 manualCommentUpdateRequestDTO, String commentContent, Long memberNo)이 호출 되었습니다!");
 
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, manualComment);
 
+        updateClause
+                .where(manualComment.manualCommentNo.eq(manualCommentNo), manualComment.writer.memberNo.eq(memberNo))
+                .set(manualComment.commentContent, manualCommentUpdateRequestDTO.getCommentContent())
+                .set(manualComment.updateAt, manualCommentUpdateRequestDTO.getUpdateAt())
+                .execute();
 
+    } // updateManualCommnet(ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO, String commentContent, Long memberNo) 끝
+
+    public Optional<ManualComment> findByManualCommentId(Long manualCommentNo) {
+
+        log.info("ManualCommentQuerydslRepository의 findByManualCommentId(Long manualCommentNo)이 호출 되었습니다!");
+
+        ManualComment manualComment = jpaQueryFactory
+                .selectFrom(QManualComment.manualComment)
+                .innerJoin(QManualComment.manualComment.writer, member)
+                .fetchJoin()
+                .where(QManualComment.manualComment.manualCommentNo.eq(manualCommentNo))
+                .fetchOne();
+
+        return Optional.ofNullable(manualComment);
+
+    } // findByManualCommentId(Long manualCommentNo) 끝
 } // class 끝
