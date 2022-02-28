@@ -1,13 +1,14 @@
 package org.comunity.hongga.service.manual;
 
 import org.comunity.hongga.constant.DefaultResponse;
-import org.comunity.hongga.model.dto.request.ManualTitleSearchRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -83,10 +84,28 @@ public interface ManualService {
 
     /**
      * 제목으로 게시물 검색
-     * @param manualtitleSearchRequestDTO - 이용자가 검색 요청한 제목 값이 담긴 DTO
+     * @param title - 이용자가 검색 요청한 제목 일부분 값이 담긴 검색어
      * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
      * @see ""
      */
 
     DefaultResponse<Page<ManualListSearchResponseDTO>> titleSearch(String title, Pageable pageable);
+
+    /**
+     * 내용으로 게시물 검색
+     * @param content - 이용자가 검색 요청한 내용 일부분 값이 담긴 검색어
+     * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    DefaultResponse<Page<ManualListContentSearchResponseDTO>> contentSearch(String content, Pageable pageable);
+
+    /**
+     * 내용으로 게시물 검색
+     * @param query - 이용자가 검색 요청한 제목 혹은 내용 일부분 값이 담긴 검색어
+     * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    DefaultResponse<Page<ManualListContentSearchResponseDTO>> contentTitleSearch(String query, Pageable pageable);
 } // interface 끝

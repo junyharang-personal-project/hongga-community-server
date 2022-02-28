@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.QManual;
@@ -174,6 +175,8 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     public Page<ManualListSearchResponseDTO> findByTitle(String title, Pageable pageable) {
 
+        log.info("ManualQuerydslRepository의 findByTitle(String title, Pageable pageable)가 호출 되었습니다!");
+
         List<ManualListSearchResponseDTO> listSearchResponseDTOS = jpaQueryFactory
                 .select(Projections.constructor(ManualListSearchResponseDTO.class,
                         manual.manualNo,
@@ -193,4 +196,46 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
         return new PageImpl<>(listSearchResponseDTOS.subList(start, end), pageable, listSearchResponseDTOS.size());
 
     } // findByTitle(String title, Pageable pageable) 끝
+
+
+    /**
+     * 내용으로 게시물 검색
+     * @param content - 검색을 위한 게시글 고유 번호
+     * @return Page<ManualListSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    public Page<ManualListContentSearchResponseDTO> findByContent(String content, Pageable pageable) {
+
+        log.info("ManualQuerydslRepository의 findByContent(String content, Pageable pageable)가 호출 되었습니다!");
+
+        List<ManualListContentSearchResponseDTO> listSearchResponseDTOS = jpaQueryFactory
+                .select(Projections.constructor(ManualListContentSearchResponseDTO.class,
+                        manual.manualNo,
+                        manual.title,
+                        member.nickname,
+                        manual.createAt,
+                        manual.updateAt,
+                        manual.content))
+
+                .from(manual)
+                .innerJoin(manual.writer, member)
+                .where(manual.content.contains(content))
+                .fetch();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), listSearchResponseDTOS.size());
+
+        return new PageImpl<>(listSearchResponseDTOS.subList(start, end), pageable, listSearchResponseDTOS.size());
+
+    } // findByContent(String content, Pageable pageable) 끝
+
+
+    /**
+     * 검색+내용으로 게시물 검색
+     * @param content - 검색을 위한 게시글 고유 번호
+     * @return Page<ManualListSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
 } // class 끝

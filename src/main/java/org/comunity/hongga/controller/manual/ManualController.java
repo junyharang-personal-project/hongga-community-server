@@ -6,11 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
-import org.comunity.hongga.model.dto.request.ManualTitleSearchRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDeleteResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.service.manual.ManualServiceImpl;
 import org.springframework.data.domain.Page;
@@ -145,10 +145,10 @@ import java.util.List;
 
 
     @ApiOperation(value = SwaggerApiInfo.TITLE_SEARCH, notes = "사용 설명서 제목 검색 서비스 입니다.")
-    @ApiParam(name = "manualSearchRequestDTO, pageable", value = "이용자가 검색을 위해 입력한 게시글 제목과 Paging 처리를 위한 객체 입니다.", readOnly = true)
+    @ApiParam(name = "title, pageable", value = "이용자가 검색을 위해 입력한 게시글 제목과 Paging 처리를 위한 객체 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
 
-    @GetMapping("/manual/search") public ResponseEntity<DefaultResponse<Page<ManualListSearchResponseDTO>>> manualTitleSearch (
+    @GetMapping("/manual/title-search") public ResponseEntity<DefaultResponse<Page<ManualListSearchResponseDTO>>> manualTitleSearch (
             @RequestParam("query") String title,
             @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
 
@@ -160,4 +160,40 @@ import java.util.List;
         return new ResponseEntity<>(manualService.titleSearch(title, pageable), HttpStatus.OK);
 
     } // manualTitleSearch (@RequestParam("query") String title, @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 끝
+
+
+    @ApiOperation(value = SwaggerApiInfo.CONTENT_SEARCH, notes = "사용 설명서 내용 검색 서비스 입니다.")
+    @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 내용과 Paging 처리를 위한 객체 입니다.", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
+
+    @GetMapping("/manual/content-search") public ResponseEntity<DefaultResponse<Page<ManualListContentSearchResponseDTO>>> manualContentSearch (
+            @RequestParam("query") String content,
+            @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
+
+        log.info("ManualController가 동작 하였습니다!");
+        log.info("manualTitleSearch (@RequestParam(\"query\") String content, @PageableDefault (sort = \"manualNo\", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 가 호출 되었습니다!");
+
+        log.info("요청으로 들어온 검색 요청 제목 " + content + "\n 요청 페이징 처리 : " + pageable.toString());
+
+        return new ResponseEntity<>(manualService.contentSearch(content, pageable), HttpStatus.OK);
+
+    } // manualTitleSearch (@RequestParam("query") String content, @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 끝
+
+
+    @ApiOperation(value = SwaggerApiInfo.TITLE_CONTENT_SEARCH, notes = "사용 설명서 제목+내용 검색 서비스 입니다.")
+    @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 내용과 Paging 처리를 위한 객체 입니다.", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
+
+    @GetMapping("/manual/content-search") public ResponseEntity<DefaultResponse<Page<ManualListContentSearchResponseDTO>>> manualTitleAndContentSearch (
+            @RequestParam("query") String query,
+            @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
+
+        log.info("ManualController가 동작 하였습니다!");
+        log.info("manualTitleSearch (@RequestParam(\"query\") String query, @PageableDefault (sort = \"manualNo\", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 가 호출 되었습니다!");
+
+        log.info("요청으로 들어온 검색 요청 제목 " + query + "\n 요청 페이징 처리 : " + pageable.toString());
+
+        return new ResponseEntity<>(manualService.contentTitleSearch(query, pageable), HttpStatus.OK);
+
+    } // manualTitleSearch (@RequestParam("query") String content, @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 끝
 } // class 끝
