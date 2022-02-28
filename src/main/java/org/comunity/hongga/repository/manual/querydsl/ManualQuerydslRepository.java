@@ -9,6 +9,7 @@ import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListTagContentSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.QManual;
 import org.comunity.hongga.model.entity.member.Member;
@@ -36,10 +37,11 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
  *    주니하랑, 1.1.0, 2022.02.18 목록 조회 동적 Query용 Query dsl 대신 JPQL로 변경(주석 처리)
  *    주니하랑, 1.2.0, 2022.02.20 Tag 동시 처리를 위한 수정 관련 기능 추가
  *    주니하랑, 1.2.1, 2022.02.22 목록 조회 동적 Query용 Query dsl으로 다시 변환
+ *    주니하랑, 1.3.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.2.1, 2022.02.22 목록 조회 동적 Query용 Query dsl으로 다시 변환
+ * @version 주니하랑, 1.3.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -237,10 +239,9 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
     /**
      * 제목 + 내용으로 게시물 검색
      * @param query - 이용자가 검색 요청한 제목 혹은 내용 일부분 검색어
-     * @return Page<ManualListSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @return Page<ManualListContentSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
      * @see ""
      */
-
 
     public Page<ManualListContentSearchResponseDTO> findByTitleOrContent(String query, Pageable pageable) {
 
@@ -258,7 +259,8 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
                 .from(manual)
                 .innerJoin(manual.writer, member)
-                .where(manual.title.containsIgnoreCase(query).or(manual.content.containsIgnoreCase(query)))
+                .where(manual.title.containsIgnoreCase(query)
+                        .or(manual.content.containsIgnoreCase(query)))
                 .orderBy(manual.manualNo.desc())
                 .fetch();
 
@@ -269,4 +271,40 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     } // findByTitleOrContent(String query, Pageable pageable)
 
+
+    /**
+     * TAG로 게시물 검색
+     * @param tagContent - 이용자가 검색 요청한 제목 혹은 내용 일부분 검색어
+     * @return Page<ManualListTagContentSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    public Page<ManualListTagContentSearchResponseDTO> findByTag(String tagContent, Pageable pageable) {
+
+        log.info("ManualQuerydslRepository의 findByTag(String tagContent, Pageable pageable)가 호출 되었습니다!");
+
+        List<ManualListTagContentSearchResponseDTO> listTagContentSearchResponseDTOS = jpaQueryFactory
+                .select(Projections.constructor(ManualListTagContentSearchResponseDTO.class,
+                        manual.manualNo,
+                        manual.title,
+                        member.nickname,
+                        manual.createAt,
+                        manual.updateAt,
+                        manual.content,
+                        manualTag.tagContent))
+
+                .from(manual)
+                .innerJoin(manual.writer, member)
+                .join(manualTag)
+                .on(manualTag.manual.manualNo.eq(manual.manualNo))
+                .where(manualTag.tagContent.containsIgnoreCase(tagContent))
+                .orderBy(manual.manualNo.desc())
+                .fetch();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), listTagContentSearchResponseDTOS.size());
+
+        return new PageImpl<>(listTagContentSearchResponseDTOS.subList(start, end), pageable, listTagContentSearchResponseDTOS.size());
+
+    } // findByTag(String tagContent, Pageable pageable) 끝
 } // class 끝

@@ -8,10 +8,7 @@ import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualDeleteResponseDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.*;
 import org.comunity.hongga.service.manual.ManualServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,10 +34,11 @@ import java.util.List;
  *    주니하랑, 1.2.4, 2022.02.20 회원 등급 추가 및 RESTFul API에 맞춘 URI 수정
  *    주니하랑, 1.3.0, 2022.02.21 사진 등록으로 인한 Refactoring
  *    주니하랑, 1.3.1, 2022.02.28 제목 검색 기능 구현
+ *    주니하랑, 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.3.1, 2022.02.28 제목 검색 기능 구현
+ * @version 주니하랑, 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -181,7 +179,7 @@ import java.util.List;
 
 
     @ApiOperation(value = SwaggerApiInfo.TITLE_CONTENT_SEARCH, notes = "사용 설명서 제목+내용 검색 서비스 입니다.")
-    @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 내용과 Paging 처리를 위한 객체 입니다.", readOnly = true)
+    @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 제목 혹은 내용과 Paging 처리를 위한 객체 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
 
     @GetMapping("/manual/query-search") public ResponseEntity<DefaultResponse<Page<ManualListContentSearchResponseDTO>>> manualTitleAndContentSearch (
@@ -196,4 +194,22 @@ import java.util.List;
         return new ResponseEntity<>(manualService.contentTitleSearch(query, pageable), HttpStatus.OK);
 
     } // manualTitleSearch (@RequestParam("query") String content, @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 끝
+
+
+    @ApiOperation(value = SwaggerApiInfo.TAG_SEARCH, notes = "사용 설명서 TAG 검색 서비스 입니다.")
+    @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 TAG와 Paging 처리를 위한 객체 입니다.", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
+
+    @GetMapping("/manual/tag-search") public ResponseEntity<DefaultResponse<Page<ManualListTagContentSearchResponseDTO>>> manualTagSearch (
+            @RequestParam("query") String tagContent,
+            @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
+
+        log.info("ManualController가 동작 하였습니다!");
+        log.info("manualTag (@RequestParam(\"query\") String content, @PageableDefault (sort = \"manualNo\", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 가 호출 되었습니다!");
+
+        log.info("요청으로 들어온 검색 TAG 내 " + tagContent + "\n 요청 페이징 처리 : " + pageable.toString());
+
+        return new ResponseEntity<>(manualService.contentTagSearch(tagContent, pageable), HttpStatus.OK);
+
+    } // manualTag (@RequestParam("query") String content, @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 끝
 } // class 끝

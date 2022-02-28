@@ -9,6 +9,7 @@ import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListTagContentSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualImage;
 import org.comunity.hongga.model.entity.manual.ManualTag;
@@ -42,10 +43,11 @@ import java.util.Optional;
  *    주니하랑, 1.3.0, 2022.02.21 사진 등록 처리로 인한 Refactoring
  *    주니하랑, 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
  *    주니하랑, 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
+ *    주니하랑, 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
+ * @version 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -284,7 +286,7 @@ import java.util.Optional;
 
         if (listSearchResponseDTOS.isEmpty()) {
 
-            log.info("이용자가 검색한 제목의 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
+            log.info("이용자가 검색한 제목의 일치하는 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
 
             return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
 
@@ -314,7 +316,7 @@ import java.util.Optional;
 
         if (listSearchResponseDTOS.isEmpty()) {
 
-            log.info("이용자가 검색한 내용의 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
+            log.info("이용자가 검색한 내용의 일치하는 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
 
             return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
 
@@ -344,7 +346,7 @@ import java.util.Optional;
 
         if (listSearchResponseDTOS.isEmpty()) {
 
-            log.info("이용자가 검색한 제목 혹은 내용의 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
+            log.info("이용자가 검색한 제목 혹은 내용의 일치하는 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
 
             return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
 
@@ -355,5 +357,36 @@ import java.util.Optional;
         return DefaultResponse.response(HttpStatus.OK.value(), "검생 성공", listSearchResponseDTOS);
 
     } // contentTitleSearch(String query, Pageable pageable) 끝
+
+
+    /**
+     * TAG로 게시물 검색
+     * @param tagContent - 이용자가 검색 요청한 제목 혹은 내용 일부분 검색어
+     * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    @Override
+    public DefaultResponse<Page<ManualListTagContentSearchResponseDTO>> contentTagSearch(String tagContent, Pageable pageable) {
+
+        log.info("ManualService의 contentTagSearch(String tagContent, Pageable pageable)가 동작 하였습니다!");
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + "검색 요청 글 제목 : " + tagContent  + "," + "페이징 요청 값 : " + pageable.toString());
+        log.info("DB를 통해 이용자가 요청한 게시글 존재 여부를 찾아 보겠습니다!");
+
+        Page<ManualListTagContentSearchResponseDTO> listTagContentSearchResponseDTOS = manualQuerydslRepository.findByTag(tagContent, pageable);
+
+        if (listTagContentSearchResponseDTOS.isEmpty()) {
+
+            log.info("이용자가 검색한 TAG의 일치하는 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
+
+            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
+
+        } // if (listTagContentSearchResponseDTOS.isEmpty()) 끝
+
+        log.info("이용자가 검색한 내용의 제목 혹은 게시글을 찾았습니다! 200 Code와 함께 \"검색 성공\" 반환 하겠습니다!");
+
+        return DefaultResponse.response(HttpStatus.OK.value(), "검색 성공", listTagContentSearchResponseDTOS);
+
+    } // contentTagSearch(String tagContent, Pageable pageable) 끝
 } // class 끝
 

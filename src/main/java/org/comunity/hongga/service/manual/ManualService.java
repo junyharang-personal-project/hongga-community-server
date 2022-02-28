@@ -6,6 +6,7 @@ import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
+import org.comunity.hongga.model.dto.response.manual.ManualListTagContentSearchResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
@@ -25,10 +26,11 @@ import java.util.List;
  *    주니하랑, 1.3.0, 2022.02.21 사진 등록 처리로 인한 Refactoring
  *    주니하랑, 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
  *    주니하랑, 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
+ *    주니하랑, 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
+ * @version 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -101,11 +103,20 @@ public interface ManualService {
     DefaultResponse<Page<ManualListContentSearchResponseDTO>> contentSearch(String content, Pageable pageable);
 
     /**
-     * 내용으로 게시물 검색
+     * 제목 혹은 내용으로 게시물 검색
      * @param query - 이용자가 검색 요청한 제목 혹은 내용 일부분 검색어
      * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
      * @see ""
      */
 
     DefaultResponse<Page<ManualListContentSearchResponseDTO>> contentTitleSearch(String query, Pageable pageable);
+
+    /**
+     * TAG로 게시물 검색
+     * @param tagContent - 이용자가 검색 요청한 제목 혹은 내용 일부분 검색어
+     * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    DefaultResponse<Page<ManualListTagContentSearchResponseDTO>> contentTagSearch(String tagContent, Pageable pageable);
 } // interface 끝
