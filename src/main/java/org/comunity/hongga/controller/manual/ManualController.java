@@ -184,7 +184,7 @@ import java.util.List;
     @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 내용과 Paging 처리를 위한 객체 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
 
-    @GetMapping("/manual/content-search") public ResponseEntity<DefaultResponse<Page<ManualListContentSearchResponseDTO>>> manualTitleAndContentSearch (
+    @GetMapping("/manual/query-search") public ResponseEntity<DefaultResponse<Page<ManualListContentSearchResponseDTO>>> manualTitleAndContentSearch (
             @RequestParam("query") String query,
             @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
 

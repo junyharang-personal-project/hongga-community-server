@@ -168,7 +168,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     /**
      * 제목으로 게시물 검색
-     * @param title - 검색을 위한 게시글 고유 번호
+     * @param title - 이용자가 검색 요청한 제목 검색
      * @return Page<ManualListSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
      * @see ""
      */
@@ -187,7 +187,9 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
                 .from(manual)
                 .innerJoin(manual.writer, member)
-                .where(manual.title.contains(title))
+                // containsIgnoreCase 대소문자 무시하고, 검색어 입력 받기 위해 사용
+                .where(manual.title.containsIgnoreCase(title))
+                .orderBy(manual.manualNo.desc())
                 .fetch();
 
         int start = (int) pageable.getOffset();
@@ -200,7 +202,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     /**
      * 내용으로 게시물 검색
-     * @param content - 검색을 위한 게시글 고유 번호
+     * @param content - 이용자가 검색 요청한 내용 일부분 검색어
      * @return Page<ManualListSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
      * @see ""
      */
@@ -220,7 +222,8 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
                 .from(manual)
                 .innerJoin(manual.writer, member)
-                .where(manual.content.contains(content))
+                .where(manual.content.containsIgnoreCase(content))
+                .orderBy(manual.manualNo.desc())
                 .fetch();
 
         int start = (int) pageable.getOffset();
@@ -232,10 +235,38 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
 
     /**
-     * 검색+내용으로 게시물 검색
-     * @param content - 검색을 위한 게시글 고유 번호
+     * 제목 + 내용으로 게시물 검색
+     * @param query - 이용자가 검색 요청한 제목 혹은 내용 일부분 검색어
      * @return Page<ManualListSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
      * @see ""
      */
+
+
+    public Page<ManualListContentSearchResponseDTO> findByTitleOrContent(String query, Pageable pageable) {
+
+        log.info("ManualQuerydslRepository의 findByTitleOrContent(String query, Pageable pageable)가 호출 되었습니다!");
+
+        List<ManualListContentSearchResponseDTO> listContentSearchResponseDTOS = jpaQueryFactory
+                .select(Projections.constructor(ManualListContentSearchResponseDTO.class,
+                        manual.manualNo,
+                        manual.title,
+                        member.nickname,
+                        manual.createAt,
+                        manual.updateAt,
+                        manual.content
+                ))
+
+                .from(manual)
+                .innerJoin(manual.writer, member)
+                .where(manual.title.containsIgnoreCase(query).or(manual.content.containsIgnoreCase(query)))
+                .orderBy(manual.manualNo.desc())
+                .fetch();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), listContentSearchResponseDTOS.size());
+
+        return new PageImpl<>(listContentSearchResponseDTOS.subList(start, end), pageable, listContentSearchResponseDTOS.size());
+
+    } // findByTitleOrContent(String query, Pageable pageable)
 
 } // class 끝
