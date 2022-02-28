@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
-import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
+import org.comunity.hongga.model.dto.request.ManualTitleSearchRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualDeleteResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
@@ -27,11 +26,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * 사용 설명서 관련 비즈니스 로직
@@ -167,14 +163,15 @@ import java.util.stream.Collectors;
 
         log.info("DB에서 찾은 메뉴얼 게시글 상세 번호 " + manualNo + "에 대한 게시글이 조회 되지 않았습니다!");
 
-        log.info("403 CODE와 함께 \"내용 없음\" 반환 하겠습니다!");
+        log.info("204 CODE와 함께 \"내용 없음\" 반환 하겠습니다!");
 
-        return DefaultResponse.response(HttpStatus.NOT_FOUND.value(), "내용 없음");
+        return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "내용 없음");
 
     } // if (dbFindDetailManual.isEmpty()) 끝
 
         return dbFindDetailManual.map(manualDetailResponseDTO -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualDetailResponseDTO))
-                .orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 실패"));
+        .orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "조회 실패"));
+
 
     } // manualDetailSearch(Long manualNo) 끝
 
@@ -230,7 +227,7 @@ import java.util.stream.Collectors;
      */
 
     @Override
-    public DefaultResponse deleteManaul(Long manualNo, Long memberNo) {
+    public DefaultResponse deleteManual(Long manualNo, Long memberNo) {
 
         log.info("ManualService의 deleteManaul(Long manualNo, Long memberNo)가 동작 하였습니다!");
         log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + "메뉴얼 고유 번호 : " + manualNo.toString()  + "," + "작성자 고유 번호 : " + memberNo.toString());
@@ -267,5 +264,33 @@ import java.util.stream.Collectors;
                 }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "삭제 실패"));
 
     } // deleteManaul(Long manualNo, Long memberNo) 끝
+
+
+    /**
+     * 제목으로 게시물 검색
+     * @param manualtitleSearchRequestDTO - 이용자가 검색 요청한 제목 값이 담긴 DTO
+     * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    @Override
+    public DefaultResponse<Page<ManualListSearchResponseDTO>> titleSearch(String title, Pageable pageable) {
+
+        log.info("ManualService의 titleSearch(String title, Pageable pageable)가 동작 하였습니다!");
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + "검색 요청 글 제목 : " + title  + "," + "페이징 요청 값 : " + pageable.toString());
+        log.info("DB를 통해 이용자가 요청한 게시글 존재 여부를 찾아 보겠습니다!");
+
+        Page<ManualListSearchResponseDTO> listSearchResponseDTOS = manualQuerydslRepository.findByTitle(title, pageable);
+
+        if (listSearchResponseDTOS.isEmpty()) {
+
+            log.info("이용자가 요청한 게시글이 존재하지 않습니다!");
+
+            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
+
+        } // if (listSearchResponseDTOS.isEmpty()) 끝
+
+        return DefaultResponse.response(HttpStatus.OK.value(), "검색 성공", listSearchResponseDTOS);
+    } // titleSearch(String title, Pageable pageable) 끝
 } // class 끝
 

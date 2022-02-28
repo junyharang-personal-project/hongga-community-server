@@ -163,4 +163,34 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
                 .execute();
 
     } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
+
+
+    /**
+     * 제목으로 게시물 검색
+     * @param title - 검색을 위한 게시글 고유 번호
+     * @return Page<ManualListSearchResponseDTO> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    public Page<ManualListSearchResponseDTO> findByTitle(String title, Pageable pageable) {
+
+        List<ManualListSearchResponseDTO> listSearchResponseDTOS = jpaQueryFactory
+                .select(Projections.constructor(ManualListSearchResponseDTO.class,
+                        manual.manualNo,
+                        manual.title,
+                        member.nickname,
+                        manual.createAt,
+                        manual.updateAt))
+
+                .from(manual)
+                .innerJoin(manual.writer, member)
+                .where(manual.title.contains(title))
+                .fetch();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), listSearchResponseDTOS.size());
+
+        return new PageImpl<>(listSearchResponseDTOS.subList(start, end), pageable, listSearchResponseDTOS.size());
+
+    } // findByTitle(String title, Pageable pageable) 끝
 } // class 끝

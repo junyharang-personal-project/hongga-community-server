@@ -157,7 +157,7 @@ public class ManualServiceTest {
 
         // when
         given(manualRepository.findById(manualNo)).willReturn(Optional.of(manual));
-        DefaultResponse result = manualService.deleteManaul(manualNo, 99L);
+        DefaultResponse result = manualService.deleteManual(manualNo, 99L);
 
         // then
         assertThat(result.getMessage()).isEqualTo("삭제 성공");

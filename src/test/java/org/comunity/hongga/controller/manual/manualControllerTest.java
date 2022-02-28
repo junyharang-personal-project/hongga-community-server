@@ -124,7 +124,7 @@ public class manualControllerTest {
 
         DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
 
-        given(manualService.deleteManaul(any(), anyLong())).willReturn(defaultResponse);
+        given(manualService.deleteManual(any(), anyLong())).willReturn(defaultResponse);
 
         mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
 

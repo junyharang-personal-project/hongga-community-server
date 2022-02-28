@@ -5,11 +5,12 @@ package org.comunity.hongga.constant;
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.08 최초 작성
+ *    주니하랑, 1.0.1, 2022.02.28 검색 기능 구현을 위해 변수 추가
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.08 최초 작성
- * @See "코드로 배우는 스프링 부트 웹 프로젝트"
+ * @version 1.0.1, 2022.02.28 검색 기능 구현을 위해 변수 추가
+ * @See ""
  * @see <a href=""></a>
  */
 
@@ -22,6 +23,10 @@ public interface SwaggerApiInfo {
     String DELETE_POSTS = "게시글 삭제";
     String MODIFY_POSTS = "게시글 수정";
     String POST_LIKE = "게시글 좋아요";
+    String TITLE_SEARCH = "게시글 제목 검색";
+    String CONTENT_SEARCH = "게시글 내용 검색";
+    String TITLE_CONTENT_SEARCH = "게시글 제목+내용 검색";
+    String TAG_SEARCH = "게시글 TAG 검색";
 
     String COMMENT = "댓글 서비스";
     String WRITE_COMMENT = "댓글 등록";

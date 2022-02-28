@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
+import org.comunity.hongga.model.dto.request.ManualTitleSearchRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDeleteResponseDTO;
@@ -14,6 +15,7 @@ import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO
 import org.comunity.hongga.service.manual.ManualServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +36,11 @@ import java.util.List;
  *    주니하랑, 1.2.3, 2022.02.20 게시글 삭제 기능 구현
  *    주니하랑, 1.2.4, 2022.02.20 회원 등급 추가 및 RESTFul API에 맞춘 URI 수정
  *    주니하랑, 1.3.0, 2022.02.21 사진 등록으로 인한 Refactoring
+ *    주니하랑, 1.3.1, 2022.02.28 제목 검색 기능 구현
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.3.0, 2022.02.21 사진 등록으로 인한 Refactoring
+ * @version 주니하랑, 1.3.1, 2022.02.28 제목 검색 기능 구현
  * @See ""
  * @see <a href=""></a>
  */
@@ -83,12 +86,13 @@ import java.util.List;
 
 
     @ApiOperation(value = SwaggerApiInfo.GET_POSTS_ONE_THING, notes = "사용 설명서 상세 조회 서비스 입니다. \t\n 가족 간에 사용하는 물건에 대해 사용 설명서 한 건에 대해 상세 조회합니다. \n 필수 : 작성자(닉네임), 메뉴얼 게시글 모든 내용")
-    @ApiParam(name = "manualNo", value = "상세 조회 하고자 하는 게시글 번호를 매개 변수로 주입 합니다.", readOnly = true)
+    @ApiParam(name = "manualNo, memberNo", value = "상세 조회 하고자 하는 게시글 번호와 작성자와 다른 이용자가 조회를 했을 때 조회수 증가를 위한 이용자 고유 번호를 매개 변수로 주입 합니다.", readOnly = true)
         @ApiResponses(value = { @ApiResponse(code=200, message = "1.조회 성공 \n 2.데이터 없음 \n 3.Token Error")})
 
      // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @GetMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<List<ManualDetailResponseDTO>>> manualDetailSearch (@PathVariable("manualNo") Long manualNo) {
+    @GetMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<List<ManualDetailResponseDTO>>> manualDetailSearch (
+            @PathVariable("manualNo") Long manualNo) {
 
         log.info("ManualController가 동작 하였습니다!");
         log.info("manualDetailSearch (@PathVariable(\"manualNo\") Long manualNo)가 호출 되었습니다!");
@@ -135,7 +139,25 @@ import java.util.List;
 
         log.info("요청으로 들어온 값 삭제 게시글 번호" + manualNo.toString() + "\n 삭제를 요청한 회원 고유 번호 : " + memberNo.toString());
 
-        return new ResponseEntity<>(manualService.deleteManaul(manualNo, memberNo), HttpStatus.OK);
+        return new ResponseEntity<>(manualService.deleteManual(manualNo, memberNo), HttpStatus.OK);
 
     } // deleteManual (@PathVariable("manualNo") Long manualNo, @RequestParam("memberNo") Long memberNo) 끝
+
+
+    @ApiOperation(value = SwaggerApiInfo.TITLE_SEARCH, notes = "사용 설명서 제목 검색 서비스 입니다.")
+    @ApiParam(name = "manualSearchRequestDTO, pageable", value = "이용자가 검색을 위해 입력한 게시글 제목과 Paging 처리를 위한 객체 입니다.", readOnly = true)
+    @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
+
+    @GetMapping("/manual/search") public ResponseEntity<DefaultResponse<Page<ManualListSearchResponseDTO>>> manualTitleSearch (
+            @RequestParam("query") String title,
+            @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
+
+        log.info("ManualController가 동작 하였습니다!");
+        log.info("manualTitleSearch (@RequestParam(\"query\") String title, @PageableDefault (sort = \"manualNo\", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 가 호출 되었습니다!");
+
+        log.info("요청으로 들어온 검색 요청 제목 " + title + "\n 요청 페이징 처리 : " + pageable.toString());
+
+        return new ResponseEntity<>(manualService.titleSearch(title, pageable), HttpStatus.OK);
+
+    } // manualTitleSearch (@RequestParam("query") String title, @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) 끝
 } // class 끝

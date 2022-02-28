@@ -40,6 +40,8 @@ import java.util.List;
     // TODO - 글, 사진 (Editor 사용)
     @Lob @Column(length = 65535, nullable = false) @NotEmpty private String content;
 
+    private Integer likeCnt;
+
 //    @OneToMany(mappedBy = "manual")
 //    private List<ManualImage> manualImageList = new LinkedList<>();
 //

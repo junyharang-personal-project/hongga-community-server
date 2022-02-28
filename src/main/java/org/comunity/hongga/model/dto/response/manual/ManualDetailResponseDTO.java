@@ -27,11 +27,12 @@ import java.util.Optional;
  * @see <a href=""></a>
  */
 
-@Data @NoArgsConstructor @Builder
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ManualDetailResponseDTO {
 
     private Long manualNo;
     private String title;
+    private Member member;
     private String writer;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
@@ -42,12 +43,17 @@ public class ManualDetailResponseDTO {
     private String tagContent;
 
 
+    public ManualDetailResponseDTO(Member member) {
 
-    public ManualDetailResponseDTO(Long manualNo, String title, String member, LocalDateTime createAt, LocalDateTime updateAt, String content, String imageUuid, String imagePath, String imgName, String tagContent) {
+        this.member = member;
+
+    } // ManualDetailResponseDTO(Member member) 끝
+
+    public ManualDetailResponseDTO(Long manualNo, String title, String writer, LocalDateTime createAt, LocalDateTime updateAt, String content, String imageUuid, String imagePath, String imgName, String tagContent) {
 
         this.manualNo = manualNo;
         this.title = title;
-        this.writer = member;
+        this.writer = writer;
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.content = content;

@@ -1,22 +1,15 @@
 package org.comunity.hongga.service.manual;
 
 import org.comunity.hongga.constant.DefaultResponse;
-import org.comunity.hongga.model.dto.request.manual.ManualTagDTO;
-import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
+import org.comunity.hongga.model.dto.request.ManualTitleSearchRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
-import org.comunity.hongga.model.entity.manual.Manual;
-import org.comunity.hongga.model.entity.manual.ManualImage;
-import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 사용 설명서 관련 비즈니스 로직
@@ -67,7 +60,7 @@ public interface ManualService {
      * @see ""
      */
 
-    DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch (Long manualNo);
+    DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch(Long manualNo);
 
     /**
      * 게시글 수정
@@ -86,6 +79,14 @@ public interface ManualService {
      * @see ""
      */
 
-    DefaultResponse deleteManaul(Long manualNo, Long memberNo);
+    DefaultResponse deleteManual(Long manualNo, Long memberNo);
 
+    /**
+     * 제목으로 게시물 검색
+     * @param manualtitleSearchRequestDTO - 이용자가 검색 요청한 제목 값이 담긴 DTO
+     * @return DefaultResponse<Page<ManualListSearchResponseDTO>> - 조회 된 결과를 DTO에 맞게 값을 넣어 Paging 처리를 한 뒤 반환
+     * @see ""
+     */
+
+    DefaultResponse<Page<ManualListSearchResponseDTO>> titleSearch(String title, Pageable pageable);
 } // interface 끝

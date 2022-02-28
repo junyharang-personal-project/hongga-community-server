@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @see <a href=""></a>
  */
 
-@Service public interface ManualCommentService {
+public interface ManualCommentService {
 
     /**
      * 댓글 등록
