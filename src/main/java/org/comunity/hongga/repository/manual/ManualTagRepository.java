@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,9 +26,15 @@ import java.util.Optional;
 
 public interface ManualTagRepository extends JpaRepository<ManualTag, Long> {
 
+    @Query(value = "select mt " +
+            "from ManualTag as mt " +
+            "left join mt.manual ma " +
+            "where ma.manualNo =:manualNo ")
+    List<ManualTag> findByManualNo(@Param("manualNo") Long manualNo);
+
     /**
-     * 사진 삭제
-     * @param manualNo - 삭제 대상 게시글 고유 번호 해당 고유 번호와 매칭된 사진 삭제 처리
+     * TAG 삭제
+     * @param manualNo - 삭제 대상 게시글 고유 번호 해당 고유 번호와 매칭된 TAG 삭제 처리
      * @see ""
      */
 

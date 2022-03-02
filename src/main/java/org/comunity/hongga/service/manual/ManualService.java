@@ -1,17 +1,25 @@
 package org.comunity.hongga.service.manual;
 
 import org.comunity.hongga.constant.DefaultResponse;
+import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualTagDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListTagContentSearchResponseDTO;
+import org.comunity.hongga.model.entity.manual.Manual;
+import org.comunity.hongga.model.entity.manual.ManualImage;
+import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 사용 설명서 관련 비즈니스 로직
@@ -63,7 +71,7 @@ public interface ManualService {
      * @see ""
      */
 
-    DefaultResponse<List<ManualDetailResponseDTO>> manualDetailSearch(Long manualNo);
+    DefaultResponse<ManualDetailResponseDTO> manualDetailSearch(Long manualNo);
 
     /**
      * 게시글 수정
@@ -119,4 +127,104 @@ public interface ManualService {
      */
 
     DefaultResponse<Page<ManualListTagContentSearchResponseDTO>> contentTagSearch(String tagContent, Pageable pageable);
+
+
+    /**
+     * DTO Type 객체 Entity Type 객체로 변환
+     * @param manualWriteRequestDTO - 게시글 작성을 위해 요청자가 입력한 게시글 내용을 담은 DTO Type 객체
+     * @return Map<String, Object> - 여러 건에 사진과 TAG를 함께 담기 위해 Map으로 값을 받아 반환
+     * @see ""
+     */
+
+    default Map<String, Object> dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) {
+
+        HashMap<String, Object> entityMap = new HashMap<>();
+
+        Manual manual = Manual.builder()
+                .title(manualWriteRequestDTO.getTitle())
+                .content(manualWriteRequestDTO.getContent())
+                .build();
+
+        entityMap.put("manual", manual);
+
+        List<ManualImageDTO> imageDTOLIST = manualWriteRequestDTO.getImageDTOLIST();
+
+        // MovieImageDTO 처리
+        if (imageDTOLIST != null && imageDTOLIST.size() > 0) {
+
+            List<ManualImage> manualImageList = imageDTOLIST.stream().map(manualImageDTO -> {
+
+                return ManualImage.builder()
+                        .path(manualImageDTO.getPath())
+                        .imgName(manualImageDTO.getImgName())
+                        .uuid(manualImageDTO.getUuid())
+                        .manual(manual)
+                        .build();
+
+            }).collect(Collectors.toList());
+
+            entityMap.put("imgList", manualImageList);
+
+        } // if (imageDTOLIST != null && imageDTOLIST.size() > 0) 끝
+
+        List<ManualTagDTO> tagDTOLIST = manualWriteRequestDTO.getTagDTOLIST();
+
+        // TagDTO 처리
+        if (tagDTOLIST != null && tagDTOLIST.size() > 0) {
+
+            List<ManualTag> manualTagList = tagDTOLIST.stream().map(manualTagDTO -> {
+
+                return ManualTag.builder()
+                        .tagContent("#"+manualTagDTO.getTagContent())       // Hash Tag 처리를 위한 문자열 # 추가
+                        .manual(manual)
+                        .build();
+
+            }).collect(Collectors.toList());
+
+            entityMap.put("tagList", manualTagList);
+
+        } // if (tagDTOLIST != null && tagDTOLIST.size() > 0) 끝
+
+        return entityMap;
+    } // dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) 끝
+
+    /**
+     * Entity Type 객체 DTO Type 객체 로 변환
+     * @param manual - ManualNo를 통해 DB에서 검색된 게시글 제목과 내용
+     * @param manualImageList - ManualNo를 통해 DB에서 검색된 게시글 사진 일체
+     * @param manualTagList - ManualNo를 통해 DB에서 검색된 게시글 TAG 일체
+     * @return ManualDetailResponseDTO - Front 단에서 받게 하기 위해 DTO로 변환하여 반환
+     * @see ""
+     */
+
+    default ManualDetailResponseDTO entitiesToDTO(Manual manual, List<ManualImage> manualImageList, List<ManualTag> manualTagList) {
+
+        ManualDetailResponseDTO manualDetailResponseDTO = ManualDetailResponseDTO.builder()
+                .manualNo(manual.getManualNo())
+                .title(manual.getTitle())
+                .createAt(manual.getCreateAt())
+                .updateAt(manual.getUpdateAt())
+                .content(manual.getContent())
+                .build();
+
+        List<ManualImageDTO> manualImageDTOList = manualImageList.stream().map(manualImage -> {
+            return ManualImageDTO.builder()
+                    .imgName(manualImage.getImgName())
+                    .path(manualImage.getPath())
+                    .uuid(manualImage.getUuid())
+                    .build();
+        }).collect(Collectors.toList());
+
+        List<ManualTagDTO> manualTagDTOList = manualTagList.stream().map(manualTag -> {
+            return ManualTagDTO.builder()
+                    .tagContent(manualTag.getTagContent())
+                    .build();
+        }).collect(Collectors.toList());
+
+        manualDetailResponseDTO.setImageDTOList(manualImageDTOList);
+        manualDetailResponseDTO.setManualTagDTOList(manualTagDTOList);
+
+        return manualDetailResponseDTO;
+
+    } // entitiesToDTO() 끝
 } // interface 끝

@@ -1,24 +1,11 @@
 package org.comunity.hongga.repository.manual;
 
-import com.querydsl.core.types.Projections;
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualDeleteResponseDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
-import org.comunity.hongga.model.entity.manual.QManual;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-
-import static org.comunity.hongga.model.entity.member.QMember.member;
 
 /**
  * Manual Repository
@@ -36,4 +23,11 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
  * @see <a href=""></a>
  */
 
-public interface ManualRepository extends JpaRepository<Manual, Long> {} // interface 끝
+public interface ManualRepository extends JpaRepository<Manual, Long> {
+
+    @Query(value = "select ma " +
+            "from Manual ma join fetch ma.writer " +
+            "where ma.manualNo =:manualNo ")
+    Optional<Manual> findByManualNo(@Param("manualNo") Long manualNo);
+
+} // interface 끝

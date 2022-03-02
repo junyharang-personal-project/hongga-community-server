@@ -49,10 +49,10 @@ public class ManualWriteRequestDTO {
 
     @Column(length = 30) @Size(max = 10, message = "Tag는 10자리 이하만 등록할 수 있습니다!") private String tagContent;
 
-//    private List<ManualImageDTO> imageDTOLIST = new ArrayList<>();
-//
-//    @Column(length = 30) @Size(max = 10, message = "Tag는 10자리 이하만 등록할 수 있습니다!")
-//    private List<ManualTagDTO> tagDTOLIST = new ArrayList<>(10);
+    private List<ManualImageDTO> imageDTOLIST = new ArrayList<>();
+
+    @Column(length = 30) @Size(max = 10, message = "Tag는 10자리 이하만 등록할 수 있습니다!")
+    private List<ManualTagDTO> tagDTOLIST = new ArrayList<>(10);
 
     @Builder public Manual toEntity(ManualWriteRequestDTO writeRequestDTO, Optional<Member> member) {
 

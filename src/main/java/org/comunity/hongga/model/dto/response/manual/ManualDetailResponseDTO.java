@@ -37,11 +37,13 @@ public class ManualDetailResponseDTO {
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private String content;
-    private String imageUuid;
-    private String imagePath;
-    private String imgName;
-    private String tagContent;
+//    private String imageUuid;
+//    private String imagePath;
+//    private String imgName;
+//    private String tagContent;
 
+    private List<ManualImageDTO> imageDTOList = new ArrayList<>();
+    private List<ManualTagDTO> manualTagDTOList = new ArrayList<>();
 
     public ManualDetailResponseDTO(Member member) {
 
@@ -57,10 +59,6 @@ public class ManualDetailResponseDTO {
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.content = content;
-        this.imageUuid = imageUuid;
-        this.imagePath = imagePath;
-        this.imgName = imgName;
-        this.tagContent = tagContent;
 
     } // 생성자 끝
 } // class 끝

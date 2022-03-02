@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,8 +27,14 @@ import java.util.Optional;
 
 public interface ManualImageRepository extends JpaRepository<ManualImage, Long> {
 
-    @Query(value = "select mi from ManualImage mi join fetch mi.manual m where mi.manual.manualNo =:manualNo")
-    Optional<ManualImage> findByManualNo(@Param("manualNo") Long manualNo);
+    @Query(value = "select mi " +
+            "from ManualImage as mi " +
+            "left join mi.manual ma " +
+            "where ma.manualNo =:manualNo ")
+    List<ManualImage> findByManualNo(@Param("manualNo") Long manualNo);
+
+//    @Query(value = "select mi from ManualImage mi join fetch mi.manual m where mi.manual.manualNo =:manualNo")
+//    Optional<ManualImage> findByManualNo(@Param("manualNo") Long manualNo);
 
     /**
      * 사진 삭제
