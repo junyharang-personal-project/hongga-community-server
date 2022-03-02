@@ -64,33 +64,35 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
         http
-                // H2-console 화면을 사용하기 위해 해당 옵션 disable
-                .csrf().disable().headers().frameOptions().disable()
-                .and()
-                // URL별 권한 관리 설정 Option의 시작점(antMatchers를 사용하기 위해 선언)
-                .authorizeRequests()
-                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
-                // 각 API 별 접근 허용할 Member Role 지정
-                .antMatchers(ServiceURIVersion.NOW_VERSION_GUEST+"/**")
-                    .access("hasRole('ROLE_GUEST') or hasRole('ROLE_FRIEND') or hasRole('ROLE_PATERNAL') or hasRole('ROLE_MATERNAL') or hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
-                .antMatchers(ServiceURIVersion.NOW_VERSION_FRIEND+"/**")
-                    .access("hasRole('ROLE_FRIEND') or hasRole('ROLE_PATERNAL') or hasRole('ROLE_MATERNAL') or hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
-                .antMatchers(ServiceURIVersion.NOW_VERSION_PATERNAL+"/**")
-                    .access("hasRole('ROLE_PATERNAL') or hasRole('ROLE_MATERNAL') or hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
-                .antMatchers(ServiceURIVersion.NOW_VERSION_MATERNAL+"/**")
-                    .access("hasRole('ROLE_MATERNAL') or hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
-                .antMatchers(ServiceURIVersion.NOW_VERSION_VALENTINE+"/**")
-                    .access("hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
-                .antMatchers(ServiceURIVersion.NOW_VERSION_FAMILY+"/**")
-                    .access("hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
-                .antMatchers(ServiceURIVersion.NOW_VERSION_ADMIN+"/**")
-                    .access("hasRole('ROLE_ADMIN')")
-
-                // 위에 열거한 URI 이외 나머지 URI는 인증 없이 접근 가능
-                .anyRequest().permitAll()
-                .and()
-                // 이용자가 로그아웃을 했을 때 이동할 곳 지정
-                .logout().logoutSuccessUrl("/")
+//                // H2-console 화면을 사용하기 위해 해당 옵션 disable
+//                .csrf().disable().headers().frameOptions().disable()
+//                .and()
+//                // URL별 권한 관리 설정 Option의 시작점(antMatchers를 사용하기 위해 선언)
+//                .authorizeRequests()
+//                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
+//                // 각 API 별 접근 허용할 Member Role 지정
+//                .antMatchers(ServiceURIVersion.NOW_VERSION_GUEST+"/**")
+//                    .access("hasRole('ROLE_GUEST') or hasRole('ROLE_FRIEND') or hasRole('ROLE_PATERNAL') or hasRole('ROLE_MATERNAL') or hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
+//                .antMatchers(ServiceURIVersion.NOW_VERSION_FRIEND+"/**")
+//                    .access("hasRole('ROLE_FRIEND') or hasRole('ROLE_PATERNAL') or hasRole('ROLE_MATERNAL') or hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
+//                .antMatchers(ServiceURIVersion.NOW_VERSION_PATERNAL+"/**")
+//                    .access("hasRole('ROLE_PATERNAL') or hasRole('ROLE_MATERNAL') or hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
+//                .antMatchers(ServiceURIVersion.NOW_VERSION_MATERNAL+"/**")
+//                    .access("hasRole('ROLE_MATERNAL') or hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
+//                .antMatchers(ServiceURIVersion.NOW_VERSION_VALENTINE+"/**")
+//                    .access("hasRole('ROLE_VELENTINE') or hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
+//                .antMatchers(ServiceURIVersion.NOW_VERSION_FAMILY+"/**")
+//                    .access("hasRole('ROLE_FAMILY') or hasRole('ROLE_ADMIN')")
+//                .antMatchers(ServiceURIVersion.NOW_VERSION_ADMIN+"/**")
+//                    .access("hasRole('ROLE_ADMIN')")
+//
+//                // 위에 열거한 URI 이외 나머지 URI는 인증 없이 접근 가능
+//                .anyRequest().permitAll()
+//                .and()
+//                // 이용자가 로그아웃을 했을 때 이동할 곳 지정
+//                .logout().logoutSuccessUrl("/")
+//                .and()
+                .authorizeRequests().anyRequest().permitAll()
                 .and()
                 // OAth2 로그인 기능 이용을 위해 선언
                 .oauth2Login()

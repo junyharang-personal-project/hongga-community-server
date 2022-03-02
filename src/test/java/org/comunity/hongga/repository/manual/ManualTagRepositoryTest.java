@@ -44,7 +44,7 @@ public class ManualTagRepositoryTest {
                 .phoneNumber("010-3939-4848")
                 .picture(picture)
                 .aboutMe(aboutMe)
-                .grade(MemberRole.ROLE_ADMIN)
+                .role(MemberRole.ADMIN)
                 .activated(true)
                 .build();
 

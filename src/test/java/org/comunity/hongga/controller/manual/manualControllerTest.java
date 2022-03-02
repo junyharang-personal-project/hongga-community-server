@@ -43,91 +43,91 @@ public class manualControllerTest {
     @MockBean private ManualServiceImpl manualService;
     @MockBean private WebMvcConfig webMvcConfig;
 
-    @Test public void 메뉴얼_등록() throws Exception{
-        String memberNo = "1";
-
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "게시물 등록 성공", null, null);
-        given(manualService.writeManual(any(), anyLong())).willReturn(defaultResponse);
-
-        mockMvc.perform(post(ServiceURIVersion.NOW_VERSION+"/paternal/manual/?memberNo={memberNo}", memberNo)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\n" +
-                        " \"content\": \"이 제품은 이렇게 사용 하시면 삶의 질이 향상 되요!\",\n" +
-                        " \"imageDTOLIST\": [\n" +
-                        "   {\n" +
-                        "       \"imageName\": \"abc.jsp\",\n" +
-                        "       \"path\": \"/home/junyharang/upload\",\n" +
-                        "       \"uuid\": \"c13ba02e-9a93-453d-a6b6-b4d75621fe43\"\n" +
-                        "   }\n" +
-                        " ],\n" +
-                        " \"imageName\": \"abcsdgw.jsp\",\n" +
-                        " \"manualNo\": 5,\n" +
-                        " \"path\": \"/home/junyharang/upload\",\n" +
-                        " \"tagContent\": \"메뉴얼\",\n" +
-                        " \"tagDTOLIST\": [\n" +
-                        "   {\n" +
-                        "       \"tagContent\": \"시놀로지\"\n" +
-                        "   }\n" +
-                        " ],\n" +
-                        " \"title\": \"시놀로지NAS 사용법\",\n" +
-                        " \"uuid\": \"c13ba02e-9a93-453d-a6b6-b4d75621fe43\",\n" +
-                        " \"writer\": \"주니하랑\"\n" +
-                        "}")).andDo(print()).andExpect(status().isOk());
-
-    } // 메뉴얼_등록() 끝
-
-    @Test public void 게시글_목록_조회() throws Exception {
-
-        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/paternal/manual")
-                .param("page", "0")).andExpect(status().isOk());
-
-    } // 게시글_전체조회() 끝
-
-
-    @Test public void 게시글_상세조회() throws Exception {
-
-        String manualNo = "10";
-        String memberNo = "12";
-
-        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo)
-                .param("memberNo", memberNo)).andExpect(status().isOk());
-
-    } // 게시글_상세조회() 끝
-
-
-    @Test public void 게시글_수정() throws Exception {
-
-        String manualNo = "103";
-        String memberNo = "1";
-
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "수정 성공", null, null);
-
-        given(manualService.updateManual(any(), anyLong(), anyLong())).willReturn(defaultResponse);
-
-        mockMvc.perform(patch(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\n" +
-                        " \"title\" : \"게시글 제목 Controller Test Code Test 중!\",\n" +
-                        " \"content\" : \"게시글 내용 Controller Test Code Test 중!\",\n" +
-                        " \"imageName\": \"abc.jsp\",\n" +
-                        " \"path\": \"/home/junyharang/upload\",\n" +
-                        " \"tagContent\": \"메뉴얼\",\n" +
-                        " \"title\": \"시놀로지NAS 사용법\",\n" +
-                        " \"uuid\": \"c13ba02e-9a93-453d-a6b6-b4d75621fe43\"\n" +
-                        "}")).andExpect(status().isOk());
-    } // 게시글_수정() 끝
-
-    @Test public void 게시글_삭제() throws Exception {
-
-        String manualNo = "99";
-        String memberNo = "99";
-
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
-
-        given(manualService.deleteManual(any(), anyLong())).willReturn(defaultResponse);
-
-        mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
-
-    } // 게시글_삭제() 끝
+//    @Test public void 메뉴얼_등록() throws Exception{
+//        String memberNo = "1";
+//
+//        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "게시물 등록 성공", null, null);
+//        given(manualService.writeManual(any(), anyLong())).willReturn(defaultResponse);
+//
+//        mockMvc.perform(post(ServiceURIVersion.NOW_VERSION+"/paternal/manual/?memberNo={memberNo}", memberNo)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\n" +
+//                        " \"content\": \"이 제품은 이렇게 사용 하시면 삶의 질이 향상 되요!\",\n" +
+//                        " \"imageDTOLIST\": [\n" +
+//                        "   {\n" +
+//                        "       \"imageName\": \"abc.jsp\",\n" +
+//                        "       \"path\": \"/home/junyharang/upload\",\n" +
+//                        "       \"uuid\": \"c13ba02e-9a93-453d-a6b6-b4d75621fe43\"\n" +
+//                        "   }\n" +
+//                        " ],\n" +
+//                        " \"imageName\": \"abcsdgw.jsp\",\n" +
+//                        " \"manualNo\": 5,\n" +
+//                        " \"path\": \"/home/junyharang/upload\",\n" +
+//                        " \"tagContent\": \"메뉴얼\",\n" +
+//                        " \"tagDTOLIST\": [\n" +
+//                        "   {\n" +
+//                        "       \"tagContent\": \"시놀로지\"\n" +
+//                        "   }\n" +
+//                        " ],\n" +
+//                        " \"title\": \"시놀로지NAS 사용법\",\n" +
+//                        " \"uuid\": \"c13ba02e-9a93-453d-a6b6-b4d75621fe43\",\n" +
+//                        " \"writer\": \"주니하랑\"\n" +
+//                        "}")).andDo(print()).andExpect(status().isOk());
+//
+//    } // 메뉴얼_등록() 끝
+//
+//    @Test public void 게시글_목록_조회() throws Exception {
+//
+//        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/paternal/manual")
+//                .param("page", "0")).andExpect(status().isOk());
+//
+//    } // 게시글_전체조회() 끝
+//
+//
+//    @Test public void 게시글_상세조회() throws Exception {
+//
+//        String manualNo = "10";
+//        String memberNo = "12";
+//
+//        mockMvc.perform(get(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo)
+//                .param("memberNo", memberNo)).andExpect(status().isOk());
+//
+//    } // 게시글_상세조회() 끝
+//
+//
+//    @Test public void 게시글_수정() throws Exception {
+//
+//        String manualNo = "103";
+//        String memberNo = "1";
+//
+//        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "수정 성공", null, null);
+//
+//        given(manualService.updateManual(any(), anyLong(), anyLong())).willReturn(defaultResponse);
+//
+//        mockMvc.perform(patch(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\n" +
+//                        " \"title\" : \"게시글 제목 Controller Test Code Test 중!\",\n" +
+//                        " \"content\" : \"게시글 내용 Controller Test Code Test 중!\",\n" +
+//                        " \"imageName\": \"abc.jsp\",\n" +
+//                        " \"path\": \"/home/junyharang/upload\",\n" +
+//                        " \"tagContent\": \"메뉴얼\",\n" +
+//                        " \"title\": \"시놀로지NAS 사용법\",\n" +
+//                        " \"uuid\": \"c13ba02e-9a93-453d-a6b6-b4d75621fe43\"\n" +
+//                        "}")).andExpect(status().isOk());
+//    } // 게시글_수정() 끝
+//
+//    @Test public void 게시글_삭제() throws Exception {
+//
+//        String manualNo = "99";
+//        String memberNo = "99";
+//
+//        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
+//
+//        given(manualService.deleteManual(any(), anyLong())).willReturn(defaultResponse);
+//
+//        mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
+//
+//    } // 게시글_삭제() 끝
 
 } // class 끝

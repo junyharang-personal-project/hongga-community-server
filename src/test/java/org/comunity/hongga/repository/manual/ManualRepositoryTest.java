@@ -64,7 +64,7 @@ public class ManualRepositoryTest {
                     .phoneNumber("010-3939-4848")
                     .picture(picture)
                     .aboutMe(aboutMe)
-                    .grade(MemberRole.ROLE_ADMIN)
+                    .role(MemberRole.ADMIN)
                     .activated(true)
                     .build();
 
@@ -111,7 +111,7 @@ public class ManualRepositoryTest {
                     .phoneNumber(fakerKOREALang.phoneNumber().phoneNumber())
                     .picture(picture)
                     .aboutMe(aboutMe)
-                    .grade(MemberRole.ROLE_FAMILY)
+                    .role(MemberRole.FAMILY)
                     .activated(true)
                     .build();
 
