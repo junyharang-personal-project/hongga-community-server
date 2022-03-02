@@ -2,7 +2,7 @@ package org.comunity.hongga.controller.member;
 
 import org.comunity.hongga.config.WebMvcConfig;
 import org.comunity.hongga.constant.ServiceURIVersion;
-import org.comunity.hongga.service.member.MemberService;
+import org.comunity.hongga.service.member.MemberServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class memberControllerTest {
 
     @Autowired private MockMvc mockMvc;
 
-    @MockBean private MemberService memberService;
+    @MockBean private MemberServiceImpl memberServiceImpl;
     @MockBean private WebMvcConfig webMvcConfig;
 
     @Test public void 회원가입() throws Exception {

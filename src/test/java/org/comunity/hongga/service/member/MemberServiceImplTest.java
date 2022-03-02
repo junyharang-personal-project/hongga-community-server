@@ -3,19 +3,16 @@ package org.comunity.hongga.service.member;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.member.MemberSignInRequestDTO;
-import org.comunity.hongga.model.dto.request.member.MemberSignUpRequestDTO;
 import org.comunity.hongga.model.dto.response.member.MemberSignInResponseDTO;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.MemberGrade;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.comunity.hongga.security.util.JwtUtil;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -42,9 +39,9 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class) @Slf4j
 
-public class MemberServiceTest {
+public class MemberServiceImplTest {
 
-    MemberService memberService;
+    MemberServiceImpl memberServiceImpl;
     MockHttpServletRequest httpServletRequest;
     MockHttpSession mockHttpSession;
 
@@ -130,7 +127,7 @@ public class MemberServiceTest {
 
         given(memberRepository.findByMember(email, password)).willReturn(Optional.of(mockMember));
 
-        DefaultResponse<MemberSignInResponseDTO> response = memberService.signIn(memberSignInRequestDTO);
+        DefaultResponse<MemberSignInResponseDTO> response = memberServiceImpl.signIn(memberSignInRequestDTO);
 
         // then
         assertThat(response.getMessage()).isEqualTo("로그인에 성공 하였습니다!");

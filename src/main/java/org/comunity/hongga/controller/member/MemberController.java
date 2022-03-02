@@ -8,7 +8,7 @@ import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.member.MemberSignInRequestDTO;
 import org.comunity.hongga.model.dto.request.member.MemberSignUpRequestDTO;
-import org.comunity.hongga.service.member.MemberService;
+import org.comunity.hongga.service.member.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +33,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor @RequestMapping(ServiceURIVersion.NOW_VERSION)
 @RestController public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
 
     @ApiOperation(value = SwaggerApiInfo.SIGN_UP, notes = "회원 가입 서비스 입니다.")
     @ApiParam(name = "MemberSignUpRequestDTO", value = "이용을 원하는 이용자가 회원 가입을 합니다. \n 필수 : 자기 소개, 프로필 사진을 제외한 모든 항목 \n 비밀번호는 암호화 처리", readOnly = true)
@@ -47,7 +47,7 @@ import javax.validation.Valid;
 
         log.info("MemberService.signUp을 호출하여 signUpRequestDTO 객체를 전달 하겠습니다!");
 
-        return new ResponseEntity<>(memberService.signUp(signUpRequestDTO), HttpStatus.OK);
+        return new ResponseEntity<>(memberServiceImpl.signUp(signUpRequestDTO), HttpStatus.OK);
 
     } // signUp (@Valid @ResponseBody MemberSignUpRequestDTO signUpRequestDTO) 끝
 
@@ -57,7 +57,7 @@ import javax.validation.Valid;
 
     @PostMapping("/signin") public ResponseEntity<DefaultResponse> signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO) {
 
-        return new ResponseEntity<>(memberService.signIn(memberSignInRequestDTO), HttpStatus.OK);
+        return new ResponseEntity<>(memberServiceImpl.signIn(memberSignInRequestDTO), HttpStatus.OK);
 
     } // signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO) 끝
 
