@@ -54,10 +54,10 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .claim("member_no", memberNo)
-                .claim("member_grade", memberRole)
+                .claim("member_role", memberRole)
                 .claim("token_name", ACCESS_TOKEN_NAME)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))
+                .setExpiration(new Date(now.getTime()+ACCESS_TOKEN_VALID_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
@@ -78,10 +78,10 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .claim("member_no", memberNo)
-                .claim("member_grade", memberRole)
+                .claim("member_role", memberRole)
                 .claim("token_name", REFRESH_TOKEN_NAME)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME))
+                .setExpiration(new Date(now.getTime()+REFRESH_TOKEN_VALID_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
@@ -104,7 +104,7 @@ public class JwtUtil {
 
         } catch (Exception e) {
 
-            log.error(token.toString() + "의 윻성 검사 및 만료 일시 확인이 실패하였습니다!");
+            log.error(token.toString() + "의 유효성 검사 및 만료 일시 확인이 실패하였습니다!");
 
             e.printStackTrace();
 

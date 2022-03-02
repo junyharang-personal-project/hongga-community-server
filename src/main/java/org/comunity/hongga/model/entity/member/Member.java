@@ -84,6 +84,7 @@ import javax.validation.constraints.Size;
         this.name = name;
         this.picture = picture;
 
+        return this;
     } // update(String name, String picture) 끝
 
     public String getRoleKey() { return this.role.getKey(); }

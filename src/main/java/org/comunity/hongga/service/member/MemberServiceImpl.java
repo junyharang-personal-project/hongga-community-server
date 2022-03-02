@@ -96,13 +96,13 @@ import java.util.Optional;
 
                 } // if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) 끝
 
-                String accessToken = JwtUtil.createAccessToken(member.getMemberNo(), member.getGrade());
+                String accessToken = JwtUtil.createAccessToken(member.getMemberNo(), member.getRole());
 
-                String refreshToken = JwtUtil.createRefreshToken(member.getMemberNo(), member.getGrade());
+                String refreshToken = JwtUtil.createRefreshToken(member.getMemberNo(), member.getRole());
 
                 member.setRefreshToken(refreshToken);
 
-                return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), new MemberSignInResponseDTO(accessToken, refreshToken, member.getMemberNo(), member.getGrade(), member.getNickname()));
+                return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), new MemberSignInResponseDTO(accessToken, refreshToken, member.getMemberNo(), member.getRole(), member.getNickname()));
 
             }).orElseGet(() -> DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.SUCCESS.getMessageEn()));
 

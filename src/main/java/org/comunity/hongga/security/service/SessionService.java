@@ -23,10 +23,11 @@ import java.util.Optional;
  * <b>History:</b>
  *    주니하랑, 1.0.0, 022.02.16 최초 작성
  *    주니하랑, 1.0.1, 2022.03.02 응답 코드 구체화로 인한 return문 수정
+ *    주니하랑, 1.1.0, 2022.03.02 회원 역할 관련 Enum Class 이름 변경으로 인한 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.03.02 응답 코드 구체화로 인한 return문 수정
+ * @version 1.1.0, 2022.03.02 회원 역할 관련 Enum Class 이름 변경으로 인한 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -83,7 +84,7 @@ import java.util.Optional;
 
             log.info("요청 이용자의 정보가 조회 되었습니다! 해당 이용자의 권한을 Map에 넣겠습니다!");
 
-            result.replace("permission", member.getGrade());
+            result.replace("permission", member.getRole());
 
         });
 
@@ -131,7 +132,7 @@ import java.util.Optional;
 
         String tokenName = claims.get("token_name", String.class);
 
-        String memberGrade = claims.get("member_grade", String.class);
+        String memberRole = claims.get("member_role", String.class);
 
         log.info("요청으로 들어온 Token의 이름이 \"REFRESH_TOKEN_NAME\" 인지 검증 하겠습니다!");
 
@@ -153,26 +154,26 @@ import java.util.Optional;
                 String accessToken;
 
                 log.info("요청 이용자의 등급을 확인 하겠습니다!");
-                if (memberGrade.equals(MemberRole.ROLE_ADMIN)) {
+                if (memberRole.equals(MemberRole.ADMIN.getKey())) {
 
                     log.info("요청 이용자의 등급이 관리자 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.ADMIN)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_ADMIN);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ADMIN);
 
-                } else if (memberGrade.equals(MemberRole.ROLE_FAMILY)) {
+                } else if (memberRole.equals(MemberRole.FAMILY.getKey())) {
 
                     log.info("요청 이용자의 등급이 가족 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.FAMILY)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_FAMILY);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.FAMILY);
 
-                } else if (memberGrade.equals(MemberRole.ROLE_GUEST)) {
+                } else if (memberRole.equals(MemberRole.GUEST.getKey())) {
 
                     log.info("요청 이용자의 등급이 손님 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.GUEST)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_GUEST);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.GUEST);
 
                 } // if (회원 등급 비교) 끝
 
