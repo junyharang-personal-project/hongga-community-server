@@ -7,10 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ResponseCode;
 import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.comunity.hongga.security.util.JwtUtil;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,12 +65,12 @@ import java.util.Optional;
 
     } // refreshTokenCheck(Long id, String refreshToken) 끝
 
-    public Map<String, MemberGrade> memberGradeCheck(Long memberNo) {
+    public Map<String, MemberRole> memberGradeCheck(Long memberNo) {
 
         log.info("SessionService가 동작 하였습니다!");
         log.info("memberGradeCheck(Long memberNo)이 호출되어 요청으로 들어 온 이용자의 등급(인가) 검증을 시작하겠습니다!");
 
-        HashMap<String, MemberGrade> result = new HashMap<>();
+        HashMap<String, MemberRole> result = new HashMap<>();
         result.put("permission", null);
 
         log.info("DB에서 요청 이용자의 고유 번호가 같은 것이 있는지 조회 하겠습니다!");
@@ -154,26 +153,26 @@ import java.util.Optional;
                 String accessToken;
 
                 log.info("요청 이용자의 등급을 확인 하겠습니다!");
-                if (memberGrade.equals(MemberGrade.ROLE_ADMIN)) {
+                if (memberGrade.equals(MemberRole.ROLE_ADMIN)) {
 
                     log.info("요청 이용자의 등급이 관리자 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.ADMIN)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberGrade.ROLE_ADMIN);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_ADMIN);
 
-                } else if (memberGrade.equals(MemberGrade.ROLE_FAMILY)) {
+                } else if (memberGrade.equals(MemberRole.ROLE_FAMILY)) {
 
                     log.info("요청 이용자의 등급이 가족 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.FAMILY)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberGrade.ROLE_FAMILY);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_FAMILY);
 
-                } else if (memberGrade.equals(MemberGrade.ROLE_GUEST)) {
+                } else if (memberGrade.equals(MemberRole.ROLE_GUEST)) {
 
                     log.info("요청 이용자의 등급이 손님 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.GUEST)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberGrade.ROLE_GUEST);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_GUEST);
 
                 } // if (회원 등급 비교) 끝
 

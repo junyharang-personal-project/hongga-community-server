@@ -5,9 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -43,7 +42,7 @@ public class JwtUtil {
     } // JwtUtil(String secret) 끝
 
     // Access Token 생성 / 발급
-    public static String createAccessToken(Long memberNo, MemberGrade memberGrade) {
+    public static String createAccessToken(Long memberNo, MemberRole memberRole) {
 
         log.info("JwtUtil가 동작하였습니다!");
         log.info("createAccessToken(Long memberId, MemberGrade memberGrade)가 호출 되었습니다!");
@@ -55,7 +54,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .claim("member_no", memberNo)
-                .claim("member_grade", memberGrade)
+                .claim("member_grade", memberRole)
                 .claim("token_name", ACCESS_TOKEN_NAME)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))
@@ -67,7 +66,7 @@ public class JwtUtil {
     /*
     Refresh Token 생성 / 발급
      */
-    public static String createRefreshToken(Long memberNo, MemberGrade memberGrade) {
+    public static String createRefreshToken(Long memberNo, MemberRole memberRole) {
 
         log.info("JwtUtil가 동작하였습니다!");
         log.info("createRefreshToken(Long memberId, MemberGrade memberGrade)가 호출 되었습니다!");
@@ -79,7 +78,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .claim("member_no", memberNo)
-                .claim("member_grade", memberGrade)
+                .claim("member_grade", memberRole)
                 .claim("token_name", REFRESH_TOKEN_NAME)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME))

@@ -2,7 +2,7 @@ package org.comunity.hongga.model.dto.response.member;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 
 /**
  * 로그인 응답 DTO
@@ -25,16 +25,16 @@ public class MemberSignInResponseDTO {
 
     private Long memberNo;
 
-    private MemberGrade memberGrade;
+    private MemberRole memberRole;
 
     private String nickname;
 
-    public MemberSignInResponseDTO(String accessToken, String refreshToken, Long memberNo, MemberGrade memberGrade, String nickname) {
+    public MemberSignInResponseDTO(String accessToken, String refreshToken, Long memberNo, MemberRole memberRole, String nickname) {
 
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.memberNo = memberNo;
-        this.memberGrade = memberGrade;
+        this.memberRole = memberRole;
         this.nickname = nickname;
 
     } // 생성자 끝

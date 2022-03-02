@@ -59,7 +59,7 @@ import java.util.Optional;
         log.info("이용자의 패스워드를 암호화 하겠습니다!");
         memberSignUpRequestDTO.setPassword(passwordEncoder.encode(memberSignUpRequestDTO.getPassword())); ;
 
-        Optional<String> checkEmail = memberRepository.findByEmail(requestEmail);
+        Optional<String> checkEmail = memberRepository.findBytoMemberEmail(requestEmail);
 
         return checkEmail.map(email -> DefaultResponse.response(ResponseCode.PRESENT.getCode(), ResponseCode.PRESENT.getMessageKo(), ResponseCode.PRESENT.getMessageEn()))
                 .orElseGet(() -> {
@@ -82,7 +82,7 @@ import java.util.Optional;
     @Override
     @Transactional public DefaultResponse<MemberSignInResponseDTO> signIn(MemberSignInRequestDTO memberSignInRequestDTO) {
 
-        Optional<String> loginEmail = memberRepository.findByEmail(memberSignInRequestDTO.getEmail());
+        Optional<String> loginEmail = memberRepository.findBytoMemberEmail(memberSignInRequestDTO.getEmail());
 
         return loginEmail.map(email -> {
 

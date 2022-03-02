@@ -7,7 +7,7 @@ import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.ManualImage;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 import org.comunity.hongga.repository.manual.querydsl.ManualQuerydslRepository;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ public class ManualRepositoryTest {
                     .phoneNumber("010-3939-4848")
                     .picture(picture)
                     .aboutMe(aboutMe)
-                    .grade(MemberGrade.ROLE_ADMIN)
+                    .grade(MemberRole.ROLE_ADMIN)
                     .activated(true)
                     .build();
 
@@ -111,7 +111,7 @@ public class ManualRepositoryTest {
                     .phoneNumber(fakerKOREALang.phoneNumber().phoneNumber())
                     .picture(picture)
                     .aboutMe(aboutMe)
-                    .grade(MemberGrade.ROLE_FAMILY)
+                    .grade(MemberRole.ROLE_FAMILY)
                     .activated(true)
                     .build();
 
