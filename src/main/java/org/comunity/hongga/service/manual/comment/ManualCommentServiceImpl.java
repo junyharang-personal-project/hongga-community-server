@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
+import org.comunity.hongga.constant.ResponseCode;
 import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.comment.ManualCommentWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.comment.ManualCommentListSearchResponseDTO;
@@ -30,10 +31,11 @@ import java.util.Optional;
  *    주니하랑, 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
  *    주니하랑, 1.0.2, 2022.02.26 댓글 수정 기능 구현
  *    주니하랑, 1.0.3, 2022.02.26 댓글 삭제 기능 구현
+ *    주니하랑, 1.0.4, 2022.03.02 응답 코드 구체화로 인한 return문 수정
  *    * </pre>
  *
  * @author 주니하랑
- * @version 1.0.3, 2022.02.26 댓글 삭제 기능 구현
+ * @version 1.0.4, 2022.03.02 응답 코드 구체화로 인한 return문 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -67,7 +69,7 @@ import java.util.Optional;
 
             log.info("게시글이 존재 하지 않습니다! 404 Code와 함께 \"게시글 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NOT_FOUND.value(), "게시글 없음");
+            return DefaultResponse.response(ResponseCode.NotFoundResult.getCode(), ResponseCode.NotFoundResult.getMessageKo(), ResponseCode.NotFoundResult.getMessageEn());
 
         } // if (dbInManual.isEmpty()) 끝
 
@@ -79,7 +81,7 @@ import java.util.Optional;
 
             log.info("비 정상적인 이용자 입니다! 보안을 위해 401 대신 404 Code와 함께 \"게시글 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NOT_FOUND.value(), "게시글 없음");
+            return DefaultResponse.response(ResponseCode.NotFoundResult.getCode(), ResponseCode.NotFoundResult.getMessageKo(), ResponseCode.NotFoundResult.getMessageEn());
 
         } // if (dbInMember.isEmpty()) 끝
 
@@ -89,14 +91,14 @@ import java.util.Optional;
 
             log.info("등록 요청한 댓글 내용이 비어 있습니다! 204 Code와 함께 \"등록 실패\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "등록 실패");
+            return DefaultResponse.response(ResponseCode.NotFoundFile.getCode(), ResponseCode.NotFoundFile.getMessageKo(), ResponseCode.NotFoundFile.getMessageEn());
 
         } // if (writeRequestDTO == null) 끝
 
 
         commentRepository.save(writeRequestDTO.toEntity(dbInManual, dbInMember, writeRequestDTO));
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "등록 성공");
+        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn());
 
     } // writeManualComment(ManualCommentWriteRequestDTO writeRequestDTO, Long manualNo, Long memberNo) 끝
 
@@ -124,11 +126,11 @@ import java.util.Optional;
 
             log.info("이런! DB에 해당 게시글에 댓글이 하나도 없네요!");
 
-            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "댓글 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (allWithManualAndWriter.getTotalElements() == 0) 끝
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", allWithManualAndWriter, new Pagination(allWithManualAndWriter));
+        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), allWithManualAndWriter, new Pagination(allWithManualAndWriter));
 
     } // manualListSearch(Long manualNo, Pageable pageable) 끝환
 
@@ -158,7 +160,7 @@ import java.util.Optional;
             log.info("이용자가 수정 요청한 댓글이 DB에 존재하지 않습니다!");
             log.info("204 Code와 함께 \"댓글 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "댓글 없음", manualCommentNo);
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn(), manualCommentNo);
 
         } // if (dbInComment.isEmpty()) 끝
 
@@ -175,9 +177,9 @@ import java.util.Optional;
 
                     log.info("수정이 완료 되었습니다! \n 200 Code와 함께 \"수정 성공\" 반환 하겠습니다!");
 
-                    return DefaultResponse.response(HttpStatus.OK.value(), "수정 성공", manualCommentNo);
+                    return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), manualCommentNo);
 
-                }).orElseGet(() -> DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "수정 실패", manualCommentNo));
+                }).orElseGet(() -> DefaultResponse.response(ResponseCode.ServerError.getCode(), ResponseCode.ServerError.getMessageKo(), ResponseCode.ServerError.getMessageEn()));
 
     } // updateManualComment(ManualCommentUpdateRequestDTO manualCommentUpdateRequestDTO, Long manualNo, Long manualCommentNo, Long memberNo) 끝제
 
@@ -205,7 +207,7 @@ import java.util.Optional;
             log.info("이용자가 삭제 요청한 댓글이 DB에 존재하지 않습니다!");
             log.info("204 Code와 함께 \"댓글 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "댓글 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (dbInComment.isEmpty()) 끝
 
@@ -221,8 +223,8 @@ import java.util.Optional;
 
                     log.info("삭제가 완료 되었습니다! \n 200 Code와 함께 \"삭제 성공\" 반환 하겠습니다!");
 
-                    return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공", manualCommentNo);
+                    return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), manualCommentNo);
 
-                }).orElseGet(() -> DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "삭제 실패"));
+                }).orElseGet(() -> DefaultResponse.response(ResponseCode.ServerError.getCode(), ResponseCode.ServerError.getMessageKo(), ResponseCode.ServerError.getMessageEn()));
     } // deleteManualComment(Long manualNo, Long manualCommentNo, Long memberNo) 끝
 } // class 끝

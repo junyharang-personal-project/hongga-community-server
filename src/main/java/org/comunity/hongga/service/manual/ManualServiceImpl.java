@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
+import org.comunity.hongga.constant.ResponseCode;
 import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
@@ -44,10 +45,11 @@ import java.util.Optional;
  *    주니하랑, 1.3.1, 2022.02.25 상세 조회 기능 구현을 위한 Refactoring
  *    주니하랑, 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
  *    주니하랑, 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
+ *    주니하랑, 1.4.1, 2022.03.02 ResponseCode 상세 구현을 위해 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
+ * @version 1.4.1, 2022.03.02 ResponseCode 상세 구현을 위해 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -84,7 +86,7 @@ import java.util.Optional;
 
             log.info("시스템 메뉴얼 등록에 입력 되지 않은 내용이 있습니다!");
 
-            return DefaultResponse.response(HttpStatus.OK.value(), "게시물 등록 실패");
+            return DefaultResponse.response(ResponseCode.NotFoundFile.getCode(), ResponseCode.NotFoundFile.getMessageKo(), ResponseCode.NotFoundFile.getMessageEn());
 
         } // if (manualWriteRequestDTO == null)
 
@@ -103,7 +105,7 @@ import java.util.Optional;
                 .manual(saveManual.get()).tagContent(manualWriteRequestDTO.getTagContent())
                 .build());
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "등록 성공", memberNo);
+        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), memberNo);
 
     } // writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo) 끝
 
@@ -132,13 +134,13 @@ import java.util.Optional;
 
             log.info("조회 된 데이터가 없습니다! 200 Code와 함께 message로 \"데이터 없음\"을 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.OK.value(), "데이터 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } else {
 
             log.info("조회 된 데이터가 있습니다! 200 Code와 함께 message로 \"조회 성공\"과 조회된 데이터를 페이징 처리 하여 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualList, new Pagination(manualList));
+            return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), manualList, new Pagination(manualList));
 
         } // if - else (manualList.getTotalElements() == 0) 끝
     } // manualListSearch(Pageable pageable, Long memberNo) 끝
@@ -166,7 +168,7 @@ import java.util.Optional;
         if (searchManual.isEmpty()) {
 
             log.info("DB에서 조회된 결과가 없습니다! 404 Code와 함께 \"데이터 없음\" 반환 하겠습니다!");
-            return DefaultResponse.response(HttpStatus.NOT_FOUND.value(), "데이터 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (result.isEmpty()) 끝
 
@@ -180,8 +182,8 @@ import java.util.Optional;
         log.info("Null 방지를 위해 변환된 DTO 객체를 Optional로 감싸주겠습니다!");
         Optional<ManualDetailResponseDTO> resultManual = Optional.of(manualDetailResponseDTO);
 
-        return resultManual.map(manualSearch -> DefaultResponse.response(HttpStatus.OK.value(), "조회 성공", manualSearch))
-                .orElseGet(() -> DefaultResponse.response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "조회 실패"));
+        return resultManual.map(manualSearch -> DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), manualSearch))
+                .orElseGet(() -> DefaultResponse.response(ResponseCode.ServerError.getCode(), ResponseCode.ServerError.getMessageKo(), ResponseCode.ServerError.getMessageEn()));
 
     } // manualDetailSearch(Long manualNo) 끝
 
@@ -201,7 +203,7 @@ import java.util.Optional;
         if (findManual.isEmpty()) {
 
             log.info("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
-            DefaultResponse.response(HttpStatus.OK.value(), "내용 없음");
+            DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (findManual.isEmpty()) 문 끝
 
@@ -224,8 +226,8 @@ import java.util.Optional;
 
                     log.info("DB에 해당 게시물 수정이 완료 되었습니다! 200 Code와 함께 \"수정 성공\" 반환 하겠습니다!");
 
-                    return DefaultResponse.response(HttpStatus.OK.value(), "수정 성공", manual.getManualNo());
-                }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "수정 실패"));
+                    return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), manual.getManualNo());
+                }).orElseGet(() -> DefaultResponse.response(ResponseCode.InvalidValueType.getCode(), ResponseCode.InvalidValueType.getMessageKo(), ResponseCode.InvalidValueType.getMessageEn()));
 
     } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
 
@@ -251,7 +253,7 @@ import java.util.Optional;
 
             log.info("DB를 통해 찾아 본 결과 해당 게시글이 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.OK.value(), "내용 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
         } // if (dbInManualAndWriter.isEmpty()) 끝
 
         log.info("DB를 통해 찾아 본 결과 해당 게시글이 존재 합니다!");
@@ -269,9 +271,9 @@ import java.util.Optional;
                     manualRepository.deleteById(manualNo);
 
                     log.info("삭제가 정상 적으로 처리 되었습니다! 200 Code와 함께 \"삭제 성공\" 반환 하겠습니다!");
-                    return DefaultResponse.response(HttpStatus.OK.value(), "삭제 성공", manualNo);
+                    return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), manualNo);
 
-                }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "삭제 실패"));
+                }).orElseGet(() -> DefaultResponse.response(ResponseCode.InvalidValueType.getCode(), ResponseCode.InvalidValueType.getMessageKo(), ResponseCode.InvalidValueType.getMessageEn()));
 
     } // deleteManaul(Long manualNo, Long memberNo) 끝
 
@@ -296,13 +298,13 @@ import java.util.Optional;
 
             log.info("이용자가 검색한 제목의 일치하는 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (listSearchResponseDTOS.isEmpty()) 끝
 
         log.info("이용자가 검색한 내용의 게시글을 찾았습니다! 200 Code와 함께 \"검색 성공\" 반환 하겠습니다!");
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "검색 성공", listSearchResponseDTOS);
+        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), listSearchResponseDTOS);
 
     } // titleSearch(String title, Pageable pageable) 끝
 
@@ -326,13 +328,13 @@ import java.util.Optional;
 
             log.info("이용자가 검색한 내용의 일치하는 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (listSearchResponseDTOS.isEmpty()) 끝
 
         log.info("이용자가 검색한 내용의 게시글을 찾았습니다! 200 Code와 함께 \"검색 성공\" 반환 하겠습니다!");
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "검색 성공", listSearchResponseDTOS);
+        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), listSearchResponseDTOS);
 
     } // contentSearch(String content, Pageable pageable) 끝
 
@@ -356,13 +358,13 @@ import java.util.Optional;
 
             log.info("이용자가 검색한 제목 혹은 내용의 일치하는 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (listSearchResponseDTOS.isEmpty()) 끝
 
         log.info("이용자가 검색한 내용의 제목 혹은 게시글을 찾았습니다! 200 Code와 함께 \"검색 성공\" 반환 하겠습니다!");
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "검생 성공", listSearchResponseDTOS);
+        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), listSearchResponseDTOS);
 
     } // contentTitleSearch(String query, Pageable pageable) 끝
 
@@ -387,13 +389,13 @@ import java.util.Optional;
 
             log.info("이용자가 검색한 TAG의 일치하는 게시글이 존재하지 않습니다! 204 Code와 함께 \"검색 결과 없음\" 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.NO_CONTENT.value(), "검색 결과 없음");
+            return DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (listTagContentSearchResponseDTOS.isEmpty()) 끝
 
         log.info("이용자가 검색한 내용의 제목 혹은 게시글을 찾았습니다! 200 Code와 함께 \"검색 성공\" 반환 하겠습니다!");
 
-        return DefaultResponse.response(HttpStatus.OK.value(), "검색 성공", listTagContentSearchResponseDTOS);
+        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), listTagContentSearchResponseDTOS);
 
     } // contentTagSearch(String tagContent, Pageable pageable) 끝
 } // class 끝

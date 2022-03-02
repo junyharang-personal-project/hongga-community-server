@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
+import org.comunity.hongga.constant.ResponseCode;
 import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.model.entity.member.MemberGrade;
 import org.comunity.hongga.repository.member.MemberRepository;
@@ -22,10 +23,11 @@ import java.util.Optional;
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 022.02.16 최초 작성
+ *    주니하랑, 1.0.1, 2022.03.02 응답 코드 구체화로 인한 return문 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.16 최초 작성
+ * @version 1.0.1, 2022.03.02 응답 코드 구체화로 인한 return문 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -106,7 +108,7 @@ import java.util.Optional;
 
             log.info("Authorization 값이 Null 입니다!");
 
-            return DefaultResponse.response(HttpStatus.UNAUTHORIZED.value(), "요청 문제");
+            return DefaultResponse.response(ResponseCode.UnauthorisedAPI.getCode(), ResponseCode.UnauthorisedAPI.getMessageKo(), ResponseCode.UnauthorisedAPI.getMessageEn());
 
         } // if (requestHeaderValue == null) 끝
 
@@ -122,7 +124,7 @@ import java.util.Optional;
 
             log.info("요청으로 들어온 JWT의 claims 값이 Null 입니다! Token 불일치로 401 Error 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.UNAUTHORIZED.value(), "Token 불 일치");
+            return DefaultResponse.response(ResponseCode.TokenError.getCode(), ResponseCode.TokenError.getMessageKo(), ResponseCode.TokenError.getMessageEn());
 
         } // if (claims == null) 끝
 
@@ -177,14 +179,14 @@ import java.util.Optional;
 
                 log.info("Token 재 발행이 완료 되었으므로, 200 Code와 함께 재 발행 된 Token을 반환 하겠습니다!");
 
-                return DefaultResponse.response(HttpStatus.OK.value(), "재 발행 성공");
+                return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn());
 
             } else {
 
                 log.info("Refresh Token 유효성 검사가 실패 하였습니다! (거짓 반환)");
                 log.info("Token이 검증 되지 않아 재 발행이 불가하여, 401 Code와 함께 \"Token 불 일치\" message 반환 하겠습니다!");
 
-                return DefaultResponse.response(HttpStatus.UNAUTHORIZED.value(), "Token 불 일치");
+                return DefaultResponse.response(ResponseCode.TokenError.getCode(), ResponseCode.TokenError.getMessageKo(), ResponseCode.TokenError.getMessageEn());
 
             } // if - else (tokenCheck) 끝
 
@@ -192,7 +194,7 @@ import java.util.Optional;
 
             log.info("요청으로 들어온 Token의 이름이 \"REFRESH_TOKEN_NAME\"가 아니기 때문에, T401 Code와 함께 \"Token 불 일치\" message 반환 하겠습니다!");
 
-            return DefaultResponse.response(HttpStatus.UNAUTHORIZED.value(), "Token 불 일치");
+            return DefaultResponse.response(ResponseCode.TokenError.getCode(), ResponseCode.TokenError.getMessageKo(), ResponseCode.TokenError.getMessageEn());
 
         } // if - else (tokenName.equals(JwtUtil.REFRESH_TOKEN_NAME)) 끝
     } // replaceToken(HttpServletRequest request) 끝

@@ -3,6 +3,7 @@ package org.comunity.hongga.service.member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
+import org.comunity.hongga.constant.ResponseCode;
 import org.comunity.hongga.model.dto.request.member.MemberSignInRequestDTO;
 import org.comunity.hongga.model.dto.request.member.MemberSignUpRequestDTO;
 import org.comunity.hongga.model.dto.response.member.MemberSignInResponseDTO;
@@ -24,10 +25,11 @@ import java.util.Optional;
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
  *    주니하랑, 1.0.1, 2022.02.15 로그인 관련 비즈니스 로직 구현
+ *    주니하랑, 1.0.2, 2022.03.02 응답 코드 구체화로 인한 return문 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.02.15 로그인 관련 비즈니스 로직 구현
+ * @version 1.0.2, 2022.03.02 응답 코드 구체화로 인한 return문 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -54,13 +56,13 @@ import java.util.Optional;
 
 
 
-        return checkEmail.map(email -> DefaultResponse.response(HttpStatus.OK.value(), "이미 존재하는 Email 입니다!"))
+        return checkEmail.map(email -> DefaultResponse.response(ResponseCode.PRESENT.getCode(), ResponseCode.PRESENT.getMessageKo(), ResponseCode.PRESENT.getMessageEn()))
                 .orElseGet(() -> {
 
                     log.info("중복된 Email이 없으므로, DB에 저장 하겠습니다!");
                     memberRepository.save(memberSignUpRequestDTO.toEntity());
 
-                    return DefaultResponse.response(HttpStatus.OK.value(), "회원가입 성공 하였습니다!");
+                    return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn());
                 });
     } // signUp(MemberSignUpRequestDTO memberSignUpRequestDTO) 끝
 
@@ -78,7 +80,7 @@ import java.util.Optional;
 
                 if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) {
 
-                    DefaultResponse.response(HttpStatus.OK.value(), "비밀번호를 확인 해 주세요!");
+                    DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.CHECK_VALUE.getMessageEn());
 
                 } // if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) 끝
 
@@ -88,11 +90,11 @@ import java.util.Optional;
 
                 member.setRefreshToken(refreshToken);
 
-                return DefaultResponse.response(HttpStatus.OK.value(), "로그인에 성공 하였습니다!", new MemberSignInResponseDTO(accessToken, refreshToken, member.getMemberNo(), member.getGrade(), member.getNickname()));
+                return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), new MemberSignInResponseDTO(accessToken, refreshToken, member.getMemberNo(), member.getGrade(), member.getNickname()));
 
-            }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "비밀번호를 확인 해 주세요!"));
+            }).orElseGet(() -> DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.SUCCESS.getMessageEn()));
 
-        }).orElseGet(() -> DefaultResponse.response(HttpStatus.OK.value(), "아이디를 확인 해 주세요!"));
+        }).orElseGet(() -> DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.SUCCESS.getMessageEn()));
 
     } // signIn(MemberSignInRequestDTO memberSignInRequestDTO) 끝
 } // class 끝
