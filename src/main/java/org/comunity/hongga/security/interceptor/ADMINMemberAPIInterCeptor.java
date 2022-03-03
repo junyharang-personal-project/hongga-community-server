@@ -14,10 +14,11 @@ import javax.servlet.http.HttpServletResponse;
  * <pre>
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
+ *    주니하랑, 1.0.1, 2022.03.03 회원 역할 추가로 인한 접근 제한 구문 추가 및 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.0, 2022.02.15 최초 작성
+ * @version 1.0.1, 2022.03.03 회원 역할 추가로 인한 접근 제한 구문 추가 및 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -55,15 +56,21 @@ public class ADMINMemberAPIInterCeptor implements HandlerInterceptor {
         String tokenName = claims.get("token_name", String.class);
 
         log.info("JWT 내에 이용자의 등급을 찾도록 하겠습니다!");
-        String memberGrade = claims.get("member_grade", String.class);
+        String memberRole = claims.get("member_role", String.class);
 
         log.info("이용자의 등급이 ADMIN이 아니라면 접근 제한 하겠습니다!");
-        if (memberGrade.equals(MemberRole.GUEST.getTitle()) || memberGrade.equals(MemberRole.FAMILY.getTitle())) {
+        if (
+                memberRole.equals(MemberRole.GUEST.getKey()) ||
+                memberRole.equals(MemberRole.FRIEND.getKey()) ||
+                memberRole.equals(MemberRole.PATERNAL.getKey()) ||
+                memberRole.equals(MemberRole.MATERNAL.getKey()) ||
+                memberRole.equals(MemberRole.VALENTINE.getKey()) ||
+                memberRole.equals(MemberRole.FAMILY.getKey())) {
 
             log.error("이용자의 등급이 ADMIN이 아닙니다! 접근 제한 하겠습니다!\");");
             response.sendError(403, "접근 권한이 없습니다!");
 
-        } // if (memberGrade.equals(MemberGrade.GUEST.name())) 끝
+        } // if 끝
 
         if (tokenName.equals(JwtUtil.ACCESS_TOKEN_NAME)) {  /* token 이름이 "ACCESS TOKEN" 이라면? */
 
