@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,10 +31,11 @@ import javax.validation.Valid;
  *    주니하랑, 1.0.1, 2022.02.26 댓글 작성, 목록 조회 구현
  *    주니하랑, 1.0.2, 2022.02.26 댓글 수정 기능 구현
  *    주니하랑, 1.0.3, 2022.02.26 댓글 삭제 기능 구현
+ *    주니하랑, 1.0.4, 2022.03.03 @PreAutorize를 사용하여 편리하게 URI 접근 제한
  *    * </pre>
  *
  * @author 주니하랑
- * @version 1.0.3, 2022.02.26 댓글 삭제 기능 구현
+ * @version 1.0.4, 2022.03.03 @PreAutorize를 사용하여 편리하게 URI 접근 제한
  * @See ""
  * @see <a href=""></a>
  */
@@ -48,6 +50,7 @@ import javax.validation.Valid;
     @ApiParam(name = "writeRequestDTO, manualNo, memberNo", value = "등록 할 내용이 들어 있는 객체, 등록할 댓글이 의존할 게시글 고유 번호, 등록을 요청한 이용자 고유 번호", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.등록 성공 \n 2. 등록 실패 \n 3.Token Error")})
 
+    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @PostMapping("/manual/comment/{manualNo}")
     public ResponseEntity<DefaultResponse<ManualCommentWriterResponseDTO>> writeComment (
             @RequestBody ManualCommentWriteRequestDTO writeRequestDTO, @PathVariable("manualNo") Long manualNo, @RequestParam("memberNo") Long memberNo) {
@@ -64,6 +67,7 @@ import javax.validation.Valid;
     @ApiParam(name = "manualNo, pageable", value = "등록할 댓글이 의존할 게시글 고유 번호, 페이징 처리를 위한 객체", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.조회 성공 \n 2. 조회 실패 \n 3.Token Error")})
 
+    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @GetMapping("/manual/comment/{manualNo}") public ResponseEntity<DefaultResponse<Page<ManualCommentListSearchResponseDTO>>> manualCommentListSearch (
             @PathVariable("manualNo") Long manualNo,
             @PageableDefault(sort = "no", direction = Sort.Direction.DESC)Pageable pageable) {     // 최신 댓글 내림차순으로 페이지 당 10개씩 조회
@@ -80,6 +84,7 @@ import javax.validation.Valid;
     @ApiParam(name = "manualNo, manualCommentNo, memberNo, manualCommentUpdateRequestDTO", value = "수정할 댓글이 의존할 게시글 고유 번호, 수정 대상 댓글 고유 번호, 수정 요청 이용자 고유 번호, 수정 내용이 담긴 DTO Class", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.수정 성공 \n 2.수정 실패 \n 3.Token Error")})
 
+    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @PatchMapping("/manual/comment/{manualNo}") public ResponseEntity<DefaultResponse<Long>> updateManualComment (
             @PathVariable("manualNo") Long manualNo,
             @RequestParam("manualCommentNo") Long manualCommentNo,
@@ -98,6 +103,7 @@ import javax.validation.Valid;
     @ApiParam(name = "manualNo, manualCommentNo, memberNo, manualCommentUpdateRequestDTO", value = "수정할 댓글이 의존할 게시글 고유 번호, 수정 대상 댓글 고유 번호, 수정 요청 이용자 고유 번호, 수정 내용이 담긴 DTO Class", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.삭제 성공 \n 2.삭제 실패 \n 3.Token Error")})
 
+    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @DeleteMapping("manual/comment/{manualNo}") public ResponseEntity<DefaultResponse<ManualCommentDeleteResponseDTO>> deleteManualComment(
             @PathVariable("manualNo") Long manualNo,
             @RequestParam("manualCommentNo") Long manualCommentNo,

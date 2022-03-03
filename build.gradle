@@ -78,16 +78,13 @@ dependencies {
     // 테스트 더미 데이터 만들기 의존성 추가
     implementation 'com.github.javafaker:javafaker:1.0.2'
 
-<<<<<<< HEAD
     // 문자열 관련 도구 의존성 추가
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-=======
+
     // Session 값을 DB에 저장하기 위해 의존성 추가
     // https://mvnrepository.com/artifact/org.springframework.session/spring-session-jdbc
     implementation 'org.springframework.session:spring-session-jdbc:2.6.1'
->>>>>>> c43943216ec8a1d45e8779b3c558bac98c3d96b2
-
 
 }
 

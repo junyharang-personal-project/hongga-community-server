@@ -8,6 +8,7 @@ import org.comunity.hongga.security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,16 +23,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * <b>History:</b>
  *    주니하랑, 1.0.0, 2022.02.08 최초 작성
  *    주니하랑, 1.1.0, 2022.03.02 소셜 로그인 기능 추가를 위한 내용 추가
+ *    주니하랑, 1.1.1, 2022.03.03 @PreAutorize를 사용하여 편리하게 URI 접근 제한을 걸기 위해 @EnableGlobalMethodSecurity 추가
  * </pre>
  *
  * @author 주니하랑
- * @version 1.1.0, 2022.03.02 소셜 로그인 기능 추가를 위한 내용 추가
+ * @version 1.1.1, 2022.03.03 @PreAutorize를 사용하여 편리하게 URI 접근 제한을 걸기 위해 @EnableGlobalMethodSecurity 추가
  * @See "스프링 부트와 AWS로 혼자 구현하는 웹 서비스 P.180 ~ 181"
+ * @See "코드로 배우는 스프링 부트 웹 프로젝트 P.556"
  * @see <a href=""></a>
  */
 
 @Slf4j @RequiredArgsConstructor
-@EnableWebSecurity
+@EnableWebSecurity @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Configuration public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAth2UserService customOAth2UserService;

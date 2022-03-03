@@ -11,6 +11,7 @@ import org.comunity.hongga.model.dto.request.member.MemberSignUpRequestDTO;
 import org.comunity.hongga.service.member.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +40,7 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpRequestDTO", value = "이용을 원하는 이용자가 회원 가입을 합니다. \n 필수 : 자기 소개, 프로필 사진을 제외한 모든 항목 \n 비밀번호는 암호화 처리", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.가입 성공 \t 2. Email 중복")})
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/signup") public ResponseEntity<DefaultResponse> signUp (
             @Valid @RequestBody MemberSignUpRequestDTO signUpRequestDTO) {
 
@@ -55,6 +57,7 @@ import javax.validation.Valid;
     @ApiParam(name = "MemberSignUpDTO", value = "이용을 원하는 이용자가 로그인 합니다. \n 필수 : email, Password", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.로그인 성공 \t 2. ID 불일치 \t 3. Password 불일치")})
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/signin") public ResponseEntity<DefaultResponse> signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO) {
 
         log.info("memberController의 signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO)이 동작 하였습니다!");
