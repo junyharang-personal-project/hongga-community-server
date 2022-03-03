@@ -1,6 +1,7 @@
 package org.comunity.hongga.repository.manual;
 
 import com.github.javafaker.Faker;
+import org.apache.commons.lang3.StringUtils;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.DATE;
 
 /**
  * Manual Repository Test Code
@@ -49,6 +52,7 @@ public class ManualRepositoryTest {
     @Autowired ManualQuerydslRepository manualQuerydslRepository;
     @Autowired ManualTagRepository manualTagRepository;
     @Autowired ManualImageRepository manualImageRepository;
+    @Autowired PasswordEncoder passwordEncoder;
 
     @Test public void 메뉴얼_등록() {
 
@@ -97,17 +101,21 @@ public class ManualRepositoryTest {
 
         Faker faker = new Faker();
         Faker fakerKOREALang = new Faker(new Locale("ko"));
+        Date now = new Date();
 
         IntStream.rangeClosed(1, 10).forEach(i -> {
 
             String picture = "sdoijgoij.jpg";
             String aboutMe = "안녕하세요! 우리 가족에게 언제나 좋은 일만 가득하길 바랍니다!";
+            String pwd = faker.bothify("????######");
+
+            System.out.println("회원 가입 테스트 패스워드 입력 값 : " + pwd);
 
             Member testMember = Member.builder()
                     .email(faker.internet().emailAddress())
-                    .password("hong123456"+i)
-                    .name(fakerKOREALang.name().lastName()+fakerKOREALang.name().firstName())
-                    .nickname(fakerKOREALang.name().fullName())
+                    .password(passwordEncoder.encode(pwd))
+                    .name(StringUtils.deleteWhitespace(fakerKOREALang.name().lastName()+fakerKOREALang.name().firstName()))
+                    .nickname(StringUtils.deleteWhitespace(faker.name().fullName()))
                     .phoneNumber(fakerKOREALang.phoneNumber().phoneNumber())
                     .picture(picture)
                     .aboutMe(aboutMe)
@@ -126,14 +134,7 @@ public class ManualRepositoryTest {
 
             Manual saveManual = manualRepository.save(manual);
 
-            ManualTag tags = ManualTag.builder()
-                    .manual(saveManual)
-                    .tagContent("시놀로지"+i)
-                    .build();
-
-            manualTagRepository.save(tags);
-
-            // 사진 추가 코드
+            // 사진과 Tag 추가 코드
             // 1, 2, 3, 4 ..
             int cnt = (int) (Math.random() * 5) + 1;
 
@@ -142,10 +143,17 @@ public class ManualRepositoryTest {
                 ManualImage manualImage = ManualImage.builder()
                         .uuid(UUID.randomUUID().toString())
                         .manual(manual)
-                        .imgName("사진등록TEST"+count+".jpg")
+                        .imgName(now+"사진등록TEST"+count+".jpg")
                         .build();
 
                 manualImageRepository.save(manualImage);
+
+                ManualTag tags = ManualTag.builder()
+                        .manual(saveManual)
+                        .tagContent("시놀로지"+i)
+                        .build();
+
+                manualTagRepository.save(tags);
 
             } // for(int count = 0; count < cnt; count++) 끝
 

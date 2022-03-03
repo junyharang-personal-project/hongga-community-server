@@ -23,8 +23,11 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query(value = "select m.email from Member m where m.email =:email")
+    @Query(value = "select m.email, m.password from Member m where m.email =:email")
     Optional<String> findByEmail(@Param("email") String email);
+
+    @Query(value = "select m.email, m.password from Member m where m.email =:email")
+    Optional<Member> findByEmailImsi(@Param("email") String email);
 
     @Query("select m from Member m where m.email =:email and m.password =:password")
     Optional<Member> findByMember(@Param("email") String email, @Param("password") String password);

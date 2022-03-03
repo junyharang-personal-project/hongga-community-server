@@ -57,6 +57,9 @@ import javax.validation.Valid;
 
     @PostMapping("/signin") public ResponseEntity<DefaultResponse> signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO) {
 
+        log.info("memberController의 signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO)이 동작 하였습니다!");
+        log.info("비즈니스 로직 처리를 위해 memberServiceImpl.signIn(memberSignInRequestDTO)를 호출 하겠습니다!");
+
         return new ResponseEntity<>(memberServiceImpl.signIn(memberSignInRequestDTO), HttpStatus.OK);
 
     } // signin (@Valid @RequestBody MemberSignInRequestDTO memberSignInRequestDTO) 끝

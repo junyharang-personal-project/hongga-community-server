@@ -2,6 +2,7 @@ package org.comunity.hongga.controller.manual;
 
 import org.comunity.hongga.config.WebMvcConfig;
 import org.comunity.hongga.constant.DefaultResponse;
+import org.comunity.hongga.constant.ResponseCode;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.service.manual.ManualServiceImpl;
 import org.junit.Test;
@@ -46,7 +47,7 @@ public class manualControllerTest {
     @Test public void 메뉴얼_등록() throws Exception{
         String memberNo = "1";
 
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "게시물 등록 성공", null, null);
+        DefaultResponse defaultResponse = DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn());
         given(manualService.writeManual(any(), anyLong())).willReturn(defaultResponse);
 
         mockMvc.perform(post(ServiceURIVersion.NOW_VERSION+"/paternal/manual/?memberNo={memberNo}", memberNo)
@@ -100,7 +101,7 @@ public class manualControllerTest {
         String manualNo = "103";
         String memberNo = "1";
 
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "수정 성공", null, null);
+        DefaultResponse defaultResponse = DefaultResponse.response(HttpStatus.SEE_OTHER.value(), "수정 성공", null, null);
 
         given(manualService.updateManual(any(), anyLong(), anyLong())).willReturn(defaultResponse);
 
@@ -122,7 +123,7 @@ public class manualControllerTest {
         String manualNo = "99";
         String memberNo = "99";
 
-        DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
+        DefaultResponse defaultResponse = DefaultResponse.response(HttpStatus.SEE_OTHER.value(), "삭제 성공", null, null);
 
         given(manualService.deleteManual(any(), anyLong())).willReturn(defaultResponse);
 

@@ -96,42 +96,42 @@ public class MemberServiceImplTest {
 //        assertThat(result.getMessage()).isEqualTo("회원가입 성공 하였습니다!");
 //    } // 회원가입() 끝
 
-    @Test public void 로그인() {
-
-        // given
-        String email = "test@hongga.com";
-        String password = "hong123456";
-        String name = "홍주니";
-        String nickName = "주니하랑";
-        String phoneNumber = "010-3939-4848";
-        String picture = "sdoijgoij.jpg";
-        String aboutMe = "안녕하세요! 우리 가족에게 언제나 좋은 일만 가득하길 바랍니다!";
-        boolean activated = true;
-
-        Member mockMember = Member.builder()
-                .email(email)
-                .password(password)
-                .name(name)
-                .nickname(nickName)
-                .phoneNumber(phoneNumber)
-                .picture(picture)
-                .aboutMe(aboutMe)
-                .grade(MemberGrade.ROLE_GUEST)
-                .activated(activated)
-                .build();
-
-        MemberSignInRequestDTO memberSignInRequestDTO = new MemberSignInRequestDTO(email, password);
-
-        // when
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(email));
-
-        given(memberRepository.findByMember(email, password)).willReturn(Optional.of(mockMember));
-
-        DefaultResponse<MemberSignInResponseDTO> response = memberServiceImpl.signIn(memberSignInRequestDTO);
-
-        // then
-        assertThat(response.getMessage()).isEqualTo("로그인에 성공 하였습니다!");
-
-    } // 로그인() 끝
+//    @Test public void 로그인() {
+//
+//        // given
+//        String email = "test@hongga.com";
+//        String password = "hong123456";
+//        String name = "홍주니";
+//        String nickName = "주니하랑";
+//        String phoneNumber = "010-3939-4848";
+//        String picture = "sdoijgoij.jpg";
+//        String aboutMe = "안녕하세요! 우리 가족에게 언제나 좋은 일만 가득하길 바랍니다!";
+//        boolean activated = true;
+//
+//        Member mockMember = Member.builder()
+//                .email(email)
+//                .password(password)
+//                .name(name)
+//                .nickname(nickName)
+//                .phoneNumber(phoneNumber)
+//                .picture(picture)
+//                .aboutMe(aboutMe)
+//                .grade(MemberGrade.ROLE_GUEST)
+//                .activated(activated)
+//                .build();
+//
+//        MemberSignInRequestDTO memberSignInRequestDTO = new MemberSignInRequestDTO(email, password);
+//
+//        // when
+//        given(memberRepository.findByEmail(email)).willReturn(Optional.of(email));
+//
+//        given(memberRepository.findByMember(email, password)).willReturn(Optional.of(mockMember));
+//
+//        DefaultResponse<MemberSignInResponseDTO> response = memberServiceImpl.signIn(memberSignInRequestDTO);
+//
+//        // then
+//        assertThat(response.getMessage()).isEqualTo("로그인에 성공 하였습니다!");
+//
+//    } // 로그인() 끝
 
 } // class 끝

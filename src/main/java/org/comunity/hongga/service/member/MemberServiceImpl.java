@@ -82,26 +82,55 @@ import java.util.Optional;
     @Override
     @Transactional public DefaultResponse<MemberSignInResponseDTO> signIn(MemberSignInRequestDTO memberSignInRequestDTO) {
 
-        Optional<String> loginEmail = memberRepository.findByEmail(memberSignInRequestDTO.getEmail());
+        log.info("MemberService의 signIn(MemberSignInRequestDTO memberSignInRequestDTO)가 동작하였습니다!");
+        log.info("로그인 요청 이용자 Email 값 : " + memberSignInRequestDTO.getEmail() + "패스워드 값 : " + memberSignInRequestDTO.getPassword());
+        log.info("DB에서 이용자가 입력한 email 주소를 통해 존재하는 회원이 있는지 찾아 보겠습니다!");
+
+        Optional<Member> loginEmail = memberRepository.findByEmailImsi(memberSignInRequestDTO.getEmail());
+
+        if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginEmail.get().getPassword())) {
+
+            log.info("이용자가 입력한 패스워드가 잘 못 입력 되었습니다!");
+
+            DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.CHECK_VALUE.getMessageEn());
+
+        } // if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) 끝
 
         return loginEmail.map(email -> {
 
-            Optional<Member> loginMember = memberRepository.findByMember(email, memberSignInRequestDTO.getPassword());
+            log.info("DB에서 이용자가 입력한 email 주소를 통해 존재하는 회원이 있습니다!");
+            log.info("DB에서 찾은 이용자 정보 : " + loginEmail.get().toString());
+            log.info("DB에서 이용자가 입력한 email 주소와 패스워드를 통해 존재하는 회원이 있는지 찾아 보겠습니다!");
+            log.info("DB 쿼리에 입력될 email 주소 값 : " + email.toString() + "Password 암호화 값 : " + passwordEncoder.encode(memberSignInRequestDTO.getPassword()));
+
+
+
+            Optional<Member> loginMember = memberRepository.findByMember(email, passwordEncoder.encode(memberSignInRequestDTO.getPassword()));
+
+
+            if (loginMember.isEmpty()) {
+
+                log.info("DB에서 회원 정보를 찾지 못했습니다!");
+
+                DefaultResponse.response(ResponseCode.NotFoundUser.getCode(), ResponseCode.NotFoundUser.getMessageKo(), ResponseCode.NotFoundUser.getMessageEn(), memberSignInRequestDTO);
+
+            } // if (loginMember.isEmpty()) 끝
+
+            log.info("DB에서 찾은 값을 출력 : " + loginMember.get().toString());
 
             return loginMember.map(member -> {
 
-                if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) {
-
-                    DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.CHECK_VALUE.getMessageEn());
-
-                } // if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) 끝
+                log.info("이용자가 입력한 Email 주소와 패스워드 검증이 모두 완료 되었습니다!");
+                log.info("해당 이용자의 고유 번호, 등급을 통해 Access Token과 Refresh Token을 만들겠습니다!");
 
                 String accessToken = JwtUtil.createAccessToken(member.getMemberNo(), member.getGrade());
 
                 String refreshToken = JwtUtil.createRefreshToken(member.getMemberNo(), member.getGrade());
 
+                log.info("DB에 Member Table에 refresh Token 값 저장을 처리 하겠습니다!");
                 member.setRefreshToken(refreshToken);
 
+                log.info("로그인 처리가 모두 완료 되었습니다! 200 Code와 함께 Access, Refresh, 회원 고유 번호, 등급, 별명을 반환 해 주겠습니다!");
                 return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), new MemberSignInResponseDTO(accessToken, refreshToken, member.getMemberNo(), member.getGrade(), member.getNickname()));
 
             }).orElseGet(() -> DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.SUCCESS.getMessageEn()));

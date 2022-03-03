@@ -78,6 +78,10 @@ dependencies {
     // 테스트 더미 데이터 만들기 의존성 추가
     implementation 'com.github.javafaker:javafaker:1.0.2'
 
+    // 문자열 관련 도구 의존성 추가
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+
 
 }
 
