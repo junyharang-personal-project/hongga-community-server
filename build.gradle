@@ -61,7 +61,7 @@ dependencies {
 
     // OAuth Test용 Mustache 의존성
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mustache
-    implementation 'org.springframework.boot:spring-boot-starter-mustache:2.6.3'
+//    implementation 'org.springframework.boot:spring-boot-starter-mustache:2.6.3'
 
     // Mockito 의존성
     // https://mvnrepository.com/artifact/org.mockito/mockito-core

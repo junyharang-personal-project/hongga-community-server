@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 
 // 이 어노테이션이 생성될 수 있는 위치 지정
 // PARAMETER로 지정 했기에 Method의 매개 변수로 선언된 객체에서 사용 가능
-@Target(ElementType.PARAMETER)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface LoginUser {
-} // Annotation 끝
+//@Target(ElementType.PARAMETER)
+//@Retention(RetentionPolicy.RUNTIME)
+//public @interface LoginUser {
+//} // Annotation 끝

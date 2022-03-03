@@ -55,7 +55,7 @@ import java.util.List;
     @ApiParam(name = "memberNo", value = "작성자의 고유 번호를 통해 게시글을 등록 합니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.등록 성공 \n 2. 등록 실패 \n 3.Token Error")})
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @PostMapping("manual") public ResponseEntity<DefaultResponse<Long>> writeManual(
             @Valid @RequestBody ManualWriteRequestDTO systemManualWriteDTO, @RequestParam("memberNo") Long memberNo) {
 
@@ -73,7 +73,7 @@ import java.util.List;
     @ApiParam(name = "pageable", value = "페이징 처리를 위한 객체를 매개 변수로 줍니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.조회 성공 \n 2.데이터 없음 \n 3.Token Error")})
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+ //   @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @GetMapping("manual") public ResponseEntity<DefaultResponse<Page<ManualListSearchResponseDTO>>> manualListSearch (
             @PageableDefault Pageable pageable) {
 
@@ -93,7 +93,7 @@ import java.util.List;
 
      // TODO - 상세 조회 시 회원 정보가 모두 나오지 않게 하고, 닉네임만 나오게 처리 필요
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @GetMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<ManualDetailResponseDTO>> manualDetailSearch (
             @PathVariable("manualNo") Long manualNo) {
 
@@ -111,7 +111,7 @@ import java.util.List;
     @ApiParam(name = "manualNo, memberNo", value = "수정 하고자 하는 게시글의 고유 번호와 수정 요청한 이용자 고유 번호 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.수정 성공 \n 2.데이터 없음 \n 3.Token Error")})
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @PatchMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<Long>> updateManual (
             @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO,
             @PathVariable("manualNo") Long manualNo,
@@ -133,7 +133,7 @@ import java.util.List;
     @ApiParam(name = "manualNo, memberNo", value = "삭제 대상 게시물 고유 번호와 요청 이용자 고유 번호 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.삭제 성공 \n 2.삭제 실패\n 1) 해당 게시글 작성자 삭제 요청자 불일치 \n 2) 삭제 요청한 게시글 DB 미 존재 \n 3.데이터 없음 \n 4.Token Error")})
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @DeleteMapping("/manual/{manualNo}") public ResponseEntity<DefaultResponse<ManualDeleteResponseDTO>> deleteManual (
             @PathVariable("manualNo") Long manualNo,
             @RequestParam("memberNo") Long memberNo
@@ -153,7 +153,7 @@ import java.util.List;
     @ApiParam(name = "title, pageable", value = "이용자가 검색을 위해 입력한 게시글 제목과 Paging 처리를 위한 객체 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @GetMapping("/manual/title-search") public ResponseEntity<DefaultResponse<Page<ManualListSearchResponseDTO>>> manualTitleSearch (
             @RequestParam("query") String title,
             @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
@@ -172,7 +172,7 @@ import java.util.List;
     @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 내용과 Paging 처리를 위한 객체 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @GetMapping("/manual/content-search") public ResponseEntity<DefaultResponse<Page<ManualListContentSearchResponseDTO>>> manualContentSearch (
             @RequestParam("query") String content,
             @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
@@ -191,7 +191,7 @@ import java.util.List;
     @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 제목 혹은 내용과 Paging 처리를 위한 객체 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @GetMapping("/manual/query-search") public ResponseEntity<DefaultResponse<Page<ManualListContentSearchResponseDTO>>> manualTitleAndContentSearch (
             @RequestParam("query") String query,
             @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
@@ -210,7 +210,7 @@ import java.util.List;
     @ApiParam(name = "content, pageable", value = "이용자가 검색을 위해 입력한 게시글 TAG와 Paging 처리를 위한 객체 입니다.", readOnly = true)
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.검색 성공 \n 2.데이터 없음 \n \n 3.Token Error")})
 
-    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @GetMapping("/manual/tag-search") public ResponseEntity<DefaultResponse<Page<ManualListTagContentSearchResponseDTO>>> manualTagSearch (
             @RequestParam("query") String tagContent,
             @PageableDefault (sort = "manualNo", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
