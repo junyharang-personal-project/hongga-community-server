@@ -5,7 +5,7 @@ import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.member.MemberSignInRequestDTO;
 import org.comunity.hongga.model.dto.response.member.MemberSignInResponseDTO;
 import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.comunity.hongga.security.util.JwtUtil;
 import org.junit.After;
@@ -116,14 +116,22 @@ public class MemberServiceImplTest {
 //                .phoneNumber(phoneNumber)
 //                .picture(picture)
 //                .aboutMe(aboutMe)
+<<<<<<< HEAD
 //                .grade(MemberGrade.ROLE_GUEST)
+=======
+//                .role(MemberRole.GUEST)
+>>>>>>> c43943216ec8a1d45e8779b3c558bac98c3d96b2
 //                .activated(activated)
 //                .build();
 //
 //        MemberSignInRequestDTO memberSignInRequestDTO = new MemberSignInRequestDTO(email, password);
 //
 //        // when
+<<<<<<< HEAD
 //        given(memberRepository.findByEmail(email)).willReturn(Optional.of(email));
+=======
+//        given(memberRepository.findBytoMemberEmail(email)).willReturn(Optional.of(email));
+>>>>>>> c43943216ec8a1d45e8779b3c558bac98c3d96b2
 //
 //        given(memberRepository.findByMember(email, password)).willReturn(Optional.of(mockMember));
 //

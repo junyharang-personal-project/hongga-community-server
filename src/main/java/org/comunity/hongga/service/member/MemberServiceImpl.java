@@ -59,7 +59,7 @@ import java.util.Optional;
         log.info("이용자의 패스워드를 암호화 하겠습니다!");
         memberSignUpRequestDTO.setPassword(passwordEncoder.encode(memberSignUpRequestDTO.getPassword())); ;
 
-        Optional<String> checkEmail = memberRepository.findByEmail(requestEmail);
+        Optional<String> checkEmail = memberRepository.findBytoMemberEmail(requestEmail);
 
         return checkEmail.map(email -> DefaultResponse.response(ResponseCode.PRESENT.getCode(), ResponseCode.PRESENT.getMessageKo(), ResponseCode.PRESENT.getMessageEn()))
                 .orElseGet(() -> {
@@ -82,6 +82,7 @@ import java.util.Optional;
     @Override
     @Transactional public DefaultResponse<MemberSignInResponseDTO> signIn(MemberSignInRequestDTO memberSignInRequestDTO) {
 
+<<<<<<< HEAD
         log.info("MemberService의 signIn(MemberSignInRequestDTO memberSignInRequestDTO)가 동작하였습니다!");
         log.info("로그인 요청 이용자 Email 값 : " + memberSignInRequestDTO.getEmail() + "패스워드 값 : " + memberSignInRequestDTO.getPassword());
         log.info("DB에서 이용자가 입력한 email 주소를 통해 존재하는 회원이 있는지 찾아 보겠습니다!");
@@ -95,6 +96,9 @@ import java.util.Optional;
             DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.CHECK_VALUE.getMessageEn());
 
         } // if (!passwordEncoder.matches(memberSignInRequestDTO.getPassword(), loginMember.get().getPassword())) 끝
+=======
+        Optional<String> loginEmail = memberRepository.findBytoMemberEmail(memberSignInRequestDTO.getEmail());
+>>>>>>> c43943216ec8a1d45e8779b3c558bac98c3d96b2
 
         return loginEmail.map(email -> {
 
@@ -123,15 +127,19 @@ import java.util.Optional;
                 log.info("이용자가 입력한 Email 주소와 패스워드 검증이 모두 완료 되었습니다!");
                 log.info("해당 이용자의 고유 번호, 등급을 통해 Access Token과 Refresh Token을 만들겠습니다!");
 
-                String accessToken = JwtUtil.createAccessToken(member.getMemberNo(), member.getGrade());
+                String accessToken = JwtUtil.createAccessToken(member.getMemberNo(), member.getRole());
 
-                String refreshToken = JwtUtil.createRefreshToken(member.getMemberNo(), member.getGrade());
+                String refreshToken = JwtUtil.createRefreshToken(member.getMemberNo(), member.getRole());
 
                 log.info("DB에 Member Table에 refresh Token 값 저장을 처리 하겠습니다!");
                 member.setRefreshToken(refreshToken);
 
+<<<<<<< HEAD
                 log.info("로그인 처리가 모두 완료 되었습니다! 200 Code와 함께 Access, Refresh, 회원 고유 번호, 등급, 별명을 반환 해 주겠습니다!");
                 return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), new MemberSignInResponseDTO(accessToken, refreshToken, member.getMemberNo(), member.getGrade(), member.getNickname()));
+=======
+                return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), new MemberSignInResponseDTO(accessToken, refreshToken, member.getMemberNo(), member.getRole(), member.getNickname()));
+>>>>>>> c43943216ec8a1d45e8779b3c558bac98c3d96b2
 
             }).orElseGet(() -> DefaultResponse.response(ResponseCode.CHECK_VALUE.getCode(), ResponseCode.CHECK_VALUE.getMessageKo(), ResponseCode.SUCCESS.getMessageEn()));
 

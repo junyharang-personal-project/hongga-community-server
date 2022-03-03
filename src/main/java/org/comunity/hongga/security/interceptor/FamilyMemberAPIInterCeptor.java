@@ -2,7 +2,7 @@ package org.comunity.hongga.security.interceptor;
 
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 import org.comunity.hongga.security.util.JwtUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -58,7 +58,7 @@ public class FamilyMemberAPIInterCeptor implements HandlerInterceptor {
         String memberGrade = claims.get("member_grade", String.class);
 
         log.info("이용자의 등급이 FAMILY가 아니라면 접근 제한 하겠습니다!");
-        if (memberGrade.equals(MemberGrade.ROLE_GUEST.name())) {
+        if (memberGrade.equals(MemberRole.GUEST.getTitle())) {
 
             log.error("이용자의 등급이 GUEST 접근 제한 하겠습니다!\");");
             response.sendError(403, "접근 권한이 없습니다!");

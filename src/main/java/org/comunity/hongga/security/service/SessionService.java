@@ -7,10 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ResponseCode;
 import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.comunity.hongga.security.util.JwtUtil;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,10 +23,11 @@ import java.util.Optional;
  * <b>History:</b>
  *    주니하랑, 1.0.0, 022.02.16 최초 작성
  *    주니하랑, 1.0.1, 2022.03.02 응답 코드 구체화로 인한 return문 수정
+ *    주니하랑, 1.1.0, 2022.03.02 회원 역할 관련 Enum Class 이름 변경으로 인한 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 1.0.1, 2022.03.02 응답 코드 구체화로 인한 return문 수정
+ * @version 1.1.0, 2022.03.02 회원 역할 관련 Enum Class 이름 변경으로 인한 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -66,12 +66,12 @@ import java.util.Optional;
 
     } // refreshTokenCheck(Long id, String refreshToken) 끝
 
-    public Map<String, MemberGrade> memberGradeCheck(Long memberNo) {
+    public Map<String, MemberRole> memberGradeCheck(Long memberNo) {
 
         log.info("SessionService가 동작 하였습니다!");
         log.info("memberGradeCheck(Long memberNo)이 호출되어 요청으로 들어 온 이용자의 등급(인가) 검증을 시작하겠습니다!");
 
-        HashMap<String, MemberGrade> result = new HashMap<>();
+        HashMap<String, MemberRole> result = new HashMap<>();
         result.put("permission", null);
 
         log.info("DB에서 요청 이용자의 고유 번호가 같은 것이 있는지 조회 하겠습니다!");
@@ -84,7 +84,7 @@ import java.util.Optional;
 
             log.info("요청 이용자의 정보가 조회 되었습니다! 해당 이용자의 권한을 Map에 넣겠습니다!");
 
-            result.replace("permission", member.getGrade());
+            result.replace("permission", member.getRole());
 
         });
 
@@ -132,7 +132,7 @@ import java.util.Optional;
 
         String tokenName = claims.get("token_name", String.class);
 
-        String memberGrade = claims.get("member_grade", String.class);
+        String memberRole = claims.get("member_role", String.class);
 
         log.info("요청으로 들어온 Token의 이름이 \"REFRESH_TOKEN_NAME\" 인지 검증 하겠습니다!");
 
@@ -154,26 +154,26 @@ import java.util.Optional;
                 String accessToken;
 
                 log.info("요청 이용자의 등급을 확인 하겠습니다!");
-                if (memberGrade.equals(MemberGrade.ROLE_ADMIN)) {
+                if (memberRole.equals(MemberRole.ADMIN.getKey())) {
 
                     log.info("요청 이용자의 등급이 관리자 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.ADMIN)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberGrade.ROLE_ADMIN);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ADMIN);
 
-                } else if (memberGrade.equals(MemberGrade.ROLE_FAMILY)) {
+                } else if (memberRole.equals(MemberRole.FAMILY.getKey())) {
 
                     log.info("요청 이용자의 등급이 가족 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.FAMILY)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberGrade.ROLE_FAMILY);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.FAMILY);
 
-                } else if (memberGrade.equals(MemberGrade.ROLE_GUEST)) {
+                } else if (memberRole.equals(MemberRole.GUEST.getKey())) {
 
                     log.info("요청 이용자의 등급이 손님 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.GUEST)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberGrade.ROLE_GUEST);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.GUEST);
 
                 } // if (회원 등급 비교) 끝
 

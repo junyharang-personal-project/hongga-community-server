@@ -1,7 +1,7 @@
 package org.comunity.hongga.repository.manual;
 
 import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class MemberRepositoryTest {
                 .picture(picture)
                 .aboutMe(aboutMe)
                 .activated(true)
-                .grade(MemberGrade.ROLE_GUEST)
+                .role(MemberRole.GUEST)
                 .build();
 
         //when

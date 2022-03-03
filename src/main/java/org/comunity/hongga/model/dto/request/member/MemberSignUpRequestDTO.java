@@ -2,9 +2,7 @@ package org.comunity.hongga.model.dto.request.member;
 
 import lombok.*;
 import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.model.entity.member.MemberGrade;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.comunity.hongga.model.entity.member.MemberRole;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -52,7 +50,7 @@ public class MemberSignUpRequestDTO {
                 .nickname(nickname)
                 .phoneNumber(phoneNumber)
                 .picture(picture)
-                .grade(MemberGrade.ROLE_GUEST)
+                .role(MemberRole.GUEST)
                 .aboutMe(aboutMe)
                 .activated(true)
                 .build();

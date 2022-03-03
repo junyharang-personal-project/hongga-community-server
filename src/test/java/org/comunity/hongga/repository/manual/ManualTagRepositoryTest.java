@@ -2,7 +2,7 @@ package org.comunity.hongga.repository.manual;
 
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.model.entity.member.MemberGrade;
+import org.comunity.hongga.model.entity.member.MemberRole;
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class ManualTagRepositoryTest {
                 .phoneNumber("010-3939-4848")
                 .picture(picture)
                 .aboutMe(aboutMe)
-                .grade(MemberGrade.ROLE_ADMIN)
+                .role(MemberRole.ADMIN)
                 .activated(true)
                 .build();
 
