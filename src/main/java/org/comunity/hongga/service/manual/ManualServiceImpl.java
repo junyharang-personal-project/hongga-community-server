@@ -5,8 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.Pagination;
 import org.comunity.hongga.constant.ResponseCode;
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
-import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualWriteAndUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
@@ -24,7 +23,6 @@ import org.comunity.hongga.repository.manual.querydsl.ManualTagQuerydslResposito
 import org.comunity.hongga.repository.member.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,10 +44,11 @@ import java.util.Optional;
  *    주니하랑, 1.3.2, 2022.02.25 삭제 기능 구현을 위한 Refactoring (Image 삭제 처리)
  *    주니하랑, 1.4.0, 2022.02.28 검색 기능(제목, 제목+내용, TAG) 구현
  *    주니하랑, 1.4.1, 2022.03.02 ResponseCode 상세 구현을 위해 수정
+ *    주니하랑, 1.4.2  2022.03.04 글 등록, 수정 RequestDTO 결합으로 인한 수정
  * </pre>
  *
  * @author 주니하랑
- * @version 1.4.1, 2022.03.02 ResponseCode 상세 구현을 위해 수정
+ * @version 1.4.2  2022.03.04 글 등록, 수정 RequestDTO 결합으로 인한 수정
  * @See ""
  * @see <a href=""></a>
  */
@@ -68,21 +67,21 @@ import java.util.Optional;
 
     /**
      * 글 등록
-     * @param manualWriteRequestDTO - Client에서 입력한 값을 담은 DTO
+     * @param manualWriteAndUpdateRequestDTO - Client에서 입력한 값을 담은 DTO
      * @param memberNo - 글 작성 이용자 고유 번호
      * @return DefaultResponse<Long> - 응답 관련 정리 해둔 Class를 통해 작성된 게시글의 Manual 고유 번호를 반환(DB에 PK값)
      */
 
     @Transactional
     @Override
-    public DefaultResponse<Long> writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo) {
+    public DefaultResponse<Long> writeManual(ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO, Long memberNo) {
 
         Optional<Member> writer = memberRepository.findById(memberNo);
 
         log.info("ManualServiceImpl 동작 하였습니다!");
         log.info("writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo) 호출 되었습니다!");
 
-        if (manualWriteRequestDTO == null) {  /* 메뉴얼에 입력 값이 없다면? */
+        if (manualWriteAndUpdateRequestDTO == null) {  /* 메뉴얼에 입력 값이 없다면? */
 
             log.info("시스템 메뉴얼 등록에 입력 되지 않은 내용이 있습니다!");
 
@@ -92,20 +91,20 @@ import java.util.Optional;
 
         log.info("manualRepository.save(manual)를 호출하여 ManualWriteRequestDTO에 담긴 게시글을 저장 하겠습니다!");
 
-        Optional<Manual> saveManual = Optional.ofNullable(manualRepository.save(manualWriteRequestDTO.toEntity(manualWriteRequestDTO, writer)));
+        Optional<Manual> saveManual = Optional.ofNullable(manualRepository.save(manualWriteAndUpdateRequestDTO.toEntity(manualWriteAndUpdateRequestDTO, writer)));
 
 
         manualImageRepository.save(ManualImage.builder()
-                .manual(saveManual.get()).uuid(manualWriteRequestDTO.getUuid())
-                .manual(saveManual.get()).imgName(manualWriteRequestDTO.getImgName())
-                .manual(saveManual.get()).path(manualWriteRequestDTO.getPath())
+                .manual(saveManual.get()).uuid(manualWriteAndUpdateRequestDTO.getUuid())
+                .manual(saveManual.get()).imgName(manualWriteAndUpdateRequestDTO.getImgName())
+                .manual(saveManual.get()).path(manualWriteAndUpdateRequestDTO.getPath())
                 .build());
 
         manualTagRepository.save(ManualTag.builder()
-                .manual(saveManual.get()).tagContent(manualWriteRequestDTO.getTagContent())
+                .manual(saveManual.get()).tagContent(manualWriteAndUpdateRequestDTO.getTagContent())
                 .build());
 
-        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn(), memberNo);
+        return DefaultResponse.response(ResponseCode.CREATE.getCode(), ResponseCode.CREATE.getMessageKo(), ResponseCode.CREATE.getMessageEn(), memberNo);
 
     } // writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo) 끝
 
@@ -188,10 +187,10 @@ import java.util.Optional;
     } // manualDetailSearch(Long manualNo) 끝
 
     @Override
-    public DefaultResponse<Long> updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
+    public DefaultResponse<Long> updateManual(ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO, Long manualNo, Long memberNo) {
 
         log.info("ManualService가 동작 하였습니다!");
-        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualUpdateRequestDTO.toString() + "," + "수정 대상 게시물 고유 번호 : " + manualNo.toString()  + "," + "수정 요청 이용자 고유 번호 : " + memberNo.toString());
+        log.info("ManualController에서 넘겨 받은 요청 값 확인 : " + manualWriteAndUpdateRequestDTO.toString() + "," + "수정 대상 게시물 고유 번호 : " + manualNo.toString()  + "," + "수정 요청 이용자 고유 번호 : " + memberNo.toString());
         log.info("updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)이 호출 되었습니다!");
 
         log.info("memberRepository.findByManualNo(manualNo, memberNo)를 호출하여 요청으로 들어온 설명서 고유 번호와 해당 글의 작성자가 맞는지 여부를 찾겠습니다!");
@@ -202,7 +201,7 @@ import java.util.Optional;
 
         if (findManual.isEmpty()) {
 
-            log.info("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 200 Code와 함께 \"내용 없음\" 반환 하겠습니다!");
+            log.info("DB에서 해당 자료를 찾아봤지만, 존재 하지 않습니다! 204 Code와 함께 \"검색 결과가 없습니다.\" 반환 하겠습니다!");
             DefaultResponse.response(ResponseCode.NO_CONTENT.getCode(), ResponseCode.NO_CONTENT.getMessageKo(), ResponseCode.NO_CONTENT.getMessageEn());
 
         } // if (findManual.isEmpty()) 문 끝
@@ -216,13 +215,13 @@ import java.util.Optional;
                     log.info("요청으로 들어온 회원 고유 번호와 게시글 고유 번호가 DB에서 찾은 자료의 값과 일치 합니다!");
                     log.info("manualQuerydslRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo)를 호출하여 게시글 수정 건에 대한 DB 값을 변경 하겠습니다!");
 
-                    manualQuerydslRepository.updateManual(manualUpdateRequestDTO, manualNo, memberNo);
+                    manualQuerydslRepository.updateManual(manualWriteAndUpdateRequestDTO, manualNo, memberNo);
 
                     log.info("manualImageRepository.updateManualImage(manualUpdateRequestDTO, manual.getManualNo())를 호출하여 Image 수정 건에 대한 DB 값을 변경 하겠습니다!");
-                    manualImageQuerydslRepository.updateManualImage(manualUpdateRequestDTO, manual.getManualNo());
+                    manualImageQuerydslRepository.updateManualImage(manualWriteAndUpdateRequestDTO, manual.getManualNo());
 
                     log.info("manualTagQuerydslRepository.updateManualTag(manualUpdateRequestDTO, manual.getManualNo())를 호출하여 Tag 수정 건에 대한 DB 값을 변경 하겠습니다!");
-                    manualTagQuerydslRespository.updateManualTag(manualUpdateRequestDTO, manual.getManualNo());
+                    manualTagQuerydslRespository.updateManualTag(manualWriteAndUpdateRequestDTO, manual.getManualNo());
 
                     log.info("DB에 해당 게시물 수정이 완료 되었습니다! 200 Code와 함께 \"수정 성공\" 반환 하겠습니다!");
 

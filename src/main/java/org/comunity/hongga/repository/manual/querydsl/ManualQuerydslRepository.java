@@ -5,15 +5,13 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualWriteAndUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListTagContentSearchResponseDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.QManual;
-import org.comunity.hongga.model.entity.member.Member;
-import org.comunity.hongga.model.entity.member.QMember;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,6 +131,9 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
     @Transactional(readOnly = true)
     public Optional<Manual> findByManualNo(Long manualNo, Long memberNo) {
 
+        log.info("ManualTagQuerydslRespository의 findByManualNo(Long manualNo, Long memberNo)이 호출 되었습니다!");
+        log.info("수정을 위한 대상 게시글을 DB에서 찾겠습니다!");
+
         Manual result = jpaQueryFactory
                 .select(QManual.manual)
                 .from(manual)
@@ -146,12 +148,12 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
 
     /**
      * 게시글 수정 Method
-     * @param manualUpdateRequestDTO 수정 요청 이용자가 제목, 내용에 대해 수정한 값을 담은 DTO 객체
+     * @param manualWriteAndUpdateRequestDTO 수정 요청 이용자가 게시글 수정 내용에 대해 수정한 값을 담은 DTO 객체
      * @param manualNo 수정 대상 게시글 고유 번호
      * @param memberNo 수정 요청 이용자 고유 번호
      */
 
-    @Transactional public void updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) {
+    @Transactional public void updateManual(ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO, Long manualNo, Long memberNo) {
 
         log.info("ManualTagQuerydslRespository의 updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo)가 호출 되었습니다!");
 
@@ -160,9 +162,9 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, manual);
 
         updateClause.where(manual.manualNo.eq(manualNo), manual.writer.memberNo.eq(memberNo))
-                .set(manual.title, manualUpdateRequestDTO.getTitle())
-                .set(manual.content, manualUpdateRequestDTO.getContent())
-                .set(manual.updateAt, manualUpdateRequestDTO.getUpdateAt())
+                .set(manual.title, manualWriteAndUpdateRequestDTO.getTitle())
+                .set(manual.content, manualWriteAndUpdateRequestDTO.getContent())
+                .set(manual.updateAt, LocalDateTime.now())
                 .execute();
 
     } // updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo) 끝
@@ -178,6 +180,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
     public Page<ManualListSearchResponseDTO> findByTitle(String title, Pageable pageable) {
 
         log.info("ManualQuerydslRepository의 findByTitle(String title, Pageable pageable)가 호출 되었습니다!");
+        log.info("요청값으로 들어온 제목 일부로 DB에서 해당 게시글을 찾아 보겠습니다!");
 
         List<ManualListSearchResponseDTO> listSearchResponseDTOS = jpaQueryFactory
                 .select(Projections.constructor(ManualListSearchResponseDTO.class,
@@ -212,6 +215,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
     public Page<ManualListContentSearchResponseDTO> findByContent(String content, Pageable pageable) {
 
         log.info("ManualQuerydslRepository의 findByContent(String content, Pageable pageable)가 호출 되었습니다!");
+        log.info("요청값으로 들어온 내용 일부로 DB에서 해당 게시글을 찾아 보겠습니다!");
 
         List<ManualListContentSearchResponseDTO> listSearchResponseDTOS = jpaQueryFactory
                 .select(Projections.constructor(ManualListContentSearchResponseDTO.class,
@@ -246,6 +250,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
     public Page<ManualListContentSearchResponseDTO> findByTitleOrContent(String query, Pageable pageable) {
 
         log.info("ManualQuerydslRepository의 findByTitleOrContent(String query, Pageable pageable)가 호출 되었습니다!");
+        log.info("요청값으로 들어온 제목과 내용 일부로 DB에서 해당 게시글을 찾아 보겠습니다!");
 
         List<ManualListContentSearchResponseDTO> listContentSearchResponseDTOS = jpaQueryFactory
                 .select(Projections.constructor(ManualListContentSearchResponseDTO.class,
@@ -282,6 +287,7 @@ import static org.comunity.hongga.model.entity.member.QMember.member;
     public Page<ManualListTagContentSearchResponseDTO> findByTag(String tagContent, Pageable pageable) {
 
         log.info("ManualQuerydslRepository의 findByTag(String tagContent, Pageable pageable)가 호출 되었습니다!");
+        log.info("요청값으로 들어온 TAG로 DB에서 해당 게시글을 찾아 보겠습니다!");
 
         List<ManualListTagContentSearchResponseDTO> listTagContentSearchResponseDTOS = jpaQueryFactory
                 .select(Projections.constructor(ManualListTagContentSearchResponseDTO.class,

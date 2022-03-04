@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualWriteAndUpdateRequestDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,11 +33,11 @@ import static org.comunity.hongga.model.entity.manual.QManualTag.manualTag;
 
     /**
      * 게시글 Tag 수정 Method
-     * @param manualUpdateRequestDTO 수정 요청 이용자가 TAG 내용에 대해 수정한 값을 담은 DTO 객체
+     * @param manualWriteAndUpdateRequestDTO 수정 요청 이용자가 게시글 수정 내용에 대해 수정한 값을 담은 DTO 객체
      * @param manualNo 수정 대상 게시글 고유 번호
      */
 
-   @Transactional public void updateManualTag(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo) {
+   @Transactional public void updateManualTag(ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO, Long manualNo) {
 
         log.info("ManualTagQuerydslRespository의 updateManualTag(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo)가 호출 되었습니다!");
 
@@ -46,7 +46,7 @@ import static org.comunity.hongga.model.entity.manual.QManualTag.manualTag;
         JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(entityManager, manualTag);
 
         jpaUpdateClause.where(manualTag.manual.manualNo.eq(manualNo))
-                .set(manualTag.tagContent, manualUpdateRequestDTO.getTagContent())
+                .set(manualTag.tagContent, manualWriteAndUpdateRequestDTO.getTagContent())
                 .execute();
 
     } // updateManualTag(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo) 끝

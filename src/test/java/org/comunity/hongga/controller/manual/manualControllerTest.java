@@ -44,7 +44,6 @@ public class manualControllerTest {
     @MockBean private ManualServiceImpl manualService;
     @MockBean private WebMvcConfig webMvcConfig;
 
-<<<<<<< HEAD
     @Test public void 메뉴얼_등록() throws Exception{
         String memberNo = "1";
 
@@ -131,7 +130,7 @@ public class manualControllerTest {
         mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
 
     } // 게시글_삭제() 끝
-=======
+
 //    @Test public void 메뉴얼_등록() throws Exception{
 //        String memberNo = "1";
 //
@@ -218,6 +217,5 @@ public class manualControllerTest {
 //        mockMvc.perform(delete(ServiceURIVersion.NOW_VERSION+"/paternal/manual/{manualNo}", manualNo).param("memberNo", memberNo)).andExpect(status().isOk());
 //
 //    } // 게시글_삭제() 끝
->>>>>>> c43943216ec8a1d45e8779b3c558bac98c3d96b2
 
 } // class 끝

@@ -67,7 +67,7 @@ import java.util.Optional;
                     log.info("중복된 Email이 없으므로, DB에 저장 하겠습니다!");
                     memberRepository.save(memberSignUpRequestDTO.toEntity());
 
-                    return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn());
+                    return DefaultResponse.response(ResponseCode.CREATE.getCode(), ResponseCode.CREATE.getMessageKo(), ResponseCode.CREATE.getMessageEn());
                 });
     } // signUp(MemberSignUpRequestDTO memberSignUpRequestDTO) 끝
 
@@ -88,11 +88,16 @@ import java.util.Optional;
 
         Optional<String> loginEmail = memberRepository.findBytoMemberEmail(memberSignInRequestDTO.getEmail());
 
+        log.info("이용자가 입력한 패스워드를 암호화 하겠습니다!");
+        String inputPwd = passwordEncoder.encode(memberSignInRequestDTO.getPassword());
+
+        log.info("로그인 시 입력된 회원의 패스워드가 어떻게 암호화 되었는지 확인 하겠습니다! \n 암호화된 패스워드 내용 : " + inputPwd);
+
         return loginEmail.map(email -> {
 
             log.info("DB에서 Email 주소를 통해 조회된 회원의 Email 주소와 이용자가 입력한 패스워드를 통해 DB에서 해당 회원이 존재하는지 확인 하겠습니다!");
 
-            Optional<Member> loginMemberInfo = memberRepository.findByMember(email, memberSignInRequestDTO.getPassword());
+            Optional<Member> loginMemberInfo = memberRepository.findByMember(email, inputPwd);
 
             return loginMemberInfo.map(member -> {
 

@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualWriteAndUpdateRequestDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,11 +33,11 @@ import static org.comunity.hongga.model.entity.manual.QManualImage.manualImage;
 
     /**
      * 게시글 Image 수정 Method
-     * @param manualUpdateRequestDTO 수정 요청 이용자가 TAG 내용에 대해 수정한 값을 담은 DTO 객체
+     * @param manualWriteAndUpdateRequestDTO 수정 요청 이용자가 게시글 수정 내용에 대해 수정한 값을 담은 DTO 객체
      * @param manualNo 수정 대상 게시글 고유 번호
      */
 
-    @Transactional public void updateManualImage(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo) {
+    @Transactional public void updateManualImage(ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO, Long manualNo) {
 
         log.info("ManualTagQuerydslRespository의 updateManualImage(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo)가 호출 되었습니다!");
 
@@ -46,9 +46,9 @@ import static org.comunity.hongga.model.entity.manual.QManualImage.manualImage;
         JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(entityManager, manualImage);
 
         jpaUpdateClause.where(manualImage.manual.manualNo.eq(manualNo))
-                .set(manualImage.uuid, manualUpdateRequestDTO.getUuid())
-                .set(manualImage.imgName, manualUpdateRequestDTO.getImgName())
-                .set(manualImage.path, manualUpdateRequestDTO.getPath())
+                .set(manualImage.uuid, manualWriteAndUpdateRequestDTO.getUuid())
+                .set(manualImage.imgName, manualWriteAndUpdateRequestDTO.getImgName())
+                .set(manualImage.path, manualWriteAndUpdateRequestDTO.getPath())
                 .execute();
 
     } // updateManualImage(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo) 끝

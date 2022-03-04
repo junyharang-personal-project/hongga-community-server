@@ -116,22 +116,16 @@ public class MemberServiceImplTest {
 //                .phoneNumber(phoneNumber)
 //                .picture(picture)
 //                .aboutMe(aboutMe)
-<<<<<<< HEAD
 //                .grade(MemberGrade.ROLE_GUEST)
-=======
 //                .role(MemberRole.GUEST)
->>>>>>> c43943216ec8a1d45e8779b3c558bac98c3d96b2
 //                .activated(activated)
 //                .build();
 //
 //        MemberSignInRequestDTO memberSignInRequestDTO = new MemberSignInRequestDTO(email, password);
 //
 //        // when
-<<<<<<< HEAD
 //        given(memberRepository.findByEmail(email)).willReturn(Optional.of(email));
-=======
 //        given(memberRepository.findBytoMemberEmail(email)).willReturn(Optional.of(email));
->>>>>>> c43943216ec8a1d45e8779b3c558bac98c3d96b2
 //
 //        given(memberRepository.findByMember(email, password)).willReturn(Optional.of(mockMember));
 //

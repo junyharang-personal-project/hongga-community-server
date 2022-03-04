@@ -107,9 +107,7 @@ public class ManualRepositoryTest {
 
             String picture = "sdoijgoij.jpg";
             String aboutMe = "안녕하세요! 우리 가족에게 언제나 좋은 일만 가득하길 바랍니다!";
-            String pwd = faker.bothify("????######");
-
-            System.out.println("회원 가입 테스트 패스워드 입력 값 : " + pwd);
+            String pwd = "LeeHonggaManse1234"+i;
 
             Member testMember = Member.builder()
                     .email(faker.internet().emailAddress())
@@ -118,18 +116,18 @@ public class ManualRepositoryTest {
                     .nickname(StringUtils.deleteWhitespace(faker.name().fullName()))
                     .phoneNumber(fakerKOREALang.phoneNumber().phoneNumber())
                     .picture(picture)
-                    .aboutMe(aboutMe)
                     .role(MemberRole.FAMILY)
+                    .aboutMe(fakerKOREALang.lorem().sentence(150))
                     .activated(true)
                     .build();
 
-            Member familyMember = memberRepository.save(testMember);
+           Member familyMember = memberRepository.save(testMember);
 
             Manual manual = Manual.builder()
 
                     .writer(familyMember)
-                    .title("Synology NAS 사용법"+i)
-                    .content("이 제품은 이렇게 사용 하시면 삶의 질이 향상 되요!"+i)
+                    .title(fakerKOREALang.company().name())
+                    .content(fakerKOREALang.lorem().sentence(1000000))
                     .build();
 
             Manual saveManual = manualRepository.save(manual);
@@ -148,12 +146,16 @@ public class ManualRepositoryTest {
 
                 manualImageRepository.save(manualImage);
 
-                ManualTag tags = ManualTag.builder()
-                        .manual(saveManual)
-                        .tagContent("시놀로지"+i)
-                        .build();
+                for(int tagCount = 0; tagCount <= cnt; tagCount++) {
 
-                manualTagRepository.save(tags);
+                    ManualTag tags = ManualTag.builder()
+                            .manual(saveManual)
+                            .tagContent("시놀로지" + i)
+                            .build();
+
+                    manualTagRepository.save(tags);
+
+                } // for(int tagCount = 0; tagCount <= cnt; tagCount++) 끝
 
             } // for(int count = 0; count < cnt; count++) 끝
 

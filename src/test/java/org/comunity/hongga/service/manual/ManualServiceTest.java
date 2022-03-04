@@ -1,31 +1,13 @@
 package org.comunity.hongga.service.manual;
 
-import org.comunity.hongga.constant.DefaultResponse;
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
-import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
-import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
-import org.comunity.hongga.model.entity.manual.Manual;
-import org.comunity.hongga.model.entity.member.Member;
 import org.comunity.hongga.repository.manual.ManualRepository;
 import org.comunity.hongga.repository.manual.querydsl.ManualQuerydslRepository;
 import org.comunity.hongga.repository.member.MemberRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 /**
  * 회원 관련 Service Test Code

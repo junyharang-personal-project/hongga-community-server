@@ -6,8 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
-import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualWriteAndUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.*;
 import org.comunity.hongga.service.manual.ManualServiceImpl;
 import org.springframework.data.domain.Page;
@@ -16,11 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * 사용 설명서 관련 Router Class
@@ -57,14 +54,14 @@ import java.util.List;
 
 //    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @PostMapping("manual") public ResponseEntity<DefaultResponse<Long>> writeManual(
-            @Valid @RequestBody ManualWriteRequestDTO systemManualWriteDTO, @RequestParam("memberNo") Long memberNo) {
+            @Valid @RequestBody ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO, @RequestParam("memberNo") Long memberNo) {
 
         log.info("ManualController가 동작 하였습니다!");
         log.info("writeManual(@Valid @ResponseBody SystemManualWriteDTO systemManualWriteDTO)가 호출 되었습니다!");
 
         log.info("systemManualService.writeSystemManual(systemManualWriteDTO)를 호출하겠습니다!");
 
-        return new ResponseEntity<>(manualService.writeManual(systemManualWriteDTO, memberNo), HttpStatus.OK);
+        return new ResponseEntity<>(manualService.writeManual(manualWriteAndUpdateRequestDTO, memberNo), HttpStatus.OK);
     } // writeManual(@Valid @RequestBody SystemManualWriteRequestDTO systemManualWriteDTO, @RequestParam ("memberId") Long memberId) 끝
 
 
@@ -113,18 +110,18 @@ import java.util.List;
 
 //    @PreAuthorize("hasRole('PATERNAL') or hasRole('MATERNAL') or hasRole('VALENTINE') or hasRole('FAMILY') or hasRole('ADMIN')")
     @PatchMapping("manual/{manualNo}") public ResponseEntity<DefaultResponse<Long>> updateManual (
-            @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO,
+            @Valid @RequestBody ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO,
             @PathVariable("manualNo") Long manualNo,
             @RequestParam("memberNo") Long memberNo) {
 
         log.info("ManualController가 동작 하였습니다!");
         log.info("updateManual ( @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO, @PathVariable(\"manualNo\") Long manualNo,@RequestParam(\"memberNo\") Long memberNo)가 호출 되었습니다!");
 
-        log.info("요청으로 들어온 값 \n 수정 내용 : " + manualUpdateRequestDTO.toString() + "\n 수정할 게시글 고유 번호 : " + manualNo.toString() + "\n 수정을 요청한 회원 고유 번호 : " + memberNo.toString());
+        log.info("요청으로 들어온 값 \n 수정 내용 : " + manualWriteAndUpdateRequestDTO.toString() + "\n 수정할 게시글 고유 번호 : " + manualNo.toString() + "\n 수정을 요청한 회원 고유 번호 : " + memberNo.toString());
 
         log.info("manualService.updateManual(manualUpdateRequestDTO, manualNo, manualNo)를 호출 하겠습니다!");
 
-        return new ResponseEntity<>(manualService.updateManual(manualUpdateRequestDTO, manualNo, memberNo), HttpStatus.OK);
+        return new ResponseEntity<>(manualService.updateManual(manualWriteAndUpdateRequestDTO, manualNo, memberNo), HttpStatus.OK);
 
     } // updateManual ( @Valid @RequestBody ManualUpdateRequestDTO manualUpdateRequestDTO, @PathVariable("manualNo") Long manualNo,@RequestParam("memberNo") Long memberNo) 끝
 

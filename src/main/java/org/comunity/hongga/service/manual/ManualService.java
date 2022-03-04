@@ -3,8 +3,7 @@ package org.comunity.hongga.service.manual;
 import org.comunity.hongga.constant.DefaultResponse;
 import org.comunity.hongga.model.dto.request.manual.ManualImageDTO;
 import org.comunity.hongga.model.dto.request.manual.ManualTagDTO;
-import org.comunity.hongga.model.dto.request.manual.ManualUpdateRequestDTO;
-import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
+import org.comunity.hongga.model.dto.request.manual.ManualWriteAndUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualDetailResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListContentSearchResponseDTO;
 import org.comunity.hongga.model.dto.response.manual.ManualListSearchResponseDTO;
@@ -14,7 +13,6 @@ import org.comunity.hongga.model.entity.manual.ManualImage;
 import org.comunity.hongga.model.entity.manual.ManualTag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,12 +45,12 @@ public interface ManualService {
 
     /**
      * 글 등록
-     * @param manualWriteRequestDTO - Client에서 입력한 값을 담은 DTO
+     * @param manualWriteAndUpdateRequestDTO - Client에서 입력한 값을 담은 DTO
      * @param memberNo - 글 작성 이용자 고유 번호
      * @return DefaultResponse<Long> - 응답 관련 정리 해둔 Class를 통해 작성된 게시글의 Manual 고유 번호를 반환(DB에 PK값)
      */
 
-    DefaultResponse<Long> writeManual(ManualWriteRequestDTO manualWriteRequestDTO, Long memberNo);
+    DefaultResponse<Long> writeManual(ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO, Long memberNo);
 
 
     /**
@@ -81,7 +79,7 @@ public interface ManualService {
      * @see ""
      */
 
-    DefaultResponse<Long> updateManual(ManualUpdateRequestDTO manualUpdateRequestDTO, Long manualNo, Long memberNo);
+    DefaultResponse<Long> updateManual(ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO, Long manualNo, Long memberNo);
 
     /**
      * 게시글 삭제
@@ -131,23 +129,23 @@ public interface ManualService {
 
     /**
      * DTO Type 객체 Entity Type 객체로 변환
-     * @param manualWriteRequestDTO - 게시글 작성을 위해 요청자가 입력한 게시글 내용을 담은 DTO Type 객체
+     * @param manualWriteAndUpdateRequestDTO - 게시글 작성을 위해 요청자가 입력한 게시글 내용을 담은 DTO Type 객체
      * @return Map<String, Object> - 여러 건에 사진과 TAG를 함께 담기 위해 Map으로 값을 받아 반환
      * @see ""
      */
 
-    default Map<String, Object> dtoToEntity(ManualWriteRequestDTO manualWriteRequestDTO) {
+    default Map<String, Object> dtoToEntity(ManualWriteAndUpdateRequestDTO manualWriteAndUpdateRequestDTO) {
 
         HashMap<String, Object> entityMap = new HashMap<>();
 
         Manual manual = Manual.builder()
-                .title(manualWriteRequestDTO.getTitle())
-                .content(manualWriteRequestDTO.getContent())
+                .title(manualWriteAndUpdateRequestDTO.getTitle())
+                .content(manualWriteAndUpdateRequestDTO.getContent())
                 .build();
 
         entityMap.put("manual", manual);
 
-        List<ManualImageDTO> imageDTOLIST = manualWriteRequestDTO.getImageDTOLIST();
+        List<ManualImageDTO> imageDTOLIST = manualWriteAndUpdateRequestDTO.getImageDTOLIST();
 
         // MovieImageDTO 처리
         if (imageDTOLIST != null && imageDTOLIST.size() > 0) {
@@ -167,7 +165,7 @@ public interface ManualService {
 
         } // if (imageDTOLIST != null && imageDTOLIST.size() > 0) 끝
 
-        List<ManualTagDTO> tagDTOLIST = manualWriteRequestDTO.getTagDTOLIST();
+        List<ManualTagDTO> tagDTOLIST = manualWriteAndUpdateRequestDTO.getTagDTOLIST();
 
         // TagDTO 처리
         if (tagDTOLIST != null && tagDTOLIST.size() > 0) {

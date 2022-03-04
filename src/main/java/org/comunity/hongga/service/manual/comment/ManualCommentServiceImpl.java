@@ -98,7 +98,7 @@ import java.util.Optional;
 
         commentRepository.save(writeRequestDTO.toEntity(dbInManual, dbInMember, writeRequestDTO));
 
-        return DefaultResponse.response(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessageKo(), ResponseCode.SUCCESS.getMessageEn());
+        return DefaultResponse.response(ResponseCode.CREATE.getCode(), ResponseCode.CREATE.getMessageKo(), ResponseCode.CREATE.getMessageEn());
 
     } // writeManualComment(ManualCommentWriteRequestDTO writeRequestDTO, Long manualNo, Long memberNo) 끝
 

@@ -25,6 +25,8 @@ public enum ResponseCode {
     PRESENT(200, "이미 존재하는 값 입니다!", "It is already existed!"),
     CHECK_VALUE(200, "입력값을 확인 해 주세요!", "Please check the input value!"),
 
+    CREATE(201, "리소스 생성이 완료 되었습니다!", "Resource creation has been completed!"),
+
     NO_CONTENT(204, "검색 결과가 없습니다.", "Not Found Data"),
 
     NotFoundUser(300, "사용자 정보를 찾을 수 없습니다.", "Not Found User"),
@@ -43,7 +45,6 @@ public enum ResponseCode {
     NotFoundAPICategory(404, "Api Category를 찾을 수 없습니다.", "Not Found Api Category"),
     NotFoundAPIConfig(404, "Api Config를 찾을 수 없습니다.", "Not Found Api Config"),
     NotFoundEvent(404, "Event를 찾을 수 없습니다.", "Not Found Event"),
-    NotFoundNodeType(404, "NodeType 찾을수 없음. - %s", "Not Found NodeType. - %s"),
     EmptyIdsParameters(404, "ids 파라미터값이 없음.", "ids Parameter is Empty"),
 
     NotAllowMethod(405, "허용하지 않는 Method 입니다.", "Not Allow Method"),

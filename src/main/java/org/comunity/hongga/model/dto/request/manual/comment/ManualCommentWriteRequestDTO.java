@@ -3,7 +3,6 @@ package org.comunity.hongga.model.dto.request.manual.comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.comunity.hongga.model.dto.request.manual.ManualWriteRequestDTO;
 import org.comunity.hongga.model.entity.manual.Manual;
 import org.comunity.hongga.model.entity.manual.comment.ManualComment;
 import org.comunity.hongga.model.entity.member.Member;
