@@ -15,10 +15,11 @@ import java.util.Optional;
  *    주니하랑, 1.1.0, 2022.02.15 회원 검색 쿼리 변경
  *    주니하랑, 1.1.1, 2022.03.02 소셜 로그인 기능 구현을 위해 Method 추가
  *    주니하랑, 1.2.0, 2022.03.05 회원을 찾기 위한 Method 통합
+ *    주니하랑, 1.2.1, 2022.03.06 PrincipalDetailsService 구현을 위해 Method 추가
  * </pre>
  *
  * @author 주니하랑
- * @version 주니하랑, 1.2.0, 2022.03.05 회원을 찾기 위한 Method 통합
+ * @version 주니하랑, 2022.03.06 PrincipalDetailsService 구현을 위해 Method 추가
  * @See "스프링 부트와 AWS로 혼자 구현하는 웹 서비스 P.179"
  * @see <a href=""></a>
  */

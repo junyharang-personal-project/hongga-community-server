@@ -6,6 +6,7 @@ import org.comunity.hongga.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MemberRepositoryTest {
 
     @Autowired private MemberRepository memberRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     @Test void 회원가입() {
 
@@ -40,7 +42,7 @@ public class MemberRepositoryTest {
         //given
         Member testMember = Member.builder()
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .name(name)
                 .nickname(nickName)
                 .phoneNumber(phoneNumber)

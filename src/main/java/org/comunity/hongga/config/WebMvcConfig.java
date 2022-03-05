@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.comunity.hongga.security.interceptor.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -26,6 +27,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration public class WebMvcConfig implements WebMvcConfigurer {
 
 //    private final LoginUserArgumentResolver loginUserArgumentResolver;
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+
+        registry
+                .addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE");
+    } // addCorsMappings(CorsRegistry registry) 끝
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -91,8 +102,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         return new ADMINMemberAPIInterCeptor();
 
     }  // guestMemberAPIInterCeptor() 끝
-
-    //TODO- 추가된 회원 역할에 따른 InterCeter추가 필요
 
     /**
      * HandlerMethodArgumentResolver를 WebMvcConfiguer의 addArgumentResolvers()를 통해 추가 하기 위해 구현

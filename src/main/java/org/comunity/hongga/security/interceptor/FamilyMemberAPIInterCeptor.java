@@ -37,6 +37,7 @@ public class FamilyMemberAPIInterCeptor implements HandlerInterceptor {
         if (token == null) {
             log.info("token 값이 null 입니다!");
             response.sendError(401, "요청 에러 입니다!");
+            return false;
         } // if (token == null) 끝
 
         String jwt = token.substring("Bearer ".length());

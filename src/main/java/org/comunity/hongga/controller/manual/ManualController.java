@@ -8,6 +8,9 @@ import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.constant.SwaggerApiInfo;
 import org.comunity.hongga.model.dto.request.manual.ManualWriteAndUpdateRequestDTO;
 import org.comunity.hongga.model.dto.response.manual.*;
+import org.comunity.hongga.model.entity.member.MemberRole;
+import org.comunity.hongga.security.auth.config.dto.SessionUser;
+import org.comunity.hongga.security.service.SessionService;
 import org.comunity.hongga.service.manual.ManualServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +18,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * 사용 설명서 관련 Router Class
@@ -46,7 +52,6 @@ import javax.validation.Valid;
 @RestController @RequestMapping(ServiceURIVersion.NOW_VERSION_PATERNAL) public class ManualController {
 
     private final ManualServiceImpl manualService;
-
 
     @ApiOperation(value = SwaggerApiInfo.WRITE_POSTS, notes = "사용 설명서 등록 서비스 입니다.")
     @ApiParam(name = "memberNo", value = "작성자의 고유 번호를 통해 게시글을 등록 합니다.", readOnly = true)

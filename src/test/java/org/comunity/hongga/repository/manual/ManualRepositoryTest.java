@@ -62,13 +62,13 @@ public class ManualRepositoryTest {
 
             Member testMember = Member.builder()
                     .email("test@hongga.com")
-                    .password("hong123456")
+                    .password(passwordEncoder.encode("hong123456"))
                     .name("홍주니")
                     .nickname("주니하랑")
                     .phoneNumber("010-3939-4848")
                     .picture(picture)
                     .aboutMe(aboutMe)
-                    .role(MemberRole.ADMIN)
+                    .role(MemberRole.ROLE_ADMIN)
                     .activated(true)
                     .build();
 
@@ -113,11 +113,11 @@ public class ManualRepositoryTest {
                     .email(faker.internet().emailAddress())
                     .password(passwordEncoder.encode(pwd))
                     .name(StringUtils.deleteWhitespace(fakerKOREALang.name().lastName()+fakerKOREALang.name().firstName()))
-                    .nickname(StringUtils.deleteWhitespace(faker.name().fullName()))
+                    .nickname(StringUtils.deleteWhitespace(faker.name().lastName()))
                     .phoneNumber(fakerKOREALang.phoneNumber().phoneNumber())
                     .picture(picture)
                     .role(MemberRole.ROLE_FAMILY)
-                    .aboutMe(fakerKOREALang.lorem().sentence(150))
+                    .aboutMe(aboutMe)
                     .activated(true)
                     .build();
 
@@ -127,7 +127,7 @@ public class ManualRepositoryTest {
 
                     .writer(familyMember)
                     .title(fakerKOREALang.company().name())
-                    .content(fakerKOREALang.lorem().sentence(1000000))
+                    .content(fakerKOREALang.lorem().sentence(10000))
                     .build();
 
             Manual saveManual = manualRepository.save(manual);

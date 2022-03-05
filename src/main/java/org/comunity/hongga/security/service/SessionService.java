@@ -66,10 +66,10 @@ import java.util.Optional;
 
     } // refreshTokenCheck(Long id, String refreshToken) 끝
 
-    public Map<String, MemberRole> memberGradeCheck(Long memberNo) {
+    public Map<String, MemberRole> memberRoleCheck(Long memberNo) {
 
         log.info("SessionService가 동작 하였습니다!");
-        log.info("memberGradeCheck(Long memberNo)이 호출되어 요청으로 들어 온 이용자의 등급(인가) 검증을 시작하겠습니다!");
+        log.info("memberRoleCheck(Long memberNo)이 호출되어 요청으로 들어 온 이용자의 등급(인가) 검증을 시작하겠습니다!");
 
         HashMap<String, MemberRole> result = new HashMap<>();
         result.put("permission", null);

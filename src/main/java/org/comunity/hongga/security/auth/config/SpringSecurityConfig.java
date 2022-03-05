@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -68,6 +69,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
         http
+                .formLogin().disable()
+                // 세션 대신 토큰 방식을 사용하기 때문에 세션 설정을 stateless로 변
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 // H2-console 화면을 사용하기 위해 해당 옵션 disable
                 .csrf().disable().headers().frameOptions().disable()
                 .and()
@@ -89,7 +94,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
                 .antMatchers(ServiceURIVersion.NOW_VERSION_ADMIN+"/**")
                     .access("hasRole('ROLE_ADMIN')")
 
-                // 위에 열거한 URI 이외 나머지 URI는 인증 없이 접근 가능
+                 // 위에 열거한 URI 이외 나머지 URI는 인증 없이 접근 가능
                 .anyRequest().permitAll()
                 .and()
                 // 이용자가 로그아웃을 했을 때 이동할 곳 지정
