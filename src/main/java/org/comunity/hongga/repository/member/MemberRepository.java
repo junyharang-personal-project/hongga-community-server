@@ -14,30 +14,23 @@ import java.util.Optional;
  *    주니하랑, 1.0.0, 2022.02.08 최초 작성
  *    주니하랑, 1.1.0, 2022.02.15 회원 검색 쿼리 변경
  *    주니하랑, 1.1.1, 2022.03.02 소셜 로그인 기능 구현을 위해 Method 추가
+ *    주니하랑, 1.2.0, 2022.03.05 회원을 찾기 위한 Method 통합
  * </pre>
  *
  * @author 주니하랑
- * @version 1.1.1, 2022.03.02 소셜 로그인 기능 구현을 위해 Method 추가
+ * @version 주니하랑, 1.2.0, 2022.03.05 회원을 찾기 위한 Method 통합
  * @See "스프링 부트와 AWS로 혼자 구현하는 웹 서비스 P.179"
  * @see <a href=""></a>
  */
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query(value = "select m.email from Member m where m.email =:email")
-    Optional<String> findBytoMemberEmail(@Param("email") String email);
-
-    @Query(value = "select m.email, m.password from Member m where m.email =:email")
-    Optional<Member> findByEmailImsi(@Param("email") String email);
-
-    @Query("select m from Member m where m.email =:email and m.password =:password")
-    Optional<Member> findByMember(@Param("email") String email, @Param("password") String password);
-
-
     /**
-     * 소셜 로그인으로 반환되는 값 중 email을 통해 이미 등록된 이용자 인지 여부 검사를 위한 Method
+     * 소셜 로인으로 반환되는 값 중 email을 통해 이미 등록된 이용자 인지 여부 검사를 위한 Method
+     * Local 계정으로 로그인 시도 시 로그인 요청자가 입력한 email을 통해 해당 회원이 있는지 여부 검사를 위한 용도 또한 사용
+     * 회원 가입 시 중복 여부를 확인하기 위한 Method
      * @param email - 소셜 로그인 서비스에서 환하는 이용자 email 주소
-     * @return Optional<Member> - Member 객체를 Null 보호하여 반환
+     * @return Optional<Member> - Member 객체를 Null 보호 하여 반환
      * @see ""
      */
 

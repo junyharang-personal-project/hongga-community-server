@@ -59,10 +59,10 @@ public class ValentineMemberAPIInterCeptor implements HandlerInterceptor {
         String memberRole = claims.get("member_role", String.class);
 
         log.info("이용자의 등급이 VALENTINE 이상 회원 역할이 접근 가능한 곳이 아니라면 접근 제한 하겠습니다!");
-        if (memberRole.equals(MemberRole.GUEST.getKey()) ||
-                memberRole.equals(MemberRole.FRIEND.getKey()) ||
-                memberRole.equals(MemberRole.PATERNAL.getKey()) ||
-                memberRole.equals(MemberRole.MATERNAL.getKey())) {
+        if (memberRole.equals(MemberRole.ROLE_GUEST.getKey()) ||
+                memberRole.equals(MemberRole.ROLE_FRIEND.getKey()) ||
+                memberRole.equals(MemberRole.ROLE_PATERNAL.getKey()) ||
+                memberRole.equals(MemberRole.ROLE_MATERNAL.getKey())) {
 
             log.error("이용자의 등급이 VALENTINE 이하 등급 입니다! 접근 제한 하겠습니다!\");");
             response.sendError(403, "접근 권한이 없습니다!");

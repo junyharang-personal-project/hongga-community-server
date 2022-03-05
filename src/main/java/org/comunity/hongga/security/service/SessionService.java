@@ -154,26 +154,26 @@ import java.util.Optional;
                 String accessToken;
 
                 log.info("요청 이용자의 등급을 확인 하겠습니다!");
-                if (memberRole.equals(MemberRole.ADMIN.getKey())) {
+                if (memberRole.equals(MemberRole.ROLE_ADMIN.getKey())) {
 
                     log.info("요청 이용자의 등급이 관리자 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.ADMIN)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ADMIN);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_ADMIN);
 
-                } else if (memberRole.equals(MemberRole.FAMILY.getKey())) {
+                } else if (memberRole.equals(MemberRole.ROLE_FAMILY.getKey())) {
 
                     log.info("요청 이용자의 등급이 가족 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.FAMILY)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.FAMILY);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_FAMILY);
 
-                } else if (memberRole.equals(MemberRole.GUEST.getKey())) {
+                } else if (memberRole.equals(MemberRole.ROLE_GUEST.getKey())) {
 
                     log.info("요청 이용자의 등급이 손님 입니다!");
                     log.info("JwtUtil.createAccessToken(memberNo, MemberGrade.GUEST)을 호출하여 accessToken을 발급 받겠습니다!");
 
-                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.GUEST);
+                    accessToken = JwtUtil.createAccessToken(memberNo, MemberRole.ROLE_GUEST);
 
                 } // if (회원 등급 비교) 끝
 

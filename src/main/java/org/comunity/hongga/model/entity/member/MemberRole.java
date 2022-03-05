@@ -25,13 +25,13 @@ import lombok.RequiredArgsConstructor;
 @Getter @RequiredArgsConstructor
 public enum MemberRole {
 
-    GUEST("ROLE_GUEST", "손님"),
-    FRIEND("ROLE_FRIEND", "친구"),
-    PATERNAL("ROLE_PATERNAL", "친가"),
-    MATERNAL("ROLE_MATERNAL", "외가"),
-    VALENTINE("ROLE_VALENTINE", "애인"),
-    FAMILY("ROLE_FAMILY", "가족"),
-    ADMIN("ROLE_ADMIN", "관리자");
+    ROLE_GUEST("ROLE_GUEST", "손님"),
+    ROLE_FRIEND("ROLE_FRIEND", "친구"),
+    ROLE_PATERNAL("ROLE_PATERNAL", "친가"),
+    ROLE_MATERNAL("ROLE_MATERNAL", "외가"),
+    ROLE_VALENTINE("ROLE_VALENTINE", "애인"),
+    ROLE_FAMILY("ROLE_FAMILY", "가족"),
+    ROLE_ADMIN("ROLE_ADMIN", "관리자");
 
     private final String key;
     private final String title;

@@ -125,7 +125,7 @@ public class OAuthAttributes {
                 .email(email)
                 .nickname(nickname)
                 .picture(picture)
-                .role(MemberRole.GUEST)
+                .role(MemberRole.ROLE_GUEST)
                 .build();
 
     } // toEntity() 끝

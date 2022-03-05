@@ -50,7 +50,7 @@ public class MemberSignUpRequestDTO {
                 .nickname(nickname)
                 .phoneNumber(phoneNumber)
                 .picture(picture)
-                .role(MemberRole.GUEST)
+                .role(MemberRole.ROLE_GUEST)
                 .aboutMe(aboutMe)
                 .activated(true)
                 .build();

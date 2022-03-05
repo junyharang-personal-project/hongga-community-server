@@ -116,7 +116,7 @@ public class ManualRepositoryTest {
                     .nickname(StringUtils.deleteWhitespace(faker.name().fullName()))
                     .phoneNumber(fakerKOREALang.phoneNumber().phoneNumber())
                     .picture(picture)
-                    .role(MemberRole.FAMILY)
+                    .role(MemberRole.ROLE_FAMILY)
                     .aboutMe(fakerKOREALang.lorem().sentence(150))
                     .activated(true)
                     .build();
