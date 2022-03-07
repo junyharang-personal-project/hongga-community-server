@@ -1,6 +1,7 @@
 package org.comunity.hongga.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.comunity.hongga.constant.ServiceURIVersion;
 import org.comunity.hongga.security.interceptor.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *    주니하랑, 1.0.0, 2022.02.15 최초 작성
  *    주니하랑, 1.1.0, 2022.02.15 HandlerMethodArgumentResolver를 WebMvcConfiguer의 addArgumentResolvers()를 통해 추가 하기 위해 구현
  *    주니하랑, 1.1.1, 2022.03.03 회원 역할 추가로 인한 접근 제한 구문 추가 및 수정
+ *    주니하랑, 1.1.2, 2022.03.07 회원 권한 검증 문제로 인한 로직 추가
  * </pre>
  *
  * @author 주니하랑
- * @version 1.1.1, 2022.03.03 회원 역할 추가로 인한 접근 제한 구문 추가 및 수정
+ * @version 1.1.2, 2022.03.07 회원 권한 검증 문제로 인한 로직 추가
  * @See ""
  * @see <a href=""></a>
  */
@@ -44,7 +46,27 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         log.info("WebMvcConfig가 동작하였습니다!");
         log.info("addInterceptors(InterceptorRegistry registry)가 호출 되었습니다!");
 
-        // WebMvcConfigurer.super.addInterceptors(registry);
+        registry.addInterceptor(guestMemberAPIInterCeptor())
+                .addPathPatterns(ServiceURIVersion.NOW_VERSION_GUEST+"/**");
+
+        registry.addInterceptor(friendMemberAPIInterCeptor())
+                .addPathPatterns(ServiceURIVersion.NOW_VERSION_FRIEND+"/**");
+
+        registry.addInterceptor(paternalMemberAPIInterCeptor())
+                .addPathPatterns(ServiceURIVersion.NOW_VERSION_PATERNAL+"/**");
+
+        registry.addInterceptor(maternalMemberAPIInterCeptor())
+                .addPathPatterns(ServiceURIVersion.NOW_VERSION_MATERNAL+"/**");
+
+        registry.addInterceptor(valentineMemberAPIInterCeptor())
+                .addPathPatterns(ServiceURIVersion.NOW_VERSION_VALENTINE+"/**");
+
+        registry.addInterceptor(familyMemberAPIInterCeptor())
+                .addPathPatterns(ServiceURIVersion.NOW_VERSION_FAMILY+"/**");
+
+        registry.addInterceptor(adminMemberAPIInterCeptor())
+                .addPathPatterns(ServiceURIVersion.NOW_VERSION_ADMIN+"/**");
+
     } // addInterceptors(InterceptorRegistry registry) 끝
 
     @Bean public GuestMemberAPIInterCeptor guestMemberAPIInterCeptor() {
