@@ -31,7 +31,7 @@ import javax.validation.Valid;
  */
 
 @Api(tags = {"회원 관리 관련 API"}) @Slf4j
-@RequiredArgsConstructor @RequestMapping(ServiceURIVersion.NOW_VERSION)
+@RequiredArgsConstructor @RequestMapping(ServiceURIVersion.NOW_VERSION_MEMBER)
 @RestController public class MemberController {
 
     private final MemberServiceImpl memberServiceImpl;
